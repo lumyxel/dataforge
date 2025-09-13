@@ -8,9 +8,11 @@ class Writer {
   final ParseResult result;
   final String? projectRoot;
   final bool debugMode;
+  final bool autoModify;
   late final String _dataforgeAnnotationPrefix;
 
-  Writer(this.result, {this.projectRoot, this.debugMode = false}) {
+  Writer(this.result,
+      {this.projectRoot, this.debugMode = false, this.autoModify = false}) {
     _dataforgeAnnotationPrefix = _getDataforgeAnnotationPrefix();
   }
 
@@ -250,22 +252,30 @@ class Writer {
       if (line.contains('class $className') && !line.contains('mixin')) {
         final trimmedLine = line.trim();
 
-        // Check if already has the correct with clause
-        if (trimmedLine.contains('with $mixinName')) {
-          return false; // Already has the correct with clause
-        }
-
         // Check if has any with clause
         if (trimmedLine.contains(' with ')) {
-          // Has existing with clause, add our mixin
+          // Parse existing mixins to avoid duplicates
           final withIndex = line.indexOf(' with ');
           final openBraceIndex = line.indexOf('{');
 
           if (openBraceIndex > withIndex) {
-            // Insert before the opening brace
-            final beforeBrace = line.substring(0, openBraceIndex).trim();
+            final withClause =
+                line.substring(withIndex + 5, openBraceIndex).trim();
+            final existingMixins =
+                withClause.split(',').map((m) => m.trim()).toSet();
+
+            // Check if our mixin is already present
+            if (existingMixins.contains(mixinName)) {
+              return false; // Already has the correct with clause
+            }
+
+            // Add our mixin to the existing list
+            existingMixins.add(mixinName);
+            final newWithClause = existingMixins.join(', ');
+
+            final beforeWith = line.substring(0, withIndex);
             final afterBrace = line.substring(openBraceIndex);
-            lines[i] = '$beforeBrace, $mixinName $afterBrace';
+            lines[i] = '$beforeWith with $newWithClause $afterBrace';
             return true;
           }
         } else {
@@ -283,6 +293,129 @@ class Writer {
       }
     }
     return false;
+  }
+
+  /// Add @override annotations to fields that implement mixin abstract fields
+  bool _addOverrideToFields(List<String> lines, String className) {
+    final clazz = result.classes.firstWhere(
+      (c) => c.name == className,
+      orElse: () => throw StateError('Class $className not found'),
+    );
+
+    bool modified = false;
+    int classStartIndex = -1;
+    int classEndIndex = -1;
+
+    // Find class boundaries
+    for (int i = 0; i < lines.length; i++) {
+      final line = lines[i];
+      if (line.contains('class $className') && !line.contains('mixin')) {
+        classStartIndex = i;
+        // Find the opening brace
+        int braceCount = 0;
+        for (int j = i; j < lines.length; j++) {
+          final currentLine = lines[j];
+          braceCount += '{'.allMatches(currentLine).length;
+          braceCount -= '}'.allMatches(currentLine).length;
+          if (braceCount == 0 && j > i) {
+            classEndIndex = j;
+            break;
+          }
+        }
+        break;
+      }
+    }
+
+    if (classStartIndex == -1 || classEndIndex == -1) {
+      return false;
+    }
+
+    // Process each field in the class
+    for (final field in clazz.fields) {
+      if (field.name.isEmpty || field.type.isEmpty) continue;
+
+      // Find field declaration within class boundaries
+      for (int i = classStartIndex + 1; i < classEndIndex; i++) {
+        final line = lines[i].trim();
+
+        // Check if this line contains the field declaration
+        if (_isFieldDeclaration(line, field.name)) {
+          // Check if @override is already present
+          bool hasOverride = false;
+
+          // Check previous lines for @override annotation
+          for (int j = i - 1; j >= classStartIndex; j--) {
+            final prevLine = lines[j].trim();
+            if (prevLine.isEmpty) continue;
+            if (prevLine == '@override') {
+              hasOverride = true;
+              break;
+            }
+            // If we hit another declaration or non-annotation, stop looking
+            if (!prevLine.startsWith('@') && prevLine.isNotEmpty) {
+              break;
+            }
+          }
+
+          // Add @override if not present
+          if (!hasOverride) {
+            final indentation = _getIndentation(lines[i]);
+            lines.insert(i, '$indentation@override');
+            modified = true;
+            classEndIndex++; // Adjust end index since we inserted a line
+          }
+          break;
+        }
+      }
+    }
+
+    return modified;
+  }
+
+  /// Check if a line is a field declaration for the given field name
+  bool _isFieldDeclaration(String line, String fieldName) {
+    // Remove leading/trailing whitespace and check for field patterns
+    final trimmed = line.trim();
+
+    // Skip lines that are clearly not field declarations
+    if (trimmed.startsWith('//') ||
+        trimmed.startsWith('/*') ||
+        trimmed.startsWith('@') ||
+        trimmed.startsWith('const ') ||
+        trimmed.startsWith('factory ') ||
+        trimmed.startsWith('return ') || // Skip return statements
+        trimmed.startsWith('if ') || // Skip if statements
+        trimmed.startsWith('for ') || // Skip for loops
+        trimmed.startsWith('while ') || // Skip while loops
+        trimmed.startsWith('switch ') || // Skip switch statements
+        trimmed.contains('(') || // Skip methods/constructors
+        trimmed.contains('=>') || // Skip arrow functions
+        trimmed.contains('=') && !trimmed.contains(';')) {
+      // Skip assignments that aren't field declarations
+      return false;
+    }
+
+    // Must end with semicolon for field declarations
+    if (!trimmed.endsWith(';')) {
+      return false;
+    }
+
+    // Check for field declaration patterns - must be at start of declaration
+    final fieldPatterns = [
+      RegExp(r'^final\s+\w+\s+' + fieldName + r'\s*;\s*\$'),
+      RegExp(r'^\w+\s+' + fieldName + r'\s*;\s*\$'),
+      RegExp(r'^var\s+' + fieldName + r'\s*;\s*\$'),
+      RegExp(r'^static\s+final\s+\w+\s+' + fieldName + r'\s*;\s*\$'),
+      RegExp(r'^static\s+\w+\s+' + fieldName + r'\s*;\s*\$'),
+    ];
+
+    return fieldPatterns.any((pattern) => pattern.hasMatch(trimmed));
+  }
+
+  /// Get the indentation of a line
+  String _getIndentation(String line) {
+    final match = RegExp(r'^(\s*)').firstMatch(line);
+    return match?.group(1) ?? '';
   }
 
   /// Check if fromJson method exists in lines
@@ -339,6 +472,15 @@ class Writer {
   /// Optimized version: Process original files with batch operations
   /// Process original files asynchronously
   Future<void> _processOriginalFilesAsync() async {
+    // Skip processing if autoModify is disabled
+    if (!autoModify) {
+      if (debugMode) {
+        print(
+            '[DEBUG] ${DateTime.now()}: Skipping original file processing (autoModify disabled)');
+      }
+      return;
+    }
+
     final processStartTime = DateTime.now();
 
     // Infer original file path from output path
@@ -364,6 +506,15 @@ class Writer {
 
   /// Process original files synchronously (legacy)
   void _processOriginalFiles() {
+    // Skip processing if autoModify is disabled
+    if (!autoModify) {
+      if (debugMode) {
+        print(
+            '[DEBUG] ${DateTime.now()}: Skipping original file processing (autoModify disabled)');
+      }
+      return;
+    }
+
     final processStartTime = DateTime.now();
 
     // Infer original file path from output path
@@ -420,6 +571,11 @@ class Writer {
           modified = true;
         }
 
+        // Add @override annotations to fields
+        if (_addOverrideToFields(lines, clazz.name)) {
+          modified = true;
+        }
+
         // Add fromJson method if needed
         if (clazz.includeFromJson &&
             !_hasFromJsonMethodInLines(lines, clazz.name)) {
@@ -470,6 +626,11 @@ class Writer {
       for (final clazz in result.classes) {
         // Add with clause to class declaration
         if (_addWithClauseToLines(lines, clazz.name)) {
+          modified = true;
+        }
+
+        // Add @override annotations to fields
+        if (_addOverrideToFields(lines, clazz.name)) {
           modified = true;
         }
 

@@ -53,6 +53,7 @@ class JsonKeyFunctionsTest with _JsonKeyFunctionsTest {
       name: 'custom_name',
       fromJson: customStringFromJson,
       toJson: customStringToJson)
+  @override
   final String name;
 
   @override
@@ -67,6 +68,7 @@ class JsonKeyFunctionsTest with _JsonKeyFunctionsTest {
       name: 'custom_count',
       fromJson: customIntFromJson,
       toJson: customIntToJson)
+  @override
   final int count;
 
   @override

@@ -66,15 +66,15 @@ mixin _AlternateNamesTest {
     return AlternateNamesTest(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       age: SafeCasteUtil.safeCast<int>(
-              map['user_age'] ?? map['age'] ?? map['years']) ??
+              (map['user_age'] ?? map['age'] ?? map['years'])) ??
           0,
-      email: SafeCasteUtil.safeCast<String>(map['email'] ??
+      email: SafeCasteUtil.safeCast<String>((map['email'] ??
               map['email_address'] ??
               map['mail'] ??
-              map['e_mail']) ??
+              map['e_mail'])) ??
           "",
       isActive: SafeCasteUtil.safeCast<bool>(
-              map['is_active'] ?? map['active'] ?? map['enabled']) ??
+              (map['is_active'] ?? map['active'] ?? map['enabled'])) ??
           false,
       tags: ((map['tags'] as List<dynamic>?) ??
                   (map['tags_list'] as List<dynamic>?) ??

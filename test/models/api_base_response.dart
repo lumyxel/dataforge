@@ -15,6 +15,7 @@ class EchoApiResponse<T> with _EchoApiResponse {
   @JsonKey(
     name: 'message',
   )
+  @override
   final String message;
 
   @override

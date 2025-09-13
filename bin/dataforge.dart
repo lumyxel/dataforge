@@ -9,6 +9,10 @@ Future<void> main(List<String> args) async {
   parser.addFlag("format", defaultsTo: false, help: "Format generated code");
   parser.addFlag("debug",
       abbr: "d", defaultsTo: false, help: "Enable debug logging");
+  parser.addFlag("auto-modify",
+      help:
+          "Automatically modify source files (add with clauses, @override annotations, and part declarations)",
+      defaultsTo: false);
   parser.addFlag("help",
       abbr: "h", defaultsTo: false, help: "Show help information");
 
@@ -22,6 +26,8 @@ Future<void> main(List<String> args) async {
     print('Options:');
     print('  --format          Format generated code');
     print('  -d, --debug       Enable debug logging');
+    print(
+        '  --auto-modify     Automatically modify source files (add with clauses, @override annotations, and part declarations) [default: false]');
     print('  -h, --help        Show this help information');
     return;
   }
@@ -33,6 +39,7 @@ Future<void> main(List<String> args) async {
   }
   bool shouldFormat = res.flag("format");
   bool debugMode = res.flag("debug");
+  bool autoModify = res.flag("auto-modify");
   List<String> generatedFiles = [];
 
   if (debugMode) {
@@ -56,7 +63,8 @@ Future<void> main(List<String> args) async {
           '\n[DEBUG] ${DateTime.now()}: Path is empty, generating for lib and test directories');
       print('[DEBUG] ${DateTime.now()}: Starting generate(\'lib\')');
     }
-    final libFiles = await generate('lib', debugMode: debugMode);
+    final libFiles =
+        await generate('lib', debugMode: debugMode, autoModify: autoModify);
     if (debugMode) {
       print(
           '[DEBUG] ${DateTime.now()}: generate(\'lib\') completed, found ${libFiles.length} files');
@@ -66,7 +74,8 @@ Future<void> main(List<String> args) async {
     if (debugMode) {
       print('[DEBUG] ${DateTime.now()}: Starting generate(\'test\')');
     }
-    final testFiles = await generate('test', debugMode: debugMode);
+    final testFiles =
+        await generate('test', debugMode: debugMode, autoModify: autoModify);
     if (debugMode) {
       print(
           '[DEBUG] ${DateTime.now()}: generate(\'test\') completed, found ${testFiles.length} files');
@@ -76,7 +85,8 @@ Future<void> main(List<String> args) async {
     if (debugMode) {
       print('\n[DEBUG] ${DateTime.now()}: Starting generate(\'$path\')');
     }
-    final pathFiles = await generate(path, debugMode: debugMode);
+    final pathFiles =
+        await generate(path, debugMode: debugMode, autoModify: autoModify);
     if (debugMode) {
       print(
           '[DEBUG] ${DateTime.now()}: generate(\'$path\') completed, found ${pathFiles.length} files');
