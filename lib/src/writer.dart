@@ -1405,7 +1405,8 @@ class Writer {
       if (jsonKeys.length == 1) {
         valueExpression = "map['${jsonKeys[0]}']";
       } else {
-        valueExpression = jsonKeys.map((key) => "map['$key']").join(' ?? ');
+        valueExpression =
+            '(${jsonKeys.map((key) => "map['$key']").join(' ?? ')})';
       }
 
       // Check for custom fromJson function first
