@@ -3,7 +3,12 @@ import 'package:dataforge_annotation/dataforge_annotation.dart';
 part 'widget_skeleton_test.model.data.dart';
 
 @Dataforge()
-class WidgetSkeletonModel with _TokenBean, _WidgetSkeletonModel {
+class WidgetSkeletonModel
+    with
+        _TokenBean,
+        _WidgetSkeletonModel,
+        _WidgetSkeletonModel,
+        _WidgetSkeletonModel {
   @override
   final String name;
   @override
