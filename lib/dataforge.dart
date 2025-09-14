@@ -4,14 +4,35 @@ import 'package:path/path.dart' as p;
 
 import 'package:dataforge/src/parser.dart';
 import 'package:dataforge/src/writer.dart';
+import 'package:dataforge/src/isolate_worker_pool.dart';
+import 'package:dataforge/src/performance_logger.dart';
 
+/// Generate data classes for Dart files in the specified directory or file
+///
+/// [path] can be a directory or a single file
+/// [autoModify] if true, will automatically modify the original files
+/// [debugMode] if true, will print debug information
+/// [useIsolate] if true, will use isolate for concurrent processing
 Future<List<String>> generate(String path,
-    {bool debugMode = false, bool autoModify = false}) async {
+    {bool debugMode = false,
+    bool autoModify = false,
+    bool useIsolate = true}) async {
   final startTime = DateTime.now();
   if (debugMode) {
-    print('[DEBUG] $startTime: generate() called with path: "$path"');
-    print(
-        '[DEBUG] ${DateTime.now()}: Current working directory: ${Directory.current.path}');
+    print('[PERF] 🚀 $startTime: Starting dataforge generation');
+    print('[PERF]   └─ Target path: "$path"');
+    print('[PERF]   └─ Working directory: ${Directory.current.path}');
+    print('[PERF]   └─ Use isolate: $useIsolate, Auto modify: $autoModify');
+  }
+
+  // Performance logging is handled at the CLI level in bin/dataforge.dart
+
+  if (useIsolate) {
+    return await _generateWithIsolate(
+      path,
+      autoModify: autoModify,
+      debugMode: debugMode,
+    );
   }
 
   // Convert relative path to absolute path to ensure consistent behavior
@@ -25,49 +46,98 @@ Future<List<String>> generate(String path,
   final generatedFiles = <String>[];
   final entity = FileSystemEntity.typeSync(absolutePath);
   final isDirectory = entity == FileSystemEntityType.directory;
+
+  // Initialize timing variables
+  int scanTime = 0;
+  int filterTime = 0;
+  int parallelTime = 0;
+  int collectTime = 0;
+
   if (debugMode) {
-    print('[DEBUG] ${DateTime.now()}: Path is directory: $isDirectory');
+    print('[PERF] ${DateTime.now()}: 🚀 Starting generation');
+    print('[PERF]   └─ Target path: "$absolutePath"');
+    print('[PERF]   └─ Working directory: "${Directory.current.path}"');
+    print('[PERF]   └─ Is directory: $isDirectory');
+    print('[PERF]   └─ Use isolates: ${useIsolate ? 'Yes' : 'No'}');
+    print('[PERF]   └─ Auto modify: ${autoModify ? 'Yes' : 'No'}');
   }
 
+  // Log to performance file if enabled
+  logPerf('🚀 Starting generation');
+  logPerf('  └─ Target path: "$absolutePath"');
+  logPerf('  └─ Working directory: "${Directory.current.path}"');
+  logPerf('  └─ Is directory: $isDirectory');
+  logPerf('  └─ Use isolates: ${useIsolate ? 'Yes' : 'No'}');
+  logPerf('  └─ Auto modify: ${autoModify ? 'Yes' : 'No'}');
+
   if (isDirectory) {
+    // Step 1: Directory scanning
+    final scanStartTime = DateTime.now();
     if (debugMode) {
-      print(
-          '[DEBUG] ${DateTime.now()}: Starting directory scan for: $absolutePath');
+      print('[PERF] $scanStartTime: 📁 Starting directory scan');
     }
+    logPerf('$scanStartTime: 📁 Starting directory scan');
 
     // Optimized file scanning with depth limit and better filtering
     final files =
         _scanDirectory(absolutePath, maxDepth: 10, debugMode: debugMode);
-    if (debugMode) {
-      print(
-          '[DEBUG] ${DateTime.now()}: Found ${files.length} dart files after filtering');
-    }
+    final scanEndTime = DateTime.now();
+    final scanTime = scanEndTime.difference(scanStartTime).inMilliseconds;
 
-    // Pre-filter files to find those with Dataforge annotations
-    final parallelStartTime = DateTime.now();
     if (debugMode) {
-      print('[PERF] $parallelStartTime: Starting parallel file processing');
+      print('[PERF] $scanEndTime: ⏱️  Directory scan: ${scanTime}ms');
+      print('[PERF]   └─ Found ${files.length} dart files');
     }
+    logPerfTiming('Directory scan', scanTime);
+    logPerf('  └─ Found ${files.length} dart files');
+
+    // Step 2: Pre-filter files to find those with Dataforge annotations
+    final filterStartTime = DateTime.now();
+    if (debugMode) {
+      print('[PERF] $filterStartTime: 🔍 Starting annotation pre-filtering');
+    }
+    logPerf('$filterStartTime: 🔍 Starting annotation pre-filtering');
 
     final candidateFiles = <String>[];
     int preFilteredCount = 0;
+    int totalFileSize = 0;
 
     for (final filePath in files) {
-      if (_hasDataforgeAnnotations(filePath)) {
-        candidateFiles.add(filePath);
-      } else {
+      try {
+        final file = File(filePath);
+        final fileSize = file.lengthSync();
+        totalFileSize += fileSize;
+
+        if (_hasDataforgeAnnotations(filePath)) {
+          candidateFiles.add(filePath);
+        } else {
+          preFilteredCount++;
+        }
+      } catch (e) {
         preFilteredCount++;
         if (debugMode) {
-          print(
-              '[DEBUG] ${DateTime.now()}: Skipping file without @Dataforge annotations: $filePath');
+          print('[PERF] ⚠️  Error reading file $filePath: $e');
         }
+        logPerf('⚠️  Error reading file $filePath: $e');
       }
     }
 
+    final filterEndTime = DateTime.now();
+    final filterTime = filterEndTime.difference(filterStartTime).inMilliseconds;
+    final avgFileSize = files.isNotEmpty
+        ? (totalFileSize / files.length / 1024).toStringAsFixed(1)
+        : '0';
+
     if (debugMode) {
+      print('[PERF] $filterEndTime: ⏱️  Pre-filtering: ${filterTime}ms');
+      print('[PERF]   └─ Total files: ${files.length} (avg ${avgFileSize}KB)');
       print(
-          '[DEBUG] ${DateTime.now()}: Pre-filtering completed. Total files: ${files.length}, Candidates: ${candidateFiles.length}, Skipped: $preFilteredCount');
+          '[PERF]   └─ Candidates: ${candidateFiles.length}, Skipped: $preFilteredCount');
     }
+    logPerfTiming('Pre-filtering', filterTime);
+    logPerf('  └─ Total files: ${files.length} (avg ${avgFileSize}KB)');
+    logPerf(
+        '  └─ Candidates: ${candidateFiles.length}, Skipped: $preFilteredCount');
 
     if (candidateFiles.isEmpty) {
       if (debugMode) {
@@ -76,12 +146,25 @@ Future<List<String>> generate(String path,
       return generatedFiles;
     }
 
-    // Process files in parallel with controlled concurrency
+    // Step 3: Process files in parallel with controlled concurrency
+    final parallelStartTime = DateTime.now();
+    if (debugMode) {
+      print('[PERF] $parallelStartTime: ⚙️  Starting parallel processing');
+      print('[PERF]   └─ Max concurrency: ${Platform.numberOfProcessors}');
+    }
+    logPerf('$parallelStartTime: ⚙️  Starting parallel processing');
+    logPerf('  └─ Max concurrency: ${Platform.numberOfProcessors}');
+
     final maxConcurrency = Platform.numberOfProcessors;
     final processedResults = await _processFilesInParallel(
         candidateFiles, absolutePath, maxConcurrency, debugMode, autoModify);
 
-    // Collect results
+    final parallelEndTime = DateTime.now();
+    final parallelTime =
+        parallelEndTime.difference(parallelStartTime).inMilliseconds;
+
+    // Step 4: Collect results
+    final collectStartTime = DateTime.now();
     int processedCount = 0;
     for (final result in processedResults) {
       if (result.isNotEmpty) {
@@ -89,18 +172,23 @@ Future<List<String>> generate(String path,
         processedCount++;
       }
     }
+    final collectEndTime = DateTime.now();
+    final collectTime =
+        collectEndTime.difference(collectStartTime).inMilliseconds;
 
-    final parallelEndTime = DateTime.now();
-    final parallelTime =
-        parallelEndTime.difference(parallelStartTime).inMilliseconds;
     if (debugMode) {
       print(
-          '[PERF] $parallelEndTime: Parallel processing completed in ${parallelTime}ms (concurrency: $maxConcurrency)');
-    }
-    if (debugMode) {
+          '[PERF] $parallelEndTime: ⏱️  Parallel processing: ${parallelTime}ms');
+      print('[PERF]   └─ Concurrency: $maxConcurrency workers');
+      print('[PERF] $collectEndTime: ⏱️  Result collection: ${collectTime}ms');
       print(
-          '[DEBUG] ${DateTime.now()}: Directory scan completed. Total files: ${files.length}, Pre-filtered: $preFilteredCount, Processed: $processedCount, Generated: ${generatedFiles.length}');
+          '[PERF]   └─ Processed: $processedCount, Generated: ${generatedFiles.length}');
     }
+    logPerfTiming('Parallel processing', parallelTime);
+    logPerf('  └─ Concurrency: $maxConcurrency workers');
+    logPerfTiming('Result collection', collectTime);
+    logPerf(
+        '  └─ Processed: $processedCount, Generated: ${generatedFiles.length}');
   } else {
     if (debugMode) {
       print('[DEBUG] ${DateTime.now()}: Processing single file: $absolutePath');
@@ -167,16 +255,16 @@ Future<List<String>> generate(String path,
           autoModify: autoModify);
       if (debugMode) {
         print(
-            '[DEBUG] ${DateTime.now()}: Starting writeCode() for single file: $absolutePath');
+            '[DEBUG] ${DateTime.now()}: Starting writeCodeAsync() for single file: $absolutePath');
       }
-      final generatedFile = writer.writeCode();
+      final generatedFile = await writer.writeCodeAsync();
       final writeEndTime = DateTime.now();
 
       if (debugMode) {
         final writeTime =
             writeEndTime.difference(writeStartTime).inMilliseconds;
         print(
-            '[DEBUG] ${DateTime.now()}: writeCode() completed for single file: $absolutePath, generated: ${generatedFile.isNotEmpty ? generatedFile : 'empty'}, time: ${writeTime}ms');
+            '[DEBUG] ${DateTime.now()}: writeCodeAsync() completed for single file: $absolutePath, generated: ${generatedFile.isNotEmpty ? generatedFile : 'empty'}, time: ${writeTime}ms');
       }
 
       if (generatedFile.isNotEmpty) {
@@ -184,17 +272,161 @@ Future<List<String>> generate(String path,
       }
     }
   }
+  // Final performance summary
   final endTime = DateTime.now();
   final totalTime = endTime.difference(startTime).inMilliseconds;
 
   if (debugMode) {
-    print(
-        '[DEBUG] $endTime: generate() completed for path: "$absolutePath", total generated files: ${generatedFiles.length}, total time: ${totalTime}ms');
-  } else if (generatedFiles.isNotEmpty) {
+    print('[PERF] 🏁 $endTime: Generation completed in ${totalTime}ms');
+    print('[PERF]   └─ Generated files: ${generatedFiles.length}');
+    if (isDirectory) {
+      print('[PERF]   └─ Time breakdown:');
+      print(
+          '[PERF]     ├─ Directory scan: ${scanTime}ms (${(scanTime / totalTime * 100).toStringAsFixed(1)}%)');
+      print(
+          '[PERF]     ├─ Pre-filtering: ${filterTime}ms (${(filterTime / totalTime * 100).toStringAsFixed(1)}%)');
+      print(
+          '[PERF]     ├─ Parallel processing: ${parallelTime}ms (${(parallelTime / totalTime * 100).toStringAsFixed(1)}%)');
+      print(
+          '[PERF]     └─ Result collection: ${collectTime}ms (${(collectTime / totalTime * 100).toStringAsFixed(1)}%)');
+    }
+  }
+
+  // Log performance summary to file if enabled
+  logPerf('🏁 Generation completed in ${totalTime}ms');
+  logPerf('  └─ Generated files: ${generatedFiles.length}');
+  if (isDirectory) {
+    logPerf('  └─ Time breakdown:');
+    logPerf(
+        '    ├─ Directory scan: ${scanTime}ms (${(scanTime / totalTime * 100).toStringAsFixed(1)}%)');
+    logPerf(
+        '    ├─ Pre-filtering: ${filterTime}ms (${(filterTime / totalTime * 100).toStringAsFixed(1)}%)');
+    logPerf(
+        '    ├─ Parallel processing: ${parallelTime}ms (${(parallelTime / totalTime * 100).toStringAsFixed(1)}%)');
+    logPerf(
+        '    └─ Result collection: ${collectTime}ms (${(collectTime / totalTime * 100).toStringAsFixed(1)}%)');
+  }
+
+  if (generatedFiles.isNotEmpty) {
     print('✅ Generated ${generatedFiles.length} files in ${totalTime}ms');
   }
 
   return generatedFiles;
+}
+
+/// Generate data classes using isolate-based concurrent processing
+///
+/// [path] can be a directory or a single file
+/// [autoModify] if true, will automatically modify the original files
+/// [debugMode] if true, will print debug information
+Future<List<String>> _generateWithIsolate(
+  String path, {
+  bool autoModify = false,
+  bool debugMode = false,
+}) async {
+  final startTime = DateTime.now();
+  if (debugMode) {
+    print('[DEBUG] Starting isolate-based generation for: $path');
+  }
+
+  // Convert relative path to absolute path
+  final absolutePath = Directory(path).absolute.path;
+  final projectRoot = _findProjectRoot(absolutePath);
+
+  if (debugMode) {
+    print('[DEBUG] Project root: $projectRoot');
+  }
+
+  // Collect all Dart files that need processing
+  final dartFiles = <String>[];
+  final entity = FileSystemEntity.typeSync(absolutePath);
+
+  if (entity == FileSystemEntityType.file) {
+    if (absolutePath.endsWith('.dart') &&
+        _hasDataforgeAnnotations(absolutePath)) {
+      dartFiles.add(absolutePath);
+    }
+  } else if (entity == FileSystemEntityType.directory) {
+    dartFiles.addAll(_scanDirectory(absolutePath));
+  } else {
+    throw ArgumentError('Path does not exist or is not accessible: $path');
+  }
+
+  if (dartFiles.isEmpty) {
+    if (debugMode) {
+      print('[DEBUG] No files with @dataforge annotations found');
+    }
+    return [];
+  }
+
+  if (debugMode) {
+    print('[DEBUG] Found ${dartFiles.length} files to process with isolates');
+  }
+
+  // Initialize isolate worker pool
+  final workerPool = IsolateWorkerPool(
+    debugMode: debugMode,
+  );
+
+  try {
+    // Initialize the worker pool
+    await workerPool.initialize();
+
+    if (debugMode) {
+      print(
+          '[DEBUG] Worker pool initialized with ${workerPool.workerCount} workers');
+    }
+
+    // Submit tasks for processing
+    final generatedFiles = await workerPool.submitTasks(
+      dartFiles,
+      projectRoot,
+      autoModify: autoModify,
+    );
+
+    final processingTime = DateTime.now().difference(startTime).inMilliseconds;
+    if (debugMode) {
+      print('[DEBUG] Isolate processing completed in ${processingTime}ms');
+      print('[DEBUG] Generated ${generatedFiles.length} files');
+
+      // Print pool statistics
+      final stats = workerPool.statistics;
+      print('[DEBUG] Pool statistics:');
+      print('  - Workers: ${stats['workerCount']}');
+      print('  - Tasks processed: ${stats['totalTasksProcessed']}');
+      print('  - Files processed: ${stats['totalFilesProcessed']}');
+      print('  - Total processing time: ${stats['totalProcessingTime']}ms');
+      print(
+          '  - Average processing time: ${stats['averageProcessingTime'].toStringAsFixed(2)}ms');
+    }
+
+    return generatedFiles;
+  } finally {
+    // Always shutdown the worker pool
+    await workerPool.shutdown();
+  }
+}
+
+/// Find the project root directory by looking for pubspec.yaml
+String _findProjectRoot(String startPath) {
+  var current = Directory(startPath);
+
+  // If startPath is a file, start from its parent directory
+  if (FileSystemEntity.typeSync(startPath) == FileSystemEntityType.file) {
+    current = current.parent;
+  }
+
+  // Walk up the directory tree looking for pubspec.yaml
+  while (current.path != current.parent.path) {
+    final pubspecFile = File('${current.path}/pubspec.yaml');
+    if (pubspecFile.existsSync()) {
+      return current.path;
+    }
+    current = current.parent;
+  }
+
+  // If no pubspec.yaml found, return the original directory
+  return Directory(startPath).parent.path;
 }
 
 /// Optimized directory scanning with depth limit and better filtering
@@ -404,7 +636,7 @@ Future<String> _processFile(String filePath, String projectRoot, bool debugMode,
     final writeStartTime = DateTime.now();
     final writer = Writer(parseRes,
         projectRoot: projectRoot, debugMode: debugMode, autoModify: autoModify);
-    final generatedFile = writer.writeCode();
+    final generatedFile = await writer.writeCodeAsync();
     final writeEndTime = DateTime.now();
 
     final fileEndTime = DateTime.now();

@@ -1,0 +1,113 @@
+# Dataforge Performance Log
+# Generated at: 2025-09-14T11:57:11.486233
+# Format: [PERF] <timestamp>: <message>
+
+[PERF] 2025-09-14T11:57:11.520090: 🚀 Starting dataforge generation
+[PERF] 2025-09-14T11:57:11.520136:   └─ Target path: "test/models"
+[PERF] 2025-09-14T11:57:11.520256:   └─ Working directory: /Volumes/mac-ext-ssd/document/GitHub/dataforge
+[PERF] 2025-09-14T11:57:11.520281:   └─ Use isolate: true , Auto modify: true
+[PERF] 2025-09-14T11:57:14.214572: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/valid_ignore_test.model.dart: 584ms
+[PERF] 2025-09-14T11:57:14.214585: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/valid_ignore_test.model.dart: 744ms
+[PERF] 2025-09-14T11:57:14.214589: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/valid_ignore_test.model.dart: 1329ms
+[PERF] 2025-09-14T11:57:14.214593: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/auto_with_test.model.dart: 38ms
+[PERF] 2025-09-14T11:57:14.214595: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/auto_with_test.model.dart: 457ms
+[PERF] 2025-09-14T11:57:14.214598: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/auto_with_test.model.dart: 495ms
+[PERF] 2025-09-14T11:57:14.214601: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/alternate_names_test.model.dart: 1ms
+[PERF] 2025-09-14T11:57:14.214604: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/alternate_names_test.model.dart: 703ms
+[PERF] 2025-09-14T11:57:14.214621: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/alternate_names_test.model.dart: 705ms
+[PERF] 2025-09-14T11:57:14.214625: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/defalt_converter.dart: 19ms
+[PERF] 2025-09-14T11:57:14.214628: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/defalt_converter.dart: 71ms
+[PERF] 2025-09-14T11:57:14.214630: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/defalt_converter.dart: 90ms
+[PERF] 2025-09-14T11:57:15.888725: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/json_key_functions_test.model.dart: 674ms
+[PERF] 2025-09-14T11:57:15.888748: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/json_key_functions_test.model.dart: 750ms
+[PERF] 2025-09-14T11:57:15.888757: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/json_key_functions_test.model.dart: 1424ms
+[PERF] 2025-09-14T11:57:15.888767: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/custom_read_value.model.dart: 22ms
+[PERF] 2025-09-14T11:57:15.888775: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/custom_read_value.model.dart: 876ms
+[PERF] 2025-09-14T11:57:15.888783: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/custom_read_value.model.dart: 898ms
+[PERF] 2025-09-14T11:57:15.888792: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/datetime_types.model.dart: 9ms
+[PERF] 2025-09-14T11:57:15.888800: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/datetime_types.model.dart: 716ms
+[PERF] 2025-09-14T11:57:15.888809: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/datetime_types.model.dart: 725ms
+[PERF] 2025-09-14T11:57:15.888819: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/default_values.model.dart: 29ms
+[PERF] 2025-09-14T11:57:15.888827: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/default_values.model.dart: 971ms
+[PERF] 2025-09-14T11:57:15.888834: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/default_values.model.dart: 1000ms
+[PERF] 2025-09-14T11:57:15.888843: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/alternate_names_priority_test.model.dart: 4ms
+[PERF] 2025-09-14T11:57:15.888851: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/alternate_names_priority_test.model.dart: 255ms
+[PERF] 2025-09-14T11:57:15.888859: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/alternate_names_priority_test.model.dart: 260ms
+[PERF] 2025-09-14T11:57:16.538271: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/example_ignore_validation.example.dart: 146ms
+[PERF] 2025-09-14T11:57:16.538284: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/example_ignore_validation.example.dart: 742ms
+[PERF] 2025-09-14T11:57:16.538294: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/example_ignore_validation.example.dart: 889ms
+[PERF] 2025-09-14T11:57:16.538304: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/prefix_validation_test.model.dart: 1ms
+[PERF] 2025-09-14T11:57:16.538313: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/prefix_validation_test.model.dart: 870ms
+[PERF] 2025-09-14T11:57:16.538320: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/prefix_validation_test.model.dart: 871ms
+[PERF] 2025-09-14T11:57:16.538329: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/nested_copywith_test.model.dart: 1ms
+[PERF] 2025-09-14T11:57:16.538337: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/nested_copywith_test.model.dart: 1416ms
+[PERF] 2025-09-14T11:57:16.538345: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/nested_copywith_test.model.dart: 1418ms
+[PERF] 2025-09-14T11:57:16.538354: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/deep_nested_test.model.dart: 5ms
+[PERF] 2025-09-14T11:57:16.538362: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/deep_nested_test.model.dart: 1292ms
+[PERF] 2025-09-14T11:57:16.538370: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/deep_nested_test.model.dart: 1298ms
+[PERF] 2025-09-14T11:57:16.786411: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/api_base_response.dart: 579ms
+[PERF] 2025-09-14T11:57:16.786424: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/api_base_response.dart: 838ms
+[PERF] 2025-09-14T11:57:16.786432: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/api_base_response.dart: 1418ms
+[PERF] 2025-09-14T11:57:16.786442: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/no_fromjson_test.model.dart: 0ms
+[PERF] 2025-09-14T11:57:16.786450: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/no_fromjson_test.model.dart: 339ms
+[PERF] 2025-09-14T11:57:16.786461: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/no_fromjson_test.model.dart: 340ms
+[PERF] 2025-09-14T11:57:16.786470: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/map_types.model.dart: 73ms
+[PERF] 2025-09-14T11:57:16.786478: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/map_types.model.dart: 2741ms
+[PERF] 2025-09-14T11:57:16.786486: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/map_types.model.dart: 2815ms
+[PERF] 2025-09-14T11:57:16.786495: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/list_custom_type.model.dart: 21ms
+[PERF] 2025-09-14T11:57:16.786503: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/list_custom_type.model.dart: 429ms
+[PERF] 2025-09-14T11:57:16.786511: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/list_custom_type.model.dart: 451ms
+[PERF] 2025-09-14T11:57:16.786520: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/custom_type_read_value_test.model.dart: 6ms
+[PERF] 2025-09-14T11:57:16.786528: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/custom_type_read_value_test.model.dart: 176ms
+[PERF] 2025-09-14T11:57:16.786536: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/custom_type_read_value_test.model.dart: 182ms
+[PERF] 2025-09-14T11:57:17.286335: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/default_chained_test.model.dart: 14ms
+[PERF] 2025-09-14T11:57:17.286353: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/default_chained_test.model.dart: 259ms
+[PERF] 2025-09-14T11:57:17.286363: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/default_chained_test.model.dart: 273ms
+[PERF] 2025-09-14T11:57:17.286372: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/test_model.model.dart: 0ms
+[PERF] 2025-09-14T11:57:17.286381: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/test_model.model.dart: 156ms
+[PERF] 2025-09-14T11:57:17.286389: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/test_model.model.dart: 157ms
+[PERF] 2025-09-14T11:57:17.286398: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/datetime_converter_model.model.dart: 4ms
+[PERF] 2025-09-14T11:57:17.286407: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/datetime_converter_model.model.dart: 60ms
+[PERF] 2025-09-14T11:57:17.286415: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/datetime_converter_model.model.dart: 65ms
+[PERF] 2025-09-14T11:57:18.809148: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/generic_support_test.model.dart: 30ms
+[PERF] 2025-09-14T11:57:18.809167: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/generic_support_test.model.dart: 737ms
+[PERF] 2025-09-14T11:57:18.809177: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/generic_support_test.model.dart: 767ms
+[PERF] 2025-09-14T11:57:18.810994: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/backward_compatibility_test.model.dart: 8ms
+[PERF] 2025-09-14T11:57:18.811005: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/backward_compatibility_test.model.dart: 209ms
+[PERF] 2025-09-14T11:57:18.811013: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/backward_compatibility_test.model.dart: 217ms
+[PERF] 2025-09-14T11:57:18.811023: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/nested_objects.model.dart: 1ms
+[PERF] 2025-09-14T11:57:18.811031: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/nested_objects.model.dart: 918ms
+[PERF] 2025-09-14T11:57:18.811039: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/nested_objects.model.dart: 920ms
+[PERF] 2025-09-14T11:57:18.811049: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/widget_skeleton_test.model.dart: 8ms
+[PERF] 2025-09-14T11:57:18.811316: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/widget_skeleton_test.model.dart: 106ms
+[PERF] 2025-09-14T11:57:18.811325: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/widget_skeleton_test.model.dart: 115ms
+[PERF] 2025-09-14T11:57:19.685641: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/enum_types.model.dart: 13ms
+[PERF] 2025-09-14T11:57:19.685647: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/enum_types.model.dart: 334ms
+[PERF] 2025-09-14T11:57:19.685650: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/enum_types.model.dart: 348ms
+[PERF] 2025-09-14T11:57:19.685653: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/chained_copywith_test.model.dart: 0ms
+[PERF] 2025-09-14T11:57:19.685655: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/chained_copywith_test.model.dart: 256ms
+[PERF] 2025-09-14T11:57:19.685658: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/chained_copywith_test.model.dart: 257ms
+[PERF] 2025-09-14T11:57:19.685661: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/override_test.model.dart: 2ms
+[PERF] 2025-09-14T11:57:19.685663: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/override_test.model.dart: 104ms
+[PERF] 2025-09-14T11:57:19.685666: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/override_test.model.dart: 107ms
+[PERF] 2025-09-14T11:57:19.685669: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/ignore_test.model.dart: 0ms
+[PERF] 2025-09-14T11:57:19.685672: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/ignore_test.model.dart: 160ms
+[PERF] 2025-09-14T11:57:19.685674: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/ignore_test.model.dart: 160ms
+[PERF] 2025-09-14T11:57:20.091147: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/auto_fromjson_test.model.dart: 0ms
+[PERF] 2025-09-14T11:57:20.091162: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/auto_fromjson_test.model.dart: 81ms
+[PERF] 2025-09-14T11:57:20.091165: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/auto_fromjson_test.model.dart: 82ms
+[PERF] 2025-09-14T11:57:20.091168: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/no_prefix_validation_test.model.dart: 1ms
+[PERF] 2025-09-14T11:57:20.091170: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/no_prefix_validation_test.model.dart: 123ms
+[PERF] 2025-09-14T11:57:20.091174: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/no_prefix_validation_test.model.dart: 124ms
+[PERF] 2025-09-14T11:57:20.091176: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/jsonkey_generic_test.model.dart: 13ms
+[PERF] 2025-09-14T11:57:20.091179: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/jsonkey_generic_test.model.dart: 124ms
+[PERF] 2025-09-14T11:57:20.091181: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/jsonkey_generic_test.model.dart: 138ms
+[PERF] 2025-09-14T11:57:20.091184: Parse phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/traditional_copywith_test.model.dart: 6ms
+[PERF] 2025-09-14T11:57:20.091186: Write phase for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/traditional_copywith_test.model.dart: 52ms
+[PERF] 2025-09-14T11:57:20.091188: Total processing for /Volumes/mac-ext-ssd/document/GitHub/dataforge/test/models/traditional_copywith_test.model.dart: 58ms
+[PERF] 2025-09-14T11:57:20.197799: 📁 Generated path: test/models: 8677ms (33 files)
+[PERF] 2025-09-14T11:57:20.198268: 🏁 Total dataforge execution: 8677ms
+[PERF] 2025-09-14T11:57:20.199331:   └─ Code Generation: 8677ms (100.0%)
+[PERF] 2025-09-14T11:57:20.199357: 📊 Files generated: 0ms (33 files)
+
+# Log completed at: 2025-09-14T11:57:20.206102

@@ -1,0 +1,14 @@
+# Dataforge Performance Log
+# Generated at: 2025-09-14T10:58:55.646630
+# Format: [PERF] <timestamp>: <message>
+
+[PERF] 2025-09-14T10:58:55.668974: 🚀 Starting dataforge generation
+[PERF] 2025-09-14T10:58:55.669089:   └─ Target path: "lib"
+[PERF] 2025-09-14T10:58:55.669394:   └─ Working directory: /Volumes/mac-ext-ssd/document/GitHub/dataforge
+[PERF] 2025-09-14T10:58:55.669456:   └─ Use isolate: true , Auto modify: false
+[PERF] 2025-09-14T10:58:57.104775: 📁 Generated path: lib: 1430ms (0 files)
+[PERF] 2025-09-14T10:58:57.108698: 🏁 Total Generation Process: 1436ms
+[PERF] 2025-09-14T10:58:57.109092:   └─ Code Generation: 1430ms (99.6%)
+[PERF] 2025-09-14T10:58:57.109105: 🏁 Total dataforge execution: 1436ms (0 files generated)
+
+# Log completed at: 2025-09-14T10:58:57.110426

@@ -330,43 +330,65 @@ class Writer {
       return false;
     }
 
-    // Process each field in the class
-    for (final field in clazz.fields) {
-      if (field.name.isEmpty || field.type.isEmpty) continue;
+    // Optimized: Single pass to find all field declarations and their @override status
+    final fieldNames = clazz.fields
+        .where((f) => f.name.isNotEmpty && f.type.isNotEmpty)
+        .map((f) => f.name)
+        .toSet();
+    final fieldsToProcess = <int>[];
 
-      // Find field declaration within class boundaries
-      for (int i = classStartIndex + 1; i < classEndIndex; i++) {
-        final line = lines[i].trim();
+    // Single pass through class lines to find all field declarations
+    for (int i = classStartIndex + 1; i < classEndIndex; i++) {
+      final line = lines[i].trim();
 
-        // Check if this line contains the field declaration
-        if (_isFieldDeclaration(line, field.name)) {
-          // Check if @override is already present
+      // Pre-filter: only check lines that could be field declarations
+      if (line.endsWith(';') &&
+          !line.startsWith('//') &&
+          !line.startsWith('/*') &&
+          !line.startsWith('@') &&
+          !line.contains('(') &&
+          !line.contains('=>')) {
+        // Quick check if line contains any field name
+        bool containsField = false;
+        String? matchedFieldName;
+        for (final fieldName in fieldNames) {
+          if (line.contains(fieldName) &&
+              _isFieldDeclaration(line, fieldName)) {
+            containsField = true;
+            matchedFieldName = fieldName;
+            break;
+          }
+        }
+
+        if (containsField) {
+          // Check if @override is already present (limit search to previous 3 lines)
           bool hasOverride = false;
+          final searchStart = (i - 3).clamp(classStartIndex, i);
 
-          // Check previous lines for @override annotation
-          for (int j = i - 1; j >= classStartIndex; j--) {
+          for (int j = i - 1; j >= searchStart; j--) {
             final prevLine = lines[j].trim();
             if (prevLine.isEmpty) continue;
             if (prevLine == '@override') {
               hasOverride = true;
               break;
             }
-            // If we hit another declaration or non-annotation, stop looking
-            if (!prevLine.startsWith('@') && prevLine.isNotEmpty) {
-              break;
-            }
+            // Stop if we hit a non-annotation line
+            if (!prevLine.startsWith('@') && prevLine.isNotEmpty) break;
           }
 
-          // Add @override if not present
           if (!hasOverride) {
-            final indentation = _getIndentation(lines[i]);
-            lines.insert(i, '$indentation@override');
-            modified = true;
-            classEndIndex++; // Adjust end index since we inserted a line
+            fieldsToProcess.add(i);
           }
-          break;
         }
       }
+    }
+
+    // Batch insert @override annotations (process in reverse order to maintain indices)
+    for (int i = fieldsToProcess.length - 1; i >= 0; i--) {
+      final lineIndex = fieldsToProcess[i];
+      final indentation = _getIndentation(lines[lineIndex]);
+      lines.insert(lineIndex, '$indentation@override');
+      modified = true;
     }
 
     return modified;
