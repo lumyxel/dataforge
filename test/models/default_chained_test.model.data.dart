@@ -8,8 +8,7 @@ mixin _DefaultChainedTest {
   abstract final int age;
   abstract final bool isActive;
 
-  _DefaultChainedTestCopyWith get copyWith =>
-      _DefaultChainedTestCopyWith._(this);
+  _DefaultChainedTestCopyWith get copyWith => _DefaultChainedTestCopyWith._(this as DefaultChainedTest);
 
   @override
   bool operator ==(Object other) {
@@ -36,11 +35,11 @@ mixin _DefaultChainedTest {
       isActive,
     ]);
   }
-
   @override
   String toString() {
     return 'DefaultChainedTest(name: $name, age: $age, isActive: $isActive)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -59,36 +58,42 @@ mixin _DefaultChainedTest {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _DefaultChainedTestCopyWith {
-  final _DefaultChainedTest _instance;
+  final DefaultChainedTest _instance;
   const _DefaultChainedTestCopyWith._(this._instance);
 
   /// Update name field
-  DefaultChainedTest name(String? value) {
-    return DefaultChainedTest(
-      name: value ?? _instance.name,
+  _DefaultChainedTestCopyWith name(String value) {
+    return _DefaultChainedTestCopyWith._(DefaultChainedTest(
+      name: value,
       age: _instance.age,
       isActive: _instance.isActive,
-    );
+    ));
   }
 
   /// Update age field
-  DefaultChainedTest age(int? value) {
-    return DefaultChainedTest(
+  _DefaultChainedTestCopyWith age(int value) {
+    return _DefaultChainedTestCopyWith._(DefaultChainedTest(
       name: _instance.name,
-      age: value ?? _instance.age,
+      age: value,
       isActive: _instance.isActive,
-    );
+    ));
   }
 
   /// Update isActive field
-  DefaultChainedTest isActive(bool? value) {
-    return DefaultChainedTest(
+  _DefaultChainedTestCopyWith isActive(bool value) {
+    return _DefaultChainedTestCopyWith._(DefaultChainedTest(
       name: _instance.name,
       age: _instance.age,
-      isActive: value ?? _instance.isActive,
-    );
+      isActive: value,
+    ));
+  }
+
+  /// Build the final instance
+  DefaultChainedTest build() {
+    return _instance as DefaultChainedTest;
   }
 
   /// Traditional copyWith method
@@ -104,3 +109,4 @@ class _DefaultChainedTestCopyWith {
     );
   }
 }
+

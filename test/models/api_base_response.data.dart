@@ -8,8 +8,7 @@ mixin _EchoApiResponse<T> {
   abstract final String message;
   abstract final T? data;
 
-  _EchoApiResponseCopyWith<T> get copyWith =>
-      _EchoApiResponseCopyWith<T>._(this);
+  _EchoApiResponseCopyWith<T> get copyWith => _EchoApiResponseCopyWith<T>._(this as EchoApiResponse<T>);
 
   @override
   bool operator ==(Object other) {
@@ -36,11 +35,11 @@ mixin _EchoApiResponse<T> {
       data,
     ]);
   }
-
   @override
   String toString() {
     return 'EchoApiResponse(code: $code, message: $message, data: $data)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -61,41 +60,42 @@ mixin _EchoApiResponse<T> {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _EchoApiResponseCopyWith<T> {
-  final _EchoApiResponse<T> _instance;
+  final EchoApiResponse<T> _instance;
   const _EchoApiResponseCopyWith._(this._instance);
 
   /// Update code field
-  EchoApiResponse<T> code(String? value) {
-    return EchoApiResponse<T>(
-      code: value ?? _instance.code,
+  _EchoApiResponseCopyWith<T> code(String value) {
+    return _EchoApiResponseCopyWith<T>._(EchoApiResponse<T>(
+      code: value,
       message: _instance.message,
       data: _instance.data,
-    );
+    ));
   }
 
   /// Update message field
-  EchoApiResponse<T> message(String? value) {
-    return EchoApiResponse<T>(
+  _EchoApiResponseCopyWith<T> message(String value) {
+    return _EchoApiResponseCopyWith<T>._(EchoApiResponse<T>(
       code: _instance.code,
-      message: value ?? _instance.message,
+      message: value,
       data: _instance.data,
-    );
+    ));
   }
 
   /// Update data field
-  EchoApiResponse<T> data(T? value) {
-    return EchoApiResponse<T>(
+  _EchoApiResponseCopyWith<T> data(T? value) {
+    return _EchoApiResponseCopyWith<T>._(EchoApiResponse<T>(
       code: _instance.code,
       message: _instance.message,
       data: value,
-    );
+    ));
   }
 
-  /// Nested copyWith for data field
-  _EchoApiResponseNestedCopyWithData<T> get dataBuilder {
-    return _EchoApiResponseNestedCopyWithData<T>._(_instance);
+  /// Build the final instance
+  EchoApiResponse<T> build() {
+    return _instance as EchoApiResponse<T>;
   }
 
   /// Traditional copyWith method
@@ -112,20 +112,3 @@ class _EchoApiResponseCopyWith<T> {
   }
 }
 
-/// Nested copyWith helper class for data field
-class _EchoApiResponseNestedCopyWithData<T> {
-  final _EchoApiResponse<T> _instance;
-  const _EchoApiResponseNestedCopyWithData._(this._instance);
-
-  /// Update data field using a copyWith function
-  EchoApiResponse<T> call(T Function(T) updater) {
-    final currentValue = _instance.data;
-    if (currentValue == null) return _instance as EchoApiResponse<T>;
-    final updatedValue = updater(currentValue);
-    return EchoApiResponse<T>(
-      code: _instance.code,
-      message: _instance.message,
-      data: updatedValue,
-    );
-  }
-}

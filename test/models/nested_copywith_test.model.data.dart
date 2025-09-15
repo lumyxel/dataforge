@@ -8,7 +8,7 @@ mixin _Address {
   abstract final String city;
   abstract final String? zipCode;
 
-  _AddressCopyWith get copyWith => _AddressCopyWith._(this);
+  _AddressCopyWith get copyWith => _AddressCopyWith._(this as Address);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +35,11 @@ mixin _Address {
       zipCode,
     ]);
   }
-
   @override
   String toString() {
     return 'Address(street: $street, city: $city, zipCode: $zipCode)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -66,7 +66,7 @@ mixin _Person {
   abstract final Address address;
   abstract final Address? workAddress;
 
-  _PersonCopyWith get copyWith => _PersonCopyWith._(this);
+  _PersonCopyWith get copyWith => _PersonCopyWith._(this as Person);
 
   @override
   bool operator ==(Object other) {
@@ -97,11 +97,11 @@ mixin _Person {
       workAddress,
     ]);
   }
-
   @override
   String toString() {
     return 'Person(name: $name, age: $age, address: $address, workAddress: $workAddress)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -119,9 +119,7 @@ mixin _Person {
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       age: SafeCasteUtil.safeCast<int>(map['age']) ?? 0,
       address: Address.fromJson((map['address'] ?? {}) as Map<String, dynamic>),
-      workAddress: map['workAddress'] != null
-          ? Address.fromJson(map['workAddress'] as Map<String, dynamic>)
-          : null,
+      workAddress: map['workAddress'] != null ? Address.fromJson(map['workAddress'] as Map<String, dynamic>) : null,
     );
   }
 }
@@ -131,7 +129,7 @@ mixin _Company {
   abstract final Person ceo;
   abstract final List<Person> employees;
 
-  _CompanyCopyWith get copyWith => _CompanyCopyWith._(this);
+  _CompanyCopyWith get copyWith => _CompanyCopyWith._(this as Company);
 
   @override
   bool operator ==(Object other) {
@@ -158,11 +156,11 @@ mixin _Company {
       DeepCollectionEquality().hash(employees),
     ]);
   }
-
   @override
   String toString() {
     return 'Company(name: $name, ceo: $ceo, employees: $employees)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -176,45 +174,253 @@ mixin _Company {
     return Company(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       ceo: Person.fromJson((map['ceo'] ?? {}) as Map<String, dynamic>),
-      employees: (map['employees'] as List<dynamic>?)
-              ?.map((e) => Person.fromJson(e as Map<String, dynamic>))
-              .toList()
-              .cast<Person>() ??
-          [],
+      employees: (map['employees'] as List<dynamic>?)?.map((e) => Person.fromJson(e as Map<String, dynamic>)).toList()?.cast<Person>() ?? [],
     );
   }
 }
 
+mixin _Department {
+  abstract final String name;
+  abstract final Person manager;
+  abstract final Company parentCompany;
+  abstract final Address? location;
+
+  _DepartmentCopyWith get copyWith => _DepartmentCopyWith._(this as Department);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Department) return false;
+
+    if (name != other.name) {
+      return false;
+    }
+    if (manager != other.manager) {
+      return false;
+    }
+    if (parentCompany != other.parentCompany) {
+      return false;
+    }
+    if (location != other.location) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([
+      name,
+      manager,
+      parentCompany,
+      location,
+    ]);
+  }
+  @override
+  String toString() {
+    return 'Department(name: $name, manager: $manager, parentCompany: $parentCompany, location: $location)';
+  }
+
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['name'] = name;
+    map['manager'] = manager;
+    map['parentCompany'] = parentCompany;
+    if (location != null) {
+      map['location'] = location;
+    }
+    return map;
+  }
+
+  static Department fromJson(Map<String, dynamic> map) {
+    return Department(
+      name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
+      manager: Person.fromJson((map['manager'] ?? {}) as Map<String, dynamic>),
+      parentCompany: Company.fromJson((map['parentCompany'] ?? {}) as Map<String, dynamic>),
+      location: map['location'] != null ? Address.fromJson(map['location'] as Map<String, dynamic>) : null,
+    );
+  }
+}
+
+mixin _Organization {
+  abstract final String name;
+  abstract final Address headquarters;
+  abstract final List<Department> departments;
+  abstract final Person founder;
+  abstract final Company? parentCompany;
+
+  _OrganizationCopyWith get copyWith => _OrganizationCopyWith._(this as Organization);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Organization) return false;
+
+    if (name != other.name) {
+      return false;
+    }
+    if (headquarters != other.headquarters) {
+      return false;
+    }
+    if (!DeepCollectionEquality().equals(departments, other.departments)) {
+      return false;
+    }
+    if (founder != other.founder) {
+      return false;
+    }
+    if (parentCompany != other.parentCompany) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([
+      name,
+      headquarters,
+      DeepCollectionEquality().hash(departments),
+      founder,
+      parentCompany,
+    ]);
+  }
+  @override
+  String toString() {
+    return 'Organization(name: $name, headquarters: $headquarters, departments: $departments, founder: $founder, parentCompany: $parentCompany)';
+  }
+
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['name'] = name;
+    map['headquarters'] = headquarters;
+    map['departments'] = departments;
+    map['founder'] = founder;
+    if (parentCompany != null) {
+      map['parentCompany'] = parentCompany;
+    }
+    return map;
+  }
+
+  static Organization fromJson(Map<String, dynamic> map) {
+    return Organization(
+      name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
+      headquarters: Address.fromJson((map['headquarters'] ?? {}) as Map<String, dynamic>),
+      departments: (map['departments'] as List<dynamic>?)?.map((e) => Department.fromJson(e as Map<String, dynamic>)).toList()?.cast<Department>() ?? [],
+      founder: Person.fromJson((map['founder'] ?? {}) as Map<String, dynamic>),
+      parentCompany: map['parentCompany'] != null ? Company.fromJson(map['parentCompany'] as Map<String, dynamic>) : null,
+    );
+  }
+}
+
+mixin _CorporateGroup {
+  abstract final String name;
+  abstract final Organization mainOrganization;
+  abstract final List<Organization> subsidiaries;
+  abstract final Person chairman;
+  abstract final Address? registeredAddress;
+
+  _CorporateGroupCopyWith get copyWith => _CorporateGroupCopyWith._(this as CorporateGroup);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CorporateGroup) return false;
+
+    if (name != other.name) {
+      return false;
+    }
+    if (mainOrganization != other.mainOrganization) {
+      return false;
+    }
+    if (!DeepCollectionEquality().equals(subsidiaries, other.subsidiaries)) {
+      return false;
+    }
+    if (chairman != other.chairman) {
+      return false;
+    }
+    if (registeredAddress != other.registeredAddress) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hashAll([
+      name,
+      mainOrganization,
+      DeepCollectionEquality().hash(subsidiaries),
+      chairman,
+      registeredAddress,
+    ]);
+  }
+  @override
+  String toString() {
+    return 'CorporateGroup(name: $name, mainOrganization: $mainOrganization, subsidiaries: $subsidiaries, chairman: $chairman, registeredAddress: $registeredAddress)';
+  }
+
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['name'] = name;
+    map['mainOrganization'] = mainOrganization;
+    map['subsidiaries'] = subsidiaries;
+    map['chairman'] = chairman;
+    if (registeredAddress != null) {
+      map['registeredAddress'] = registeredAddress;
+    }
+    return map;
+  }
+
+  static CorporateGroup fromJson(Map<String, dynamic> map) {
+    return CorporateGroup(
+      name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
+      mainOrganization: Organization.fromJson((map['mainOrganization'] ?? {}) as Map<String, dynamic>),
+      subsidiaries: (map['subsidiaries'] as List<dynamic>?)?.map((e) => Organization.fromJson(e as Map<String, dynamic>)).toList()?.cast<Organization>() ?? [],
+      chairman: Person.fromJson((map['chairman'] ?? {}) as Map<String, dynamic>),
+      registeredAddress: map['registeredAddress'] != null ? Address.fromJson(map['registeredAddress'] as Map<String, dynamic>) : null,
+    );
+  }
+}
+
+
 /// Helper class for chained copyWith operations
 class _AddressCopyWith {
-  final _Address _instance;
+  final Address _instance;
   const _AddressCopyWith._(this._instance);
 
   /// Update street field
-  Address street(String? value) {
-    return Address(
-      street: value ?? _instance.street,
+  _AddressCopyWith street(String value) {
+    return _AddressCopyWith._(Address(
+      street: value,
       city: _instance.city,
       zipCode: _instance.zipCode,
-    );
+    ));
   }
 
   /// Update city field
-  Address city(String? value) {
-    return Address(
+  _AddressCopyWith city(String value) {
+    return _AddressCopyWith._(Address(
       street: _instance.street,
-      city: value ?? _instance.city,
+      city: value,
       zipCode: _instance.zipCode,
-    );
+    ));
   }
 
   /// Update zipCode field
-  Address zipCode(String? value) {
-    return Address(
+  _AddressCopyWith zipCode(String? value) {
+    return _AddressCopyWith._(Address(
       street: _instance.street,
       city: _instance.city,
       zipCode: value,
-    );
+    ));
+  }
+
+  /// Build the final instance
+  Address build() {
+    return _instance as Address;
   }
 
   /// Traditional copyWith method
@@ -231,59 +437,55 @@ class _AddressCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _PersonCopyWith {
-  final _Person _instance;
+  final Person _instance;
   const _PersonCopyWith._(this._instance);
 
   /// Update name field
-  Person name(String? value) {
-    return Person(
-      name: value ?? _instance.name,
+  _PersonCopyWith name(String value) {
+    return _PersonCopyWith._(Person(
+      name: value,
       age: _instance.age,
       address: _instance.address,
       workAddress: _instance.workAddress,
-    );
+    ));
   }
 
   /// Update age field
-  Person age(int? value) {
-    return Person(
+  _PersonCopyWith age(int value) {
+    return _PersonCopyWith._(Person(
       name: _instance.name,
-      age: value ?? _instance.age,
+      age: value,
       address: _instance.address,
       workAddress: _instance.workAddress,
-    );
+    ));
   }
 
   /// Update address field
-  Person address(Address? value) {
-    return Person(
+  _PersonCopyWith address(Address value) {
+    return _PersonCopyWith._(Person(
       name: _instance.name,
       age: _instance.age,
-      address: value ?? _instance.address,
+      address: value,
       workAddress: _instance.workAddress,
-    );
+    ));
   }
 
   /// Update workAddress field
-  Person workAddress(Address? value) {
-    return Person(
+  _PersonCopyWith workAddress(Address? value) {
+    return _PersonCopyWith._(Person(
       name: _instance.name,
       age: _instance.age,
       address: _instance.address,
       workAddress: value,
-    );
+    ));
   }
 
-  /// Nested copyWith for address field
-  _PersonNestedCopyWithAddress get addressBuilder {
-    return _PersonNestedCopyWithAddress._(_instance);
-  }
-
-  /// Nested copyWith for workAddress field
-  _PersonNestedCopyWithWorkAddress get workAddressBuilder {
-    return _PersonNestedCopyWithWorkAddress._(_instance);
+  /// Build the final instance
+  Person build() {
+    return _instance as Person;
   }
 
   /// Traditional copyWith method
@@ -302,78 +504,42 @@ class _PersonCopyWith {
   }
 }
 
-/// Nested copyWith helper class for address field
-class _PersonNestedCopyWithAddress {
-  final _Person _instance;
-  const _PersonNestedCopyWithAddress._(this._instance);
-
-  /// Update address field using a copyWith function
-  Person call(Address Function(Address) updater) {
-    final currentValue = _instance.address;
-    final updatedValue = updater(currentValue);
-    return Person(
-      name: _instance.name,
-      age: _instance.age,
-      address: updatedValue,
-      workAddress: _instance.workAddress,
-    );
-  }
-}
-
-/// Nested copyWith helper class for workAddress field
-class _PersonNestedCopyWithWorkAddress {
-  final _Person _instance;
-  const _PersonNestedCopyWithWorkAddress._(this._instance);
-
-  /// Update workAddress field using a copyWith function
-  Person call(Address Function(Address) updater) {
-    final currentValue = _instance.workAddress;
-    if (currentValue == null) return _instance as Person;
-    final updatedValue = updater(currentValue);
-    return Person(
-      name: _instance.name,
-      age: _instance.age,
-      address: _instance.address,
-      workAddress: updatedValue,
-    );
-  }
-}
 
 /// Helper class for chained copyWith operations
 class _CompanyCopyWith {
-  final _Company _instance;
+  final Company _instance;
   const _CompanyCopyWith._(this._instance);
 
   /// Update name field
-  Company name(String? value) {
-    return Company(
-      name: value ?? _instance.name,
+  _CompanyCopyWith name(String value) {
+    return _CompanyCopyWith._(Company(
+      name: value,
       ceo: _instance.ceo,
       employees: _instance.employees,
-    );
+    ));
   }
 
   /// Update ceo field
-  Company ceo(Person? value) {
-    return Company(
+  _CompanyCopyWith ceo(Person value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
-      ceo: value ?? _instance.ceo,
+      ceo: value,
       employees: _instance.employees,
-    );
+    ));
   }
 
   /// Update employees field
-  Company employees(List<Person>? value) {
-    return Company(
+  _CompanyCopyWith employees(List<Person> value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
       ceo: _instance.ceo,
-      employees: value ?? _instance.employees,
-    );
+      employees: value,
+    ));
   }
 
-  /// Nested copyWith for ceo field
-  _CompanyNestedCopyWithCeo get ceoBuilder {
-    return _CompanyNestedCopyWithCeo._(_instance);
+  /// Build the final instance
+  Company build() {
+    return _instance as Company;
   }
 
   /// Traditional copyWith method
@@ -390,19 +556,238 @@ class _CompanyCopyWith {
   }
 }
 
-/// Nested copyWith helper class for ceo field
-class _CompanyNestedCopyWithCeo {
-  final _Company _instance;
-  const _CompanyNestedCopyWithCeo._(this._instance);
 
-  /// Update ceo field using a copyWith function
-  Company call(Person Function(Person) updater) {
-    final currentValue = _instance.ceo;
-    final updatedValue = updater(currentValue);
-    return Company(
+/// Helper class for chained copyWith operations
+class _DepartmentCopyWith {
+  final Department _instance;
+  const _DepartmentCopyWith._(this._instance);
+
+  /// Update name field
+  _DepartmentCopyWith name(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: value,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager field
+  _DepartmentCopyWith manager(Person value) {
+    return _DepartmentCopyWith._(Department(
       name: _instance.name,
-      ceo: updatedValue,
-      employees: _instance.employees,
+      manager: value,
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany field
+  _DepartmentCopyWith parentCompany(Company value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: value,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update location field
+  _DepartmentCopyWith location(Address? value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany,
+      location: value,
+    ));
+  }
+
+  /// Build the final instance
+  Department build() {
+    return _instance as Department;
+  }
+
+  /// Traditional copyWith method
+  Department call({
+    String? name,
+    Person? manager,
+    Company? parentCompany,
+    Address? location,
+  }) {
+    return Department(
+      name: name ?? _instance.name,
+      manager: manager ?? _instance.manager,
+      parentCompany: parentCompany ?? _instance.parentCompany,
+      location: location ?? _instance.location,
     );
   }
 }
+
+
+/// Helper class for chained copyWith operations
+class _OrganizationCopyWith {
+  final Organization _instance;
+  const _OrganizationCopyWith._(this._instance);
+
+  /// Update name field
+  _OrganizationCopyWith name(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: value,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update headquarters field
+  _OrganizationCopyWith headquarters(Address value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: value,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update departments field
+  _OrganizationCopyWith departments(List<Department> value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: value,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder field
+  _OrganizationCopyWith founder(Person value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: value,
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update parentCompany field
+  _OrganizationCopyWith parentCompany(Company? value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: value,
+    ));
+  }
+
+  /// Build the final instance
+  Organization build() {
+    return _instance as Organization;
+  }
+
+  /// Traditional copyWith method
+  Organization call({
+    String? name,
+    Address? headquarters,
+    List<Department>? departments,
+    Person? founder,
+    Company? parentCompany,
+  }) {
+    return Organization(
+      name: name ?? _instance.name,
+      headquarters: headquarters ?? _instance.headquarters,
+      departments: departments ?? _instance.departments,
+      founder: founder ?? _instance.founder,
+      parentCompany: parentCompany ?? _instance.parentCompany,
+    );
+  }
+}
+
+
+/// Helper class for chained copyWith operations
+class _CorporateGroupCopyWith {
+  final CorporateGroup _instance;
+  const _CorporateGroupCopyWith._(this._instance);
+
+  /// Update name field
+  _CorporateGroupCopyWith name(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: value,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization field
+  _CorporateGroupCopyWith mainOrganization(Organization value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: value,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update subsidiaries field
+  _CorporateGroupCopyWith subsidiaries(List<Organization> value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: value,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman field
+  _CorporateGroupCopyWith chairman(Person value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: value,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update registeredAddress field
+  _CorporateGroupCopyWith registeredAddress(Address? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: value,
+    ));
+  }
+
+  /// Build the final instance
+  CorporateGroup build() {
+    return _instance as CorporateGroup;
+  }
+
+  /// Traditional copyWith method
+  CorporateGroup call({
+    String? name,
+    Organization? mainOrganization,
+    List<Organization>? subsidiaries,
+    Person? chairman,
+    Address? registeredAddress,
+  }) {
+    return CorporateGroup(
+      name: name ?? _instance.name,
+      mainOrganization: mainOrganization ?? _instance.mainOrganization,
+      subsidiaries: subsidiaries ?? _instance.subsidiaries,
+      chairman: chairman ?? _instance.chairman,
+      registeredAddress: registeredAddress ?? _instance.registeredAddress,
+    );
+  }
+}
+

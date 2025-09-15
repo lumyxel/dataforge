@@ -7,7 +7,7 @@ mixin _ImageListModel {
   abstract final String id;
   abstract final List<ImageBean> watermarkImages;
 
-  _ImageListModelCopyWith get copyWith => _ImageListModelCopyWith._(this);
+  _ImageListModelCopyWith get copyWith => _ImageListModelCopyWith._(this as ImageListModel);
 
   @override
   bool operator ==(Object other) {
@@ -17,8 +17,7 @@ mixin _ImageListModel {
     if (id != other.id) {
       return false;
     }
-    if (!DeepCollectionEquality()
-        .equals(watermarkImages, other.watermarkImages)) {
+    if (!DeepCollectionEquality().equals(watermarkImages, other.watermarkImages)) {
       return false;
     }
     return true;
@@ -31,11 +30,11 @@ mixin _ImageListModel {
       DeepCollectionEquality().hash(watermarkImages),
     ]);
   }
-
   @override
   String toString() {
     return 'ImageListModel(id: $id, watermarkImages: $watermarkImages)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -45,13 +44,10 @@ mixin _ImageListModel {
   }
 
   static ImageListModel fromJson(Map<String, dynamic> map) {
-    final watermarkImagesReadValue =
-        ImageListModel._readValue(map, 'watermarkImages');
+    final watermarkImagesReadValue = ImageListModel._readValue(map, 'watermarkImages');
     return ImageListModel(
       id: SafeCasteUtil.safeCast<String>(map['id']) ?? "",
-      watermarkImages: ((watermarkImagesReadValue as List?) ?? [])
-          .map((e) => ImageBean.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      watermarkImages: ((watermarkImagesReadValue as List?) ?? []).map((e) => ImageBean.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 }
@@ -61,7 +57,7 @@ mixin _ImageBean {
   abstract final int width;
   abstract final int height;
 
-  _ImageBeanCopyWith get copyWith => _ImageBeanCopyWith._(this);
+  _ImageBeanCopyWith get copyWith => _ImageBeanCopyWith._(this as ImageBean);
 
   @override
   bool operator ==(Object other) {
@@ -88,11 +84,11 @@ mixin _ImageBean {
       height,
     ]);
   }
-
   @override
   String toString() {
     return 'ImageBean(url: $url, width: $width, height: $height)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -111,25 +107,31 @@ mixin _ImageBean {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ImageListModelCopyWith {
-  final _ImageListModel _instance;
+  final ImageListModel _instance;
   const _ImageListModelCopyWith._(this._instance);
 
   /// Update id field
-  ImageListModel id(String? value) {
-    return ImageListModel(
-      id: value ?? _instance.id,
+  _ImageListModelCopyWith id(String value) {
+    return _ImageListModelCopyWith._(ImageListModel(
+      id: value,
       watermarkImages: _instance.watermarkImages,
-    );
+    ));
   }
 
   /// Update watermarkImages field
-  ImageListModel watermarkImages(List<ImageBean>? value) {
-    return ImageListModel(
+  _ImageListModelCopyWith watermarkImages(List<ImageBean> value) {
+    return _ImageListModelCopyWith._(ImageListModel(
       id: _instance.id,
-      watermarkImages: value ?? _instance.watermarkImages,
-    );
+      watermarkImages: value,
+    ));
+  }
+
+  /// Build the final instance
+  ImageListModel build() {
+    return _instance as ImageListModel;
   }
 
   /// Traditional copyWith method
@@ -144,36 +146,42 @@ class _ImageListModelCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ImageBeanCopyWith {
-  final _ImageBean _instance;
+  final ImageBean _instance;
   const _ImageBeanCopyWith._(this._instance);
 
   /// Update url field
-  ImageBean url(String? value) {
-    return ImageBean(
-      url: value ?? _instance.url,
+  _ImageBeanCopyWith url(String value) {
+    return _ImageBeanCopyWith._(ImageBean(
+      url: value,
       width: _instance.width,
       height: _instance.height,
-    );
+    ));
   }
 
   /// Update width field
-  ImageBean width(int? value) {
-    return ImageBean(
+  _ImageBeanCopyWith width(int value) {
+    return _ImageBeanCopyWith._(ImageBean(
       url: _instance.url,
-      width: value ?? _instance.width,
+      width: value,
       height: _instance.height,
-    );
+    ));
   }
 
   /// Update height field
-  ImageBean height(int? value) {
-    return ImageBean(
+  _ImageBeanCopyWith height(int value) {
+    return _ImageBeanCopyWith._(ImageBean(
       url: _instance.url,
       width: _instance.width,
-      height: value ?? _instance.height,
-    );
+      height: value,
+    ));
+  }
+
+  /// Build the final instance
+  ImageBean build() {
+    return _instance as ImageBean;
   }
 
   /// Traditional copyWith method
@@ -189,3 +197,4 @@ class _ImageBeanCopyWith {
     );
   }
 }
+

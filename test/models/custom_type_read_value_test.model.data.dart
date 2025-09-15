@@ -7,8 +7,7 @@ mixin _CustomTypeReadValueTest {
   abstract final TradeInfoBean? tradeInfo;
   abstract final UserInfo userInfo;
 
-  _CustomTypeReadValueTestCopyWith get copyWith =>
-      _CustomTypeReadValueTestCopyWith._(this);
+  _CustomTypeReadValueTestCopyWith get copyWith => _CustomTypeReadValueTestCopyWith._(this as CustomTypeReadValueTest);
 
   @override
   bool operator ==(Object other) {
@@ -31,11 +30,11 @@ mixin _CustomTypeReadValueTest {
       userInfo,
     ]);
   }
-
   @override
   String toString() {
     return 'CustomTypeReadValueTest(tradeInfo: $tradeInfo, userInfo: $userInfo)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -47,17 +46,11 @@ mixin _CustomTypeReadValueTest {
   }
 
   static CustomTypeReadValueTest fromJson(Map<String, dynamic> map) {
-    final tradeInfoReadValue =
-        CustomTypeReadValueTest._readTradeInfo(map, 'tradeInfo');
-    final userInfoReadValue =
-        CustomTypeReadValueTest._readUserInfo(map, 'userInfo');
+    final tradeInfoReadValue = CustomTypeReadValueTest._readTradeInfo(map, 'tradeInfo');
+    final userInfoReadValue = CustomTypeReadValueTest._readUserInfo(map, 'userInfo');
     return CustomTypeReadValueTest(
-      tradeInfo: tradeInfoReadValue != null
-          ? TradeInfoBean.fromJson(
-              Map<String, dynamic>.from(tradeInfoReadValue as Map))
-          : null,
-      userInfo: UserInfo.fromJson(
-          Map<String, dynamic>.from((userInfoReadValue ?? {}) as Map)),
+      tradeInfo: tradeInfoReadValue != null ? TradeInfoBean.fromJson(Map<String, dynamic>.from(tradeInfoReadValue as Map)) : null,
+      userInfo: UserInfo.fromJson(Map<String, dynamic>.from((userInfoReadValue ?? {}) as Map)),
     );
   }
 }
@@ -66,7 +59,7 @@ mixin _TradeInfoBean {
   abstract final String status;
   abstract final double price;
 
-  _TradeInfoBeanCopyWith get copyWith => _TradeInfoBeanCopyWith._(this);
+  _TradeInfoBeanCopyWith get copyWith => _TradeInfoBeanCopyWith._(this as TradeInfoBean);
 
   @override
   bool operator ==(Object other) {
@@ -89,11 +82,11 @@ mixin _TradeInfoBean {
       price,
     ]);
   }
-
   @override
   String toString() {
     return 'TradeInfoBean(status: $status, price: $price)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -114,7 +107,7 @@ mixin _UserInfo {
   abstract final String name;
   abstract final int age;
 
-  _UserInfoCopyWith get copyWith => _UserInfoCopyWith._(this);
+  _UserInfoCopyWith get copyWith => _UserInfoCopyWith._(this as UserInfo);
 
   @override
   bool operator ==(Object other) {
@@ -137,11 +130,11 @@ mixin _UserInfo {
       age,
     ]);
   }
-
   @override
   String toString() {
     return 'UserInfo(name: $name, age: $age)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -158,35 +151,31 @@ mixin _UserInfo {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _CustomTypeReadValueTestCopyWith {
-  final _CustomTypeReadValueTest _instance;
+  final CustomTypeReadValueTest _instance;
   const _CustomTypeReadValueTestCopyWith._(this._instance);
 
   /// Update tradeInfo field
-  CustomTypeReadValueTest tradeInfo(TradeInfoBean? value) {
-    return CustomTypeReadValueTest(
+  _CustomTypeReadValueTestCopyWith tradeInfo(TradeInfoBean? value) {
+    return _CustomTypeReadValueTestCopyWith._(CustomTypeReadValueTest(
       tradeInfo: value,
       userInfo: _instance.userInfo,
-    );
+    ));
   }
 
   /// Update userInfo field
-  CustomTypeReadValueTest userInfo(UserInfo? value) {
-    return CustomTypeReadValueTest(
+  _CustomTypeReadValueTestCopyWith userInfo(UserInfo value) {
+    return _CustomTypeReadValueTestCopyWith._(CustomTypeReadValueTest(
       tradeInfo: _instance.tradeInfo,
-      userInfo: value ?? _instance.userInfo,
-    );
+      userInfo: value,
+    ));
   }
 
-  /// Nested copyWith for tradeInfo field
-  _CustomTypeReadValueTestNestedCopyWithTradeInfo get tradeInfoBuilder {
-    return _CustomTypeReadValueTestNestedCopyWithTradeInfo._(_instance);
-  }
-
-  /// Nested copyWith for userInfo field
-  _CustomTypeReadValueTestNestedCopyWithUserInfo get userInfoBuilder {
-    return _CustomTypeReadValueTestNestedCopyWithUserInfo._(_instance);
+  /// Build the final instance
+  CustomTypeReadValueTest build() {
+    return _instance as CustomTypeReadValueTest;
   }
 
   /// Traditional copyWith method
@@ -201,58 +190,31 @@ class _CustomTypeReadValueTestCopyWith {
   }
 }
 
-/// Nested copyWith helper class for tradeInfo field
-class _CustomTypeReadValueTestNestedCopyWithTradeInfo {
-  final _CustomTypeReadValueTest _instance;
-  const _CustomTypeReadValueTestNestedCopyWithTradeInfo._(this._instance);
-
-  /// Update tradeInfo field using a copyWith function
-  CustomTypeReadValueTest call(TradeInfoBean Function(TradeInfoBean) updater) {
-    final currentValue = _instance.tradeInfo;
-    if (currentValue == null) return _instance as CustomTypeReadValueTest;
-    final updatedValue = updater(currentValue);
-    return CustomTypeReadValueTest(
-      tradeInfo: updatedValue,
-      userInfo: _instance.userInfo,
-    );
-  }
-}
-
-/// Nested copyWith helper class for userInfo field
-class _CustomTypeReadValueTestNestedCopyWithUserInfo {
-  final _CustomTypeReadValueTest _instance;
-  const _CustomTypeReadValueTestNestedCopyWithUserInfo._(this._instance);
-
-  /// Update userInfo field using a copyWith function
-  CustomTypeReadValueTest call(UserInfo Function(UserInfo) updater) {
-    final currentValue = _instance.userInfo;
-    final updatedValue = updater(currentValue);
-    return CustomTypeReadValueTest(
-      tradeInfo: _instance.tradeInfo,
-      userInfo: updatedValue,
-    );
-  }
-}
 
 /// Helper class for chained copyWith operations
 class _TradeInfoBeanCopyWith {
-  final _TradeInfoBean _instance;
+  final TradeInfoBean _instance;
   const _TradeInfoBeanCopyWith._(this._instance);
 
   /// Update status field
-  TradeInfoBean status(String? value) {
-    return TradeInfoBean(
-      status: value ?? _instance.status,
+  _TradeInfoBeanCopyWith status(String value) {
+    return _TradeInfoBeanCopyWith._(TradeInfoBean(
+      status: value,
       price: _instance.price,
-    );
+    ));
   }
 
   /// Update price field
-  TradeInfoBean price(double? value) {
-    return TradeInfoBean(
+  _TradeInfoBeanCopyWith price(double value) {
+    return _TradeInfoBeanCopyWith._(TradeInfoBean(
       status: _instance.status,
-      price: value ?? _instance.price,
-    );
+      price: value,
+    ));
+  }
+
+  /// Build the final instance
+  TradeInfoBean build() {
+    return _instance as TradeInfoBean;
   }
 
   /// Traditional copyWith method
@@ -267,25 +229,31 @@ class _TradeInfoBeanCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _UserInfoCopyWith {
-  final _UserInfo _instance;
+  final UserInfo _instance;
   const _UserInfoCopyWith._(this._instance);
 
   /// Update name field
-  UserInfo name(String? value) {
-    return UserInfo(
-      name: value ?? _instance.name,
+  _UserInfoCopyWith name(String value) {
+    return _UserInfoCopyWith._(UserInfo(
+      name: value,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update age field
-  UserInfo age(int? value) {
-    return UserInfo(
+  _UserInfoCopyWith age(int value) {
+    return _UserInfoCopyWith._(UserInfo(
       name: _instance.name,
-      age: value ?? _instance.age,
-    );
+      age: value,
+    ));
+  }
+
+  /// Build the final instance
+  UserInfo build() {
+    return _instance as UserInfo;
   }
 
   /// Traditional copyWith method
@@ -299,3 +267,4 @@ class _UserInfoCopyWith {
     );
   }
 }
+

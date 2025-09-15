@@ -8,7 +8,7 @@ mixin _Employee {
   abstract final int id;
   abstract final String position;
 
-  _EmployeeCopyWith get copyWith => _EmployeeCopyWith._(this);
+  _EmployeeCopyWith get copyWith => _EmployeeCopyWith._(this as Employee);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +35,11 @@ mixin _Employee {
       position,
     ]);
   }
-
   @override
   String toString() {
     return 'Employee(name: $name, id: $id, position: $position)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -63,7 +63,7 @@ mixin _Team {
   abstract final Employee leader;
   abstract final List<Employee> members;
 
-  _TeamCopyWith get copyWith => _TeamCopyWith._(this);
+  _TeamCopyWith get copyWith => _TeamCopyWith._(this as Team);
 
   @override
   bool operator ==(Object other) {
@@ -90,11 +90,11 @@ mixin _Team {
       DeepCollectionEquality().hash(members),
     ]);
   }
-
   @override
   String toString() {
     return 'Team(name: $name, leader: $leader, members: $members)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -108,11 +108,7 @@ mixin _Team {
     return Team(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       leader: Employee.fromJson((map['leader'] ?? {}) as Map<String, dynamic>),
-      members: (map['members'] as List<dynamic>?)
-              ?.map((e) => Employee.fromJson(e as Map<String, dynamic>))
-              .toList()
-              .cast<Employee>() ??
-          [],
+      members: (map['members'] as List<dynamic>?)?.map((e) => Employee.fromJson(e as Map<String, dynamic>)).toList()?.cast<Employee>() ?? [],
     );
   }
 }
@@ -122,7 +118,7 @@ mixin _Department {
   abstract final String code;
   abstract final List<Team> teams;
 
-  _DepartmentCopyWith get copyWith => _DepartmentCopyWith._(this);
+  _DepartmentCopyWith get copyWith => _DepartmentCopyWith._(this as Department);
 
   @override
   bool operator ==(Object other) {
@@ -149,11 +145,11 @@ mixin _Department {
       DeepCollectionEquality().hash(teams),
     ]);
   }
-
   @override
   String toString() {
     return 'Department(name: $name, code: $code, teams: $teams)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -167,11 +163,7 @@ mixin _Department {
     return Department(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       code: SafeCasteUtil.safeCast<String>(map['code']) ?? "",
-      teams: (map['teams'] as List<dynamic>?)
-              ?.map((e) => Team.fromJson(e as Map<String, dynamic>))
-              .toList()
-              .cast<Team>() ??
-          [],
+      teams: (map['teams'] as List<dynamic>?)?.map((e) => Team.fromJson(e as Map<String, dynamic>)).toList()?.cast<Team>() ?? [],
     );
   }
 }
@@ -181,7 +173,7 @@ mixin _Company {
   abstract final String address;
   abstract final List<Department> departments;
 
-  _CompanyCopyWith get copyWith => _CompanyCopyWith._(this);
+  _CompanyCopyWith get copyWith => _CompanyCopyWith._(this as Company);
 
   @override
   bool operator ==(Object other) {
@@ -208,11 +200,11 @@ mixin _Company {
       DeepCollectionEquality().hash(departments),
     ]);
   }
-
   @override
   String toString() {
     return 'Company(name: $name, address: $address, departments: $departments)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -226,45 +218,47 @@ mixin _Company {
     return Company(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       address: SafeCasteUtil.safeCast<String>(map['address']) ?? "",
-      departments: (map['departments'] as List<dynamic>?)
-              ?.map((e) => Department.fromJson(e as Map<String, dynamic>))
-              .toList()
-              .cast<Department>() ??
-          [],
+      departments: (map['departments'] as List<dynamic>?)?.map((e) => Department.fromJson(e as Map<String, dynamic>)).toList()?.cast<Department>() ?? [],
     );
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _EmployeeCopyWith {
-  final _Employee _instance;
+  final Employee _instance;
   const _EmployeeCopyWith._(this._instance);
 
   /// Update name field
-  Employee name(String? value) {
-    return Employee(
-      name: value ?? _instance.name,
+  _EmployeeCopyWith name(String value) {
+    return _EmployeeCopyWith._(Employee(
+      name: value,
       id: _instance.id,
       position: _instance.position,
-    );
+    ));
   }
 
   /// Update id field
-  Employee id(int? value) {
-    return Employee(
+  _EmployeeCopyWith id(int value) {
+    return _EmployeeCopyWith._(Employee(
       name: _instance.name,
-      id: value ?? _instance.id,
+      id: value,
       position: _instance.position,
-    );
+    ));
   }
 
   /// Update position field
-  Employee position(String? value) {
-    return Employee(
+  _EmployeeCopyWith position(String value) {
+    return _EmployeeCopyWith._(Employee(
       name: _instance.name,
       id: _instance.id,
-      position: value ?? _instance.position,
-    );
+      position: value,
+    ));
+  }
+
+  /// Build the final instance
+  Employee build() {
+    return _instance as Employee;
   }
 
   /// Traditional copyWith method
@@ -281,41 +275,42 @@ class _EmployeeCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _TeamCopyWith {
-  final _Team _instance;
+  final Team _instance;
   const _TeamCopyWith._(this._instance);
 
   /// Update name field
-  Team name(String? value) {
-    return Team(
-      name: value ?? _instance.name,
+  _TeamCopyWith name(String value) {
+    return _TeamCopyWith._(Team(
+      name: value,
       leader: _instance.leader,
       members: _instance.members,
-    );
+    ));
   }
 
   /// Update leader field
-  Team leader(Employee? value) {
-    return Team(
+  _TeamCopyWith leader(Employee value) {
+    return _TeamCopyWith._(Team(
       name: _instance.name,
-      leader: value ?? _instance.leader,
+      leader: value,
       members: _instance.members,
-    );
+    ));
   }
 
   /// Update members field
-  Team members(List<Employee>? value) {
-    return Team(
+  _TeamCopyWith members(List<Employee> value) {
+    return _TeamCopyWith._(Team(
       name: _instance.name,
       leader: _instance.leader,
-      members: value ?? _instance.members,
-    );
+      members: value,
+    ));
   }
 
-  /// Nested copyWith for leader field
-  _TeamNestedCopyWithLeader get leaderBuilder {
-    return _TeamNestedCopyWithLeader._(_instance);
+  /// Build the final instance
+  Team build() {
+    return _instance as Team;
   }
 
   /// Traditional copyWith method
@@ -332,53 +327,42 @@ class _TeamCopyWith {
   }
 }
 
-/// Nested copyWith helper class for leader field
-class _TeamNestedCopyWithLeader {
-  final _Team _instance;
-  const _TeamNestedCopyWithLeader._(this._instance);
-
-  /// Update leader field using a copyWith function
-  Team call(Employee Function(Employee) updater) {
-    final currentValue = _instance.leader;
-    final updatedValue = updater(currentValue);
-    return Team(
-      name: _instance.name,
-      leader: updatedValue,
-      members: _instance.members,
-    );
-  }
-}
 
 /// Helper class for chained copyWith operations
 class _DepartmentCopyWith {
-  final _Department _instance;
+  final Department _instance;
   const _DepartmentCopyWith._(this._instance);
 
   /// Update name field
-  Department name(String? value) {
-    return Department(
-      name: value ?? _instance.name,
+  _DepartmentCopyWith name(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: value,
       code: _instance.code,
       teams: _instance.teams,
-    );
+    ));
   }
 
   /// Update code field
-  Department code(String? value) {
-    return Department(
+  _DepartmentCopyWith code(String value) {
+    return _DepartmentCopyWith._(Department(
       name: _instance.name,
-      code: value ?? _instance.code,
+      code: value,
       teams: _instance.teams,
-    );
+    ));
   }
 
   /// Update teams field
-  Department teams(List<Team>? value) {
-    return Department(
+  _DepartmentCopyWith teams(List<Team> value) {
+    return _DepartmentCopyWith._(Department(
       name: _instance.name,
       code: _instance.code,
-      teams: value ?? _instance.teams,
-    );
+      teams: value,
+    ));
+  }
+
+  /// Build the final instance
+  Department build() {
+    return _instance as Department;
   }
 
   /// Traditional copyWith method
@@ -395,36 +379,42 @@ class _DepartmentCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _CompanyCopyWith {
-  final _Company _instance;
+  final Company _instance;
   const _CompanyCopyWith._(this._instance);
 
   /// Update name field
-  Company name(String? value) {
-    return Company(
-      name: value ?? _instance.name,
+  _CompanyCopyWith name(String value) {
+    return _CompanyCopyWith._(Company(
+      name: value,
       address: _instance.address,
       departments: _instance.departments,
-    );
+    ));
   }
 
   /// Update address field
-  Company address(String? value) {
-    return Company(
+  _CompanyCopyWith address(String value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
-      address: value ?? _instance.address,
+      address: value,
       departments: _instance.departments,
-    );
+    ));
   }
 
   /// Update departments field
-  Company departments(List<Department>? value) {
-    return Company(
+  _CompanyCopyWith departments(List<Department> value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
       address: _instance.address,
-      departments: value ?? _instance.departments,
-    );
+      departments: value,
+    ));
+  }
+
+  /// Build the final instance
+  Company build() {
+    return _instance as Company;
   }
 
   /// Traditional copyWith method
@@ -440,3 +430,4 @@ class _CompanyCopyWith {
     );
   }
 }
+

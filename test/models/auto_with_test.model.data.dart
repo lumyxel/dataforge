@@ -7,7 +7,7 @@ mixin _TestUser {
   abstract final String name;
   abstract final int age;
 
-  _TestUserCopyWith get copyWith => _TestUserCopyWith._(this);
+  _TestUserCopyWith get copyWith => _TestUserCopyWith._(this as TestUser);
 
   @override
   bool operator ==(Object other) {
@@ -30,11 +30,11 @@ mixin _TestUser {
       age,
     ]);
   }
-
   @override
   String toString() {
     return 'TestUser(name: $name, age: $age)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -55,7 +55,7 @@ mixin _TestAdmin {
   abstract final String username;
   abstract final String role;
 
-  _TestAdminCopyWith get copyWith => _TestAdminCopyWith._(this);
+  _TestAdminCopyWith get copyWith => _TestAdminCopyWith._(this as TestAdmin);
 
   @override
   bool operator ==(Object other) {
@@ -78,11 +78,11 @@ mixin _TestAdmin {
       role,
     ]);
   }
-
   @override
   String toString() {
     return 'TestAdmin(username: $username, role: $role)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -99,25 +99,31 @@ mixin _TestAdmin {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _TestUserCopyWith {
-  final _TestUser _instance;
+  final TestUser _instance;
   const _TestUserCopyWith._(this._instance);
 
   /// Update name field
-  TestUser name(String? value) {
-    return TestUser(
-      name: value ?? _instance.name,
+  _TestUserCopyWith name(String value) {
+    return _TestUserCopyWith._(TestUser(
+      name: value,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update age field
-  TestUser age(int? value) {
-    return TestUser(
+  _TestUserCopyWith age(int value) {
+    return _TestUserCopyWith._(TestUser(
       name: _instance.name,
-      age: value ?? _instance.age,
-    );
+      age: value,
+    ));
+  }
+
+  /// Build the final instance
+  TestUser build() {
+    return _instance as TestUser;
   }
 
   /// Traditional copyWith method
@@ -132,25 +138,31 @@ class _TestUserCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _TestAdminCopyWith {
-  final _TestAdmin _instance;
+  final TestAdmin _instance;
   const _TestAdminCopyWith._(this._instance);
 
   /// Update username field
-  TestAdmin username(String? value) {
-    return TestAdmin(
-      username: value ?? _instance.username,
+  _TestAdminCopyWith username(String value) {
+    return _TestAdminCopyWith._(TestAdmin(
+      username: value,
       role: _instance.role,
-    );
+    ));
   }
 
   /// Update role field
-  TestAdmin role(String? value) {
-    return TestAdmin(
+  _TestAdminCopyWith role(String value) {
+    return _TestAdminCopyWith._(TestAdmin(
       username: _instance.username,
-      role: value ?? _instance.role,
-    );
+      role: value,
+    ));
+  }
+
+  /// Build the final instance
+  TestAdmin build() {
+    return _instance as TestAdmin;
   }
 
   /// Traditional copyWith method
@@ -164,3 +176,4 @@ class _TestAdminCopyWith {
     );
   }
 }
+

@@ -9,7 +9,7 @@ mixin _ValidIgnoreTest {
   abstract final String passwordWithDefault;
   abstract final int age;
 
-  _ValidIgnoreTestCopyWith get copyWith => _ValidIgnoreTestCopyWith._(this);
+  _ValidIgnoreTestCopyWith get copyWith => _ValidIgnoreTestCopyWith._(this as ValidIgnoreTest);
 
   @override
   bool operator ==(Object other) {
@@ -40,11 +40,11 @@ mixin _ValidIgnoreTest {
       age,
     ]);
   }
-
   @override
   String toString() {
     return 'ValidIgnoreTest(name: $name, nullablePassword: $nullablePassword, passwordWithDefault: $passwordWithDefault, age: $age)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -61,49 +61,55 @@ mixin _ValidIgnoreTest {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ValidIgnoreTestCopyWith {
-  final _ValidIgnoreTest _instance;
+  final ValidIgnoreTest _instance;
   const _ValidIgnoreTestCopyWith._(this._instance);
 
   /// Update name field
-  ValidIgnoreTest name(String? value) {
-    return ValidIgnoreTest(
-      name: value ?? _instance.name,
+  _ValidIgnoreTestCopyWith name(String value) {
+    return _ValidIgnoreTestCopyWith._(ValidIgnoreTest(
+      name: value,
       nullablePassword: _instance.nullablePassword,
       passwordWithDefault: _instance.passwordWithDefault,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update nullablePassword field
-  ValidIgnoreTest nullablePassword(String? value) {
-    return ValidIgnoreTest(
+  _ValidIgnoreTestCopyWith nullablePassword(String? value) {
+    return _ValidIgnoreTestCopyWith._(ValidIgnoreTest(
       name: _instance.name,
       nullablePassword: value,
       passwordWithDefault: _instance.passwordWithDefault,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update passwordWithDefault field
-  ValidIgnoreTest passwordWithDefault(String? value) {
-    return ValidIgnoreTest(
+  _ValidIgnoreTestCopyWith passwordWithDefault(String value) {
+    return _ValidIgnoreTestCopyWith._(ValidIgnoreTest(
       name: _instance.name,
       nullablePassword: _instance.nullablePassword,
-      passwordWithDefault: value ?? _instance.passwordWithDefault,
+      passwordWithDefault: value,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update age field
-  ValidIgnoreTest age(int? value) {
-    return ValidIgnoreTest(
+  _ValidIgnoreTestCopyWith age(int value) {
+    return _ValidIgnoreTestCopyWith._(ValidIgnoreTest(
       name: _instance.name,
       nullablePassword: _instance.nullablePassword,
       passwordWithDefault: _instance.passwordWithDefault,
-      age: value ?? _instance.age,
-    );
+      age: value,
+    ));
+  }
+
+  /// Build the final instance
+  ValidIgnoreTest build() {
+    return _instance as ValidIgnoreTest;
   }
 
   /// Traditional copyWith method
@@ -121,3 +127,4 @@ class _ValidIgnoreTestCopyWith {
     );
   }
 }
+

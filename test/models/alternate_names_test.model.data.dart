@@ -10,8 +10,7 @@ mixin _AlternateNamesTest {
   abstract final bool isActive;
   abstract final List<String> tags;
 
-  _AlternateNamesTestCopyWith get copyWith =>
-      _AlternateNamesTestCopyWith._(this);
+  _AlternateNamesTestCopyWith get copyWith => _AlternateNamesTestCopyWith._(this as AlternateNamesTest);
 
   @override
   bool operator ==(Object other) {
@@ -46,11 +45,11 @@ mixin _AlternateNamesTest {
       DeepCollectionEquality().hash(tags),
     ]);
   }
-
   @override
   String toString() {
     return 'AlternateNamesTest(name: $name, age: $age, email: $email, isActive: $isActive, tags: $tags)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -65,85 +64,78 @@ mixin _AlternateNamesTest {
   static AlternateNamesTest fromJson(Map<String, dynamic> map) {
     return AlternateNamesTest(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      age: SafeCasteUtil.safeCast<int>(
-              (map['user_age'] ?? map['age'] ?? map['years'])) ??
-          0,
-      email: SafeCasteUtil.safeCast<String>((map['email'] ??
-              map['email_address'] ??
-              map['mail'] ??
-              map['e_mail'])) ??
-          "",
-      isActive: SafeCasteUtil.safeCast<bool>(
-              (map['is_active'] ?? map['active'] ?? map['enabled'])) ??
-          false,
-      tags: ((map['tags'] as List<dynamic>?) ??
-                  (map['tags_list'] as List<dynamic>?) ??
-                  (map['labels'] as List<dynamic>?))
-              ?.map((e) => e.toString())
-              .toList() ??
-          const [],
+      age: SafeCasteUtil.safeCast<int>((map['user_age'] ?? map['age'] ?? map['years'])) ?? 0,
+      email: SafeCasteUtil.safeCast<String>((map['email'] ?? map['email_address'] ?? map['mail'] ?? map['e_mail'])) ?? "",
+      isActive: SafeCasteUtil.safeCast<bool>((map['is_active'] ?? map['active'] ?? map['enabled'])) ?? false,
+      tags: ((map['tags'] as List<dynamic>?) ?? (map['tags_list'] as List<dynamic>?) ?? (map['labels'] as List<dynamic>?))?.map((e) => e.toString()).toList() ?? const [],
     );
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _AlternateNamesTestCopyWith {
-  final _AlternateNamesTest _instance;
+  final AlternateNamesTest _instance;
   const _AlternateNamesTestCopyWith._(this._instance);
 
   /// Update name field
-  AlternateNamesTest name(String? value) {
-    return AlternateNamesTest(
-      name: value ?? _instance.name,
+  _AlternateNamesTestCopyWith name(String value) {
+    return _AlternateNamesTestCopyWith._(AlternateNamesTest(
+      name: value,
       age: _instance.age,
       email: _instance.email,
       isActive: _instance.isActive,
       tags: _instance.tags,
-    );
+    ));
   }
 
   /// Update age field
-  AlternateNamesTest age(int? value) {
-    return AlternateNamesTest(
+  _AlternateNamesTestCopyWith age(int value) {
+    return _AlternateNamesTestCopyWith._(AlternateNamesTest(
       name: _instance.name,
-      age: value ?? _instance.age,
+      age: value,
       email: _instance.email,
       isActive: _instance.isActive,
       tags: _instance.tags,
-    );
+    ));
   }
 
   /// Update email field
-  AlternateNamesTest email(String? value) {
-    return AlternateNamesTest(
+  _AlternateNamesTestCopyWith email(String value) {
+    return _AlternateNamesTestCopyWith._(AlternateNamesTest(
       name: _instance.name,
       age: _instance.age,
-      email: value ?? _instance.email,
+      email: value,
       isActive: _instance.isActive,
       tags: _instance.tags,
-    );
+    ));
   }
 
   /// Update isActive field
-  AlternateNamesTest isActive(bool? value) {
-    return AlternateNamesTest(
+  _AlternateNamesTestCopyWith isActive(bool value) {
+    return _AlternateNamesTestCopyWith._(AlternateNamesTest(
       name: _instance.name,
       age: _instance.age,
       email: _instance.email,
-      isActive: value ?? _instance.isActive,
+      isActive: value,
       tags: _instance.tags,
-    );
+    ));
   }
 
   /// Update tags field
-  AlternateNamesTest tags(List<String>? value) {
-    return AlternateNamesTest(
+  _AlternateNamesTestCopyWith tags(List<String> value) {
+    return _AlternateNamesTestCopyWith._(AlternateNamesTest(
       name: _instance.name,
       age: _instance.age,
       email: _instance.email,
       isActive: _instance.isActive,
-      tags: value ?? _instance.tags,
-    );
+      tags: value,
+    ));
+  }
+
+  /// Build the final instance
+  AlternateNamesTest build() {
+    return _instance as AlternateNamesTest;
   }
 
   /// Traditional copyWith method
@@ -163,3 +155,4 @@ class _AlternateNamesTestCopyWith {
     );
   }
 }
+

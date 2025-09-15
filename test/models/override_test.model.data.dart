@@ -8,7 +8,7 @@ mixin _OverrideTestModel {
   abstract final int value;
   abstract final bool isActive;
 
-  _OverrideTestModelCopyWith get copyWith => _OverrideTestModelCopyWith._(this);
+  _OverrideTestModelCopyWith get copyWith => _OverrideTestModelCopyWith._(this as OverrideTestModel);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +35,11 @@ mixin _OverrideTestModel {
       isActive,
     ]);
   }
-
   @override
   String toString() {
     return 'OverrideTestModel(name: $name, value: $value, isActive: $isActive)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -58,36 +58,42 @@ mixin _OverrideTestModel {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _OverrideTestModelCopyWith {
-  final _OverrideTestModel _instance;
+  final OverrideTestModel _instance;
   const _OverrideTestModelCopyWith._(this._instance);
 
   /// Update name field
-  OverrideTestModel name(String? value) {
-    return OverrideTestModel(
-      name: value ?? _instance.name,
+  _OverrideTestModelCopyWith name(String value) {
+    return _OverrideTestModelCopyWith._(OverrideTestModel(
+      name: value,
       value: _instance.value,
       isActive: _instance.isActive,
-    );
+    ));
   }
 
   /// Update value field
-  OverrideTestModel value(int? value) {
-    return OverrideTestModel(
+  _OverrideTestModelCopyWith value(int value) {
+    return _OverrideTestModelCopyWith._(OverrideTestModel(
       name: _instance.name,
-      value: value ?? _instance.value,
+      value: value,
       isActive: _instance.isActive,
-    );
+    ));
   }
 
   /// Update isActive field
-  OverrideTestModel isActive(bool? value) {
-    return OverrideTestModel(
+  _OverrideTestModelCopyWith isActive(bool value) {
+    return _OverrideTestModelCopyWith._(OverrideTestModel(
       name: _instance.name,
       value: _instance.value,
-      isActive: value ?? _instance.isActive,
-    );
+      isActive: value,
+    ));
+  }
+
+  /// Build the final instance
+  OverrideTestModel build() {
+    return _instance as OverrideTestModel;
   }
 
   /// Traditional copyWith method
@@ -103,3 +109,4 @@ class _OverrideTestModelCopyWith {
     );
   }
 }
+

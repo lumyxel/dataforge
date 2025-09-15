@@ -9,7 +9,7 @@ mixin _DateTimeModel {
   abstract final DateTime? secondsTimestamp;
   abstract final DateTime? isoDate;
 
-  _DateTimeModelCopyWith get copyWith => _DateTimeModelCopyWith._(this);
+  _DateTimeModelCopyWith get copyWith => _DateTimeModelCopyWith._(this as DateTimeModel);
 
   @override
   bool operator ==(Object other) {
@@ -40,98 +40,88 @@ mixin _DateTimeModel {
       isoDate,
     ]);
   }
-
   @override
   String toString() {
     return 'DateTimeModel(timestamp: $timestamp, millisTimestamp: $millisTimestamp, secondsTimestamp: $secondsTimestamp, isoDate: $isoDate)';
   }
 
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (timestamp != null) {
-      map['timestamp'] = timestamp != null
-          ? const DefaultDateTimeConverter().toJson(timestamp!)
-          : null;
+      map['timestamp'] = timestamp != null ? const DefaultDateTimeConverter().toJson(timestamp!) : null;
     }
     if (millisTimestamp != null) {
-      map['millisTimestamp'] = millisTimestamp != null
-          ? const DefaultDateTimeConverter().toJson(millisTimestamp!)
-          : null;
+      map['millisTimestamp'] = millisTimestamp != null ? const DefaultDateTimeConverter().toJson(millisTimestamp!) : null;
     }
     if (secondsTimestamp != null) {
-      map['secondsTimestamp'] = secondsTimestamp != null
-          ? const DefaultDateTimeConverter().toJson(secondsTimestamp!)
-          : null;
+      map['secondsTimestamp'] = secondsTimestamp != null ? const DefaultDateTimeConverter().toJson(secondsTimestamp!) : null;
     }
     if (isoDate != null) {
-      map['isoDate'] = isoDate != null
-          ? const DefaultDateTimeConverter().toJson(isoDate!)
-          : null;
+      map['isoDate'] = isoDate != null ? const DefaultDateTimeConverter().toJson(isoDate!) : null;
     }
     return map;
   }
 
   static DateTimeModel fromJson(Map<String, dynamic> map) {
     return DateTimeModel(
-      timestamp: map['timestamp'] != null
-          ? const DefaultDateTimeConverter().fromJson(map['timestamp'])
-          : null,
-      millisTimestamp: map['millisTimestamp'] != null
-          ? const DefaultDateTimeConverter().fromJson(map['millisTimestamp'])
-          : null,
-      secondsTimestamp: map['secondsTimestamp'] != null
-          ? const DefaultDateTimeConverter().fromJson(map['secondsTimestamp'])
-          : null,
-      isoDate: map['isoDate'] != null
-          ? const DefaultDateTimeConverter().fromJson(map['isoDate'])
-          : null,
+      timestamp: map['timestamp'] != null ? const DefaultDateTimeConverter().fromJson(map['timestamp']) : null,
+      millisTimestamp: map['millisTimestamp'] != null ? const DefaultDateTimeConverter().fromJson(map['millisTimestamp']) : null,
+      secondsTimestamp: map['secondsTimestamp'] != null ? const DefaultDateTimeConverter().fromJson(map['secondsTimestamp']) : null,
+      isoDate: map['isoDate'] != null ? const DefaultDateTimeConverter().fromJson(map['isoDate']) : null,
     );
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _DateTimeModelCopyWith {
-  final _DateTimeModel _instance;
+  final DateTimeModel _instance;
   const _DateTimeModelCopyWith._(this._instance);
 
   /// Update timestamp field
-  DateTimeModel timestamp(DateTime? value) {
-    return DateTimeModel(
+  _DateTimeModelCopyWith timestamp(DateTime? value) {
+    return _DateTimeModelCopyWith._(DateTimeModel(
       timestamp: value,
       millisTimestamp: _instance.millisTimestamp,
       secondsTimestamp: _instance.secondsTimestamp,
       isoDate: _instance.isoDate,
-    );
+    ));
   }
 
   /// Update millisTimestamp field
-  DateTimeModel millisTimestamp(DateTime? value) {
-    return DateTimeModel(
+  _DateTimeModelCopyWith millisTimestamp(DateTime? value) {
+    return _DateTimeModelCopyWith._(DateTimeModel(
       timestamp: _instance.timestamp,
       millisTimestamp: value,
       secondsTimestamp: _instance.secondsTimestamp,
       isoDate: _instance.isoDate,
-    );
+    ));
   }
 
   /// Update secondsTimestamp field
-  DateTimeModel secondsTimestamp(DateTime? value) {
-    return DateTimeModel(
+  _DateTimeModelCopyWith secondsTimestamp(DateTime? value) {
+    return _DateTimeModelCopyWith._(DateTimeModel(
       timestamp: _instance.timestamp,
       millisTimestamp: _instance.millisTimestamp,
       secondsTimestamp: value,
       isoDate: _instance.isoDate,
-    );
+    ));
   }
 
   /// Update isoDate field
-  DateTimeModel isoDate(DateTime? value) {
-    return DateTimeModel(
+  _DateTimeModelCopyWith isoDate(DateTime? value) {
+    return _DateTimeModelCopyWith._(DateTimeModel(
       timestamp: _instance.timestamp,
       millisTimestamp: _instance.millisTimestamp,
       secondsTimestamp: _instance.secondsTimestamp,
       isoDate: value,
-    );
+    ));
+  }
+
+  /// Build the final instance
+  DateTimeModel build() {
+    return _instance as DateTimeModel;
   }
 
   /// Traditional copyWith method
@@ -149,3 +139,4 @@ class _DateTimeModelCopyWith {
     );
   }
 }
+

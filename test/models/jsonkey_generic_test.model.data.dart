@@ -8,7 +8,7 @@ mixin _ApiResponse<T> {
   abstract final String message;
   abstract final T? data;
 
-  _ApiResponseCopyWith<T> get copyWith => _ApiResponseCopyWith<T>._(this);
+  _ApiResponseCopyWith<T> get copyWith => _ApiResponseCopyWith<T>._(this as ApiResponse<T>);
 
   @override
   bool operator ==(Object other) {
@@ -35,18 +35,18 @@ mixin _ApiResponse<T> {
       data,
     ]);
   }
-
   @override
   String toString() {
     return 'ApiResponse(success: $success, message: $message, data: $data)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['success'] = success;
     map['message'] = message;
     if (data != null) {
-      map['data'] = data != null ? ApiResponse._dataToJson(data as T) : null;
+      map['data'] = data != null ? ApiResponse._dataToJson(data!) : null;
     }
     return map;
   }
@@ -66,7 +66,7 @@ mixin _User {
   abstract final String email;
   abstract final int? age;
 
-  _UserCopyWith get copyWith => _UserCopyWith._(this);
+  _UserCopyWith get copyWith => _UserCopyWith._(this as User);
 
   @override
   bool operator ==(Object other) {
@@ -97,11 +97,11 @@ mixin _User {
       age,
     ]);
   }
-
   @override
   String toString() {
     return 'User(id: $id, name: $name, email: $email, age: $age)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -128,7 +128,7 @@ mixin _ListResponse<T> {
   abstract final int total;
   abstract final List<T>? items;
 
-  _ListResponseCopyWith<T> get copyWith => _ListResponseCopyWith<T>._(this);
+  _ListResponseCopyWith<T> get copyWith => _ListResponseCopyWith<T>._(this as ListResponse<T>);
 
   @override
   bool operator ==(Object other) {
@@ -151,11 +151,11 @@ mixin _ListResponse<T> {
       DeepCollectionEquality().hash(items),
     ]);
   }
-
   @override
   String toString() {
     return 'ListResponse(total: $total, items: $items)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -169,48 +169,47 @@ mixin _ListResponse<T> {
   static ListResponse<T> fromJson<T>(Map<String, dynamic> map) {
     return ListResponse<T>(
       total: SafeCasteUtil.safeCast<int>(map['total']) ?? 0,
-      items: map['items'] != null
-          ? ListResponse._itemsFromJson(map['items'])
-          : null,
+      items: map['items'] != null ? ListResponse._itemsFromJson(map['items']) : null,
     );
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ApiResponseCopyWith<T> {
-  final _ApiResponse<T> _instance;
+  final ApiResponse<T> _instance;
   const _ApiResponseCopyWith._(this._instance);
 
   /// Update success field
-  ApiResponse<T> success(bool? value) {
-    return ApiResponse<T>(
-      success: value ?? _instance.success,
+  _ApiResponseCopyWith<T> success(bool value) {
+    return _ApiResponseCopyWith<T>._(ApiResponse<T>(
+      success: value,
       message: _instance.message,
       data: _instance.data,
-    );
+    ));
   }
 
   /// Update message field
-  ApiResponse<T> message(String? value) {
-    return ApiResponse<T>(
+  _ApiResponseCopyWith<T> message(String value) {
+    return _ApiResponseCopyWith<T>._(ApiResponse<T>(
       success: _instance.success,
-      message: value ?? _instance.message,
+      message: value,
       data: _instance.data,
-    );
+    ));
   }
 
   /// Update data field
-  ApiResponse<T> data(T? value) {
-    return ApiResponse<T>(
+  _ApiResponseCopyWith<T> data(T? value) {
+    return _ApiResponseCopyWith<T>._(ApiResponse<T>(
       success: _instance.success,
       message: _instance.message,
       data: value,
-    );
+    ));
   }
 
-  /// Nested copyWith for data field
-  _ApiResponseNestedCopyWithData<T> get dataBuilder {
-    return _ApiResponseNestedCopyWithData<T>._(_instance);
+  /// Build the final instance
+  ApiResponse<T> build() {
+    return _instance as ApiResponse<T>;
   }
 
   /// Traditional copyWith method
@@ -227,67 +226,55 @@ class _ApiResponseCopyWith<T> {
   }
 }
 
-/// Nested copyWith helper class for data field
-class _ApiResponseNestedCopyWithData<T> {
-  final _ApiResponse<T> _instance;
-  const _ApiResponseNestedCopyWithData._(this._instance);
-
-  /// Update data field using a copyWith function
-  ApiResponse<T> call(T Function(T) updater) {
-    final currentValue = _instance.data;
-    if (currentValue == null) return _instance as ApiResponse<T>;
-    final updatedValue = updater(currentValue);
-    return ApiResponse<T>(
-      success: _instance.success,
-      message: _instance.message,
-      data: updatedValue,
-    );
-  }
-}
 
 /// Helper class for chained copyWith operations
 class _UserCopyWith {
-  final _User _instance;
+  final User _instance;
   const _UserCopyWith._(this._instance);
 
   /// Update id field
-  User id(int? value) {
-    return User(
-      id: value ?? _instance.id,
+  _UserCopyWith id(int value) {
+    return _UserCopyWith._(User(
+      id: value,
       name: _instance.name,
       email: _instance.email,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update name field
-  User name(String? value) {
-    return User(
+  _UserCopyWith name(String value) {
+    return _UserCopyWith._(User(
       id: _instance.id,
-      name: value ?? _instance.name,
+      name: value,
       email: _instance.email,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update email field
-  User email(String? value) {
-    return User(
+  _UserCopyWith email(String value) {
+    return _UserCopyWith._(User(
       id: _instance.id,
       name: _instance.name,
-      email: value ?? _instance.email,
+      email: value,
       age: _instance.age,
-    );
+    ));
   }
 
   /// Update age field
-  User age(int? value) {
-    return User(
+  _UserCopyWith age(int? value) {
+    return _UserCopyWith._(User(
       id: _instance.id,
       name: _instance.name,
       email: _instance.email,
       age: value,
-    );
+    ));
+  }
+
+  /// Build the final instance
+  User build() {
+    return _instance as User;
   }
 
   /// Traditional copyWith method
@@ -306,25 +293,31 @@ class _UserCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ListResponseCopyWith<T> {
-  final _ListResponse<T> _instance;
+  final ListResponse<T> _instance;
   const _ListResponseCopyWith._(this._instance);
 
   /// Update total field
-  ListResponse<T> total(int? value) {
-    return ListResponse<T>(
-      total: value ?? _instance.total,
+  _ListResponseCopyWith<T> total(int value) {
+    return _ListResponseCopyWith<T>._(ListResponse<T>(
+      total: value,
       items: _instance.items,
-    );
+    ));
   }
 
   /// Update items field
-  ListResponse<T> items(List<T>? value) {
-    return ListResponse<T>(
+  _ListResponseCopyWith<T> items(List<T>? value) {
+    return _ListResponseCopyWith<T>._(ListResponse<T>(
       total: _instance.total,
       items: value,
-    );
+    ));
+  }
+
+  /// Build the final instance
+  ListResponse<T> build() {
+    return _instance as ListResponse<T>;
   }
 
   /// Traditional copyWith method
@@ -338,3 +331,4 @@ class _ListResponseCopyWith<T> {
     );
   }
 }
+

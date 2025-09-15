@@ -7,7 +7,7 @@ mixin _Test {
   abstract final DateTime createdAt;
   abstract final DateTime? createdAtNull;
 
-  _TestCopyWith get copyWith => _TestCopyWith._(this);
+  _TestCopyWith get copyWith => _TestCopyWith._(this as Test);
 
   @override
   bool operator ==(Object other) {
@@ -30,55 +30,54 @@ mixin _Test {
       createdAtNull,
     ]);
   }
-
   @override
   String toString() {
     return 'Test(createdAt: $createdAt, createdAtNull: $createdAtNull)';
   }
 
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['createdAt'] = const DefaultDateTimeConverter().toJson(createdAt);
     if (createdAtNull != null) {
-      map['createdAtNull'] = createdAtNull != null
-          ? const DefaultDateTimeConverter().toJson(createdAtNull!)
-          : null;
+      map['createdAtNull'] = createdAtNull != null ? const DefaultDateTimeConverter().toJson(createdAtNull!) : null;
     }
     return map;
   }
 
   static Test fromJson(Map<String, dynamic> map) {
     return Test(
-      createdAt: map['createdAt'] != null
-          ? const DefaultDateTimeConverter().fromJson(map['createdAt'])
-              as DateTime
-          : throw ArgumentError('Required field createdAt is missing'),
-      createdAtNull: map['createdAtNull'] != null
-          ? const DefaultDateTimeConverter().fromJson(map['createdAtNull'])
-          : null,
+      createdAt: map['createdAt'] != null ? const DefaultDateTimeConverter().fromJson(map['createdAt']) as DateTime : throw ArgumentError('Required field createdAt is missing'),
+      createdAtNull: map['createdAtNull'] != null ? const DefaultDateTimeConverter().fromJson(map['createdAtNull']) : null,
     );
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _TestCopyWith {
-  final _Test _instance;
+  final Test _instance;
   const _TestCopyWith._(this._instance);
 
   /// Update createdAt field
-  Test createdAt(DateTime? value) {
-    return Test(
-      createdAt: value ?? _instance.createdAt,
+  _TestCopyWith createdAt(DateTime value) {
+    return _TestCopyWith._(Test(
+      createdAt: value,
       createdAtNull: _instance.createdAtNull,
-    );
+    ));
   }
 
   /// Update createdAtNull field
-  Test createdAtNull(DateTime? value) {
-    return Test(
+  _TestCopyWith createdAtNull(DateTime? value) {
+    return _TestCopyWith._(Test(
       createdAt: _instance.createdAt,
       createdAtNull: value,
-    );
+    ));
+  }
+
+  /// Build the final instance
+  Test build() {
+    return _instance as Test;
   }
 
   /// Traditional copyWith method
@@ -92,3 +91,4 @@ class _TestCopyWith {
     );
   }
 }
+

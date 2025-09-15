@@ -7,7 +7,7 @@ mixin _ValidExample1 {
   abstract final String name;
   abstract final String? password;
 
-  _ValidExample1CopyWith get copyWith => _ValidExample1CopyWith._(this);
+  _ValidExample1CopyWith get copyWith => _ValidExample1CopyWith._(this as ValidExample1);
 
   @override
   bool operator ==(Object other) {
@@ -30,11 +30,11 @@ mixin _ValidExample1 {
       password,
     ]);
   }
-
   @override
   String toString() {
     return 'ValidExample1(name: $name, password: $password)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -53,7 +53,7 @@ mixin _ValidExample2 {
   abstract final String name;
   abstract final String secret;
 
-  _ValidExample2CopyWith get copyWith => _ValidExample2CopyWith._(this);
+  _ValidExample2CopyWith get copyWith => _ValidExample2CopyWith._(this as ValidExample2);
 
   @override
   bool operator ==(Object other) {
@@ -76,11 +76,11 @@ mixin _ValidExample2 {
       secret,
     ]);
   }
-
   @override
   String toString() {
     return 'ValidExample2(name: $name, secret: $secret)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -95,25 +95,31 @@ mixin _ValidExample2 {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ValidExample1CopyWith {
-  final _ValidExample1 _instance;
+  final ValidExample1 _instance;
   const _ValidExample1CopyWith._(this._instance);
 
   /// Update name field
-  ValidExample1 name(String? value) {
-    return ValidExample1(
-      name: value ?? _instance.name,
+  _ValidExample1CopyWith name(String value) {
+    return _ValidExample1CopyWith._(ValidExample1(
+      name: value,
       password: _instance.password,
-    );
+    ));
   }
 
   /// Update password field
-  ValidExample1 password(String? value) {
-    return ValidExample1(
+  _ValidExample1CopyWith password(String? value) {
+    return _ValidExample1CopyWith._(ValidExample1(
       name: _instance.name,
       password: value,
-    );
+    ));
+  }
+
+  /// Build the final instance
+  ValidExample1 build() {
+    return _instance as ValidExample1;
   }
 
   /// Traditional copyWith method
@@ -128,25 +134,31 @@ class _ValidExample1CopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ValidExample2CopyWith {
-  final _ValidExample2 _instance;
+  final ValidExample2 _instance;
   const _ValidExample2CopyWith._(this._instance);
 
   /// Update name field
-  ValidExample2 name(String? value) {
-    return ValidExample2(
-      name: value ?? _instance.name,
+  _ValidExample2CopyWith name(String value) {
+    return _ValidExample2CopyWith._(ValidExample2(
+      name: value,
       secret: _instance.secret,
-    );
+    ));
   }
 
   /// Update secret field
-  ValidExample2 secret(String? value) {
-    return ValidExample2(
+  _ValidExample2CopyWith secret(String value) {
+    return _ValidExample2CopyWith._(ValidExample2(
       name: _instance.name,
-      secret: value ?? _instance.secret,
-    );
+      secret: value,
+    ));
+  }
+
+  /// Build the final instance
+  ValidExample2 build() {
+    return _instance as ValidExample2;
   }
 
   /// Traditional copyWith method
@@ -160,3 +172,4 @@ class _ValidExample2CopyWith {
     );
   }
 }
+

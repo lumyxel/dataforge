@@ -11,7 +11,7 @@ mixin _Address {
   abstract final String country;
   abstract final bool isPrimary;
 
-  _AddressCopyWith get copyWith => _AddressCopyWith._(this);
+  _AddressCopyWith get copyWith => _AddressCopyWith._(this as Address);
 
   @override
   bool operator ==(Object other) {
@@ -50,11 +50,11 @@ mixin _Address {
       isPrimary,
     ]);
   }
-
   @override
   String toString() {
     return 'Address(street: $street, city: $city, state: $state, zipCode: $zipCode, country: $country, isPrimary: $isPrimary)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -86,7 +86,7 @@ mixin _Contact {
   abstract final String? phone;
   abstract final String contactType;
 
-  _ContactCopyWith get copyWith => _ContactCopyWith._(this);
+  _ContactCopyWith get copyWith => _ContactCopyWith._(this as Contact);
 
   @override
   bool operator ==(Object other) {
@@ -113,11 +113,11 @@ mixin _Contact {
       contactType,
     ]);
   }
-
   @override
   String toString() {
     return 'Contact(email: $email, phone: $phone, contactType: $contactType)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -145,7 +145,7 @@ mixin _Company {
   abstract final Contact primaryContact;
   abstract final List<Contact>? additionalContacts;
 
-  _CompanyCopyWith get copyWith => _CompanyCopyWith._(this);
+  _CompanyCopyWith get copyWith => _CompanyCopyWith._(this as Company);
 
   @override
   bool operator ==(Object other) {
@@ -164,8 +164,7 @@ mixin _Company {
     if (primaryContact != other.primaryContact) {
       return false;
     }
-    if (!DeepCollectionEquality()
-        .equals(additionalContacts, other.additionalContacts)) {
+    if (!DeepCollectionEquality().equals(additionalContacts, other.additionalContacts)) {
       return false;
     }
     return true;
@@ -181,11 +180,11 @@ mixin _Company {
       DeepCollectionEquality().hash(additionalContacts),
     ]);
   }
-
   @override
   String toString() {
     return 'Company(name: $name, headquarters: $headquarters, branches: $branches, primaryContact: $primaryContact, additionalContacts: $additionalContacts)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -204,18 +203,10 @@ mixin _Company {
   static Company fromJson(Map<String, dynamic> map) {
     return Company(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      headquarters:
-          Address.fromJson((map['headquarters'] ?? {}) as Map<String, dynamic>),
-      branches: (map['branches'] as List<dynamic>?)
-          ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
-          .toList()
-          .cast<Address>(),
-      primaryContact: Contact.fromJson(
-          (map['primaryContact'] ?? {}) as Map<String, dynamic>),
-      additionalContacts: (map['additionalContacts'] as List<dynamic>?)
-          ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
-          .toList()
-          .cast<Contact>(),
+      headquarters: Address.fromJson((map['headquarters'] ?? {}) as Map<String, dynamic>),
+      branches: (map['branches'] as List<dynamic>?)?.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList()?.cast<Address>(),
+      primaryContact: Contact.fromJson((map['primaryContact'] ?? {}) as Map<String, dynamic>),
+      additionalContacts: (map['additionalContacts'] as List<dynamic>?)?.map((e) => Contact.fromJson(e as Map<String, dynamic>)).toList()?.cast<Contact>(),
     );
   }
 }
@@ -232,7 +223,7 @@ mixin _NestedObjects {
   abstract final Address? customAddress;
   abstract final List<Contact>? parsedContacts;
 
-  _NestedObjectsCopyWith get copyWith => _NestedObjectsCopyWith._(this);
+  _NestedObjectsCopyWith get copyWith => _NestedObjectsCopyWith._(this as NestedObjects);
 
   @override
   bool operator ==(Object other) {
@@ -248,12 +239,10 @@ mixin _NestedObjects {
     if (workAddress != other.workAddress) {
       return false;
     }
-    if (!DeepCollectionEquality()
-        .equals(previousAddresses, other.previousAddresses)) {
+    if (!DeepCollectionEquality().equals(previousAddresses, other.previousAddresses)) {
       return false;
     }
-    if (!DeepCollectionEquality()
-        .equals(namedAddresses, other.namedAddresses)) {
+    if (!DeepCollectionEquality().equals(namedAddresses, other.namedAddresses)) {
       return false;
     }
     if (primaryContact != other.primaryContact) {
@@ -268,8 +257,7 @@ mixin _NestedObjects {
     if (customAddress != other.customAddress) {
       return false;
     }
-    if (!DeepCollectionEquality()
-        .equals(parsedContacts, other.parsedContacts)) {
+    if (!DeepCollectionEquality().equals(parsedContacts, other.parsedContacts)) {
       return false;
     }
     return true;
@@ -290,11 +278,11 @@ mixin _NestedObjects {
       DeepCollectionEquality().hash(parsedContacts),
     ]);
   }
-
   @override
   String toString() {
     return 'NestedObjects(name: $name, homeAddress: $homeAddress, workAddress: $workAddress, previousAddresses: $previousAddresses, namedAddresses: $namedAddresses, primaryContact: $primaryContact, contacts: $contacts, employer: $employer, customAddress: $customAddress, parsedContacts: $parsedContacts)';
   }
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -324,119 +312,103 @@ mixin _NestedObjects {
   }
 
   static NestedObjects fromJson(Map<String, dynamic> map) {
-    final parsedContactsReadValue =
-        NestedObjects._readValue(map, 'parsedContacts');
+    final parsedContactsReadValue = NestedObjects._readValue(map, 'parsedContacts');
     return NestedObjects(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      homeAddress:
-          Address.fromJson((map['homeAddress'] ?? {}) as Map<String, dynamic>),
-      workAddress: map['workAddress'] != null
-          ? Address.fromJson(map['workAddress'] as Map<String, dynamic>)
-          : null,
-      previousAddresses: (map['previousAddresses'] as List<dynamic>?)
-              ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
-              .toList()
-              .cast<Address>() ??
-          [],
-      namedAddresses: (map['namedAddresses'] as Map<String, dynamic>?)?.map(
-          (key, value) =>
-              MapEntry(key, Address.fromJson(value as Map<String, dynamic>))),
-      primaryContact: Contact.fromJson(
-          (map['primaryContact'] ?? {}) as Map<String, dynamic>),
-      contacts: (map['contacts'] as List<dynamic>?)
-          ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
-          .toList()
-          .cast<Contact>(),
-      employer: map['employer'] != null
-          ? Company.fromJson(map['employer'] as Map<String, dynamic>)
-          : null,
-      customAddress: map['customAddress'] != null
-          ? Address.fromJson(map['customAddress'] as Map<String, dynamic>)
-          : null,
-      parsedContacts: parsedContactsReadValue != null
-          ? (parsedContactsReadValue as List?)
-              ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
-              .toList()
-          : null,
+      homeAddress: Address.fromJson((map['homeAddress'] ?? {}) as Map<String, dynamic>),
+      workAddress: map['workAddress'] != null ? Address.fromJson(map['workAddress'] as Map<String, dynamic>) : null,
+      previousAddresses: (map['previousAddresses'] as List<dynamic>?)?.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList()?.cast<Address>() ?? [],
+      namedAddresses: (map['namedAddresses'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, Address.fromJson(value as Map<String, dynamic>))),
+      primaryContact: Contact.fromJson((map['primaryContact'] ?? {}) as Map<String, dynamic>),
+      contacts: (map['contacts'] as List<dynamic>?)?.map((e) => Contact.fromJson(e as Map<String, dynamic>)).toList()?.cast<Contact>(),
+      employer: map['employer'] != null ? Company.fromJson(map['employer'] as Map<String, dynamic>) : null,
+      customAddress: map['customAddress'] != null ? Address.fromJson(map['customAddress'] as Map<String, dynamic>) : null,
+      parsedContacts: parsedContactsReadValue != null ? (parsedContactsReadValue as List?)?.map((e) => Contact.fromJson(e as Map<String, dynamic>)).toList() : null,
     );
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _AddressCopyWith {
-  final _Address _instance;
+  final Address _instance;
   const _AddressCopyWith._(this._instance);
 
   /// Update street field
-  Address street(String? value) {
-    return Address(
-      street: value ?? _instance.street,
+  _AddressCopyWith street(String value) {
+    return _AddressCopyWith._(Address(
+      street: value,
       city: _instance.city,
       state: _instance.state,
       zipCode: _instance.zipCode,
       country: _instance.country,
       isPrimary: _instance.isPrimary,
-    );
+    ));
   }
 
   /// Update city field
-  Address city(String? value) {
-    return Address(
+  _AddressCopyWith city(String value) {
+    return _AddressCopyWith._(Address(
       street: _instance.street,
-      city: value ?? _instance.city,
+      city: value,
       state: _instance.state,
       zipCode: _instance.zipCode,
       country: _instance.country,
       isPrimary: _instance.isPrimary,
-    );
+    ));
   }
 
   /// Update state field
-  Address state(String? value) {
-    return Address(
+  _AddressCopyWith state(String? value) {
+    return _AddressCopyWith._(Address(
       street: _instance.street,
       city: _instance.city,
       state: value,
       zipCode: _instance.zipCode,
       country: _instance.country,
       isPrimary: _instance.isPrimary,
-    );
+    ));
   }
 
   /// Update zipCode field
-  Address zipCode(String? value) {
-    return Address(
+  _AddressCopyWith zipCode(String value) {
+    return _AddressCopyWith._(Address(
       street: _instance.street,
       city: _instance.city,
       state: _instance.state,
-      zipCode: value ?? _instance.zipCode,
+      zipCode: value,
       country: _instance.country,
       isPrimary: _instance.isPrimary,
-    );
+    ));
   }
 
   /// Update country field
-  Address country(String? value) {
-    return Address(
+  _AddressCopyWith country(String value) {
+    return _AddressCopyWith._(Address(
       street: _instance.street,
       city: _instance.city,
       state: _instance.state,
       zipCode: _instance.zipCode,
-      country: value ?? _instance.country,
+      country: value,
       isPrimary: _instance.isPrimary,
-    );
+    ));
   }
 
   /// Update isPrimary field
-  Address isPrimary(bool? value) {
-    return Address(
+  _AddressCopyWith isPrimary(bool value) {
+    return _AddressCopyWith._(Address(
       street: _instance.street,
       city: _instance.city,
       state: _instance.state,
       zipCode: _instance.zipCode,
       country: _instance.country,
-      isPrimary: value ?? _instance.isPrimary,
-    );
+      isPrimary: value,
+    ));
+  }
+
+  /// Build the final instance
+  Address build() {
+    return _instance as Address;
   }
 
   /// Traditional copyWith method
@@ -459,36 +431,42 @@ class _AddressCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _ContactCopyWith {
-  final _Contact _instance;
+  final Contact _instance;
   const _ContactCopyWith._(this._instance);
 
   /// Update email field
-  Contact email(String? value) {
-    return Contact(
-      email: value ?? _instance.email,
+  _ContactCopyWith email(String value) {
+    return _ContactCopyWith._(Contact(
+      email: value,
       phone: _instance.phone,
       contactType: _instance.contactType,
-    );
+    ));
   }
 
   /// Update phone field
-  Contact phone(String? value) {
-    return Contact(
+  _ContactCopyWith phone(String? value) {
+    return _ContactCopyWith._(Contact(
       email: _instance.email,
       phone: value,
       contactType: _instance.contactType,
-    );
+    ));
   }
 
   /// Update contactType field
-  Contact contactType(String? value) {
-    return Contact(
+  _ContactCopyWith contactType(String value) {
+    return _ContactCopyWith._(Contact(
       email: _instance.email,
       phone: _instance.phone,
-      contactType: value ?? _instance.contactType,
-    );
+      contactType: value,
+    ));
+  }
+
+  /// Build the final instance
+  Contact build() {
+    return _instance as Contact;
   }
 
   /// Traditional copyWith method
@@ -505,74 +483,70 @@ class _ContactCopyWith {
   }
 }
 
+
 /// Helper class for chained copyWith operations
 class _CompanyCopyWith {
-  final _Company _instance;
+  final Company _instance;
   const _CompanyCopyWith._(this._instance);
 
   /// Update name field
-  Company name(String? value) {
-    return Company(
-      name: value ?? _instance.name,
+  _CompanyCopyWith name(String value) {
+    return _CompanyCopyWith._(Company(
+      name: value,
       headquarters: _instance.headquarters,
       branches: _instance.branches,
       primaryContact: _instance.primaryContact,
       additionalContacts: _instance.additionalContacts,
-    );
+    ));
   }
 
   /// Update headquarters field
-  Company headquarters(Address? value) {
-    return Company(
+  _CompanyCopyWith headquarters(Address value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
-      headquarters: value ?? _instance.headquarters,
+      headquarters: value,
       branches: _instance.branches,
       primaryContact: _instance.primaryContact,
       additionalContacts: _instance.additionalContacts,
-    );
+    ));
   }
 
   /// Update branches field
-  Company branches(List<Address>? value) {
-    return Company(
+  _CompanyCopyWith branches(List<Address>? value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
       headquarters: _instance.headquarters,
       branches: value,
       primaryContact: _instance.primaryContact,
       additionalContacts: _instance.additionalContacts,
-    );
+    ));
   }
 
   /// Update primaryContact field
-  Company primaryContact(Contact? value) {
-    return Company(
+  _CompanyCopyWith primaryContact(Contact value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
       headquarters: _instance.headquarters,
       branches: _instance.branches,
-      primaryContact: value ?? _instance.primaryContact,
+      primaryContact: value,
       additionalContacts: _instance.additionalContacts,
-    );
+    ));
   }
 
   /// Update additionalContacts field
-  Company additionalContacts(List<Contact>? value) {
-    return Company(
+  _CompanyCopyWith additionalContacts(List<Contact>? value) {
+    return _CompanyCopyWith._(Company(
       name: _instance.name,
       headquarters: _instance.headquarters,
       branches: _instance.branches,
       primaryContact: _instance.primaryContact,
       additionalContacts: value,
-    );
+    ));
   }
 
-  /// Nested copyWith for headquarters field
-  _CompanyNestedCopyWithHeadquarters get headquartersBuilder {
-    return _CompanyNestedCopyWithHeadquarters._(_instance);
-  }
-
-  /// Nested copyWith for primaryContact field
-  _CompanyNestedCopyWithPrimaryContact get primaryContactBuilder {
-    return _CompanyNestedCopyWithPrimaryContact._(_instance);
+  /// Build the final instance
+  Company build() {
+    return _instance as Company;
   }
 
   /// Traditional copyWith method
@@ -593,53 +567,16 @@ class _CompanyCopyWith {
   }
 }
 
-/// Nested copyWith helper class for headquarters field
-class _CompanyNestedCopyWithHeadquarters {
-  final _Company _instance;
-  const _CompanyNestedCopyWithHeadquarters._(this._instance);
-
-  /// Update headquarters field using a copyWith function
-  Company call(Address Function(Address) updater) {
-    final currentValue = _instance.headquarters;
-    final updatedValue = updater(currentValue);
-    return Company(
-      name: _instance.name,
-      headquarters: updatedValue,
-      branches: _instance.branches,
-      primaryContact: _instance.primaryContact,
-      additionalContacts: _instance.additionalContacts,
-    );
-  }
-}
-
-/// Nested copyWith helper class for primaryContact field
-class _CompanyNestedCopyWithPrimaryContact {
-  final _Company _instance;
-  const _CompanyNestedCopyWithPrimaryContact._(this._instance);
-
-  /// Update primaryContact field using a copyWith function
-  Company call(Contact Function(Contact) updater) {
-    final currentValue = _instance.primaryContact;
-    final updatedValue = updater(currentValue);
-    return Company(
-      name: _instance.name,
-      headquarters: _instance.headquarters,
-      branches: _instance.branches,
-      primaryContact: updatedValue,
-      additionalContacts: _instance.additionalContacts,
-    );
-  }
-}
 
 /// Helper class for chained copyWith operations
 class _NestedObjectsCopyWith {
-  final _NestedObjects _instance;
+  final NestedObjects _instance;
   const _NestedObjectsCopyWith._(this._instance);
 
   /// Update name field
-  NestedObjects name(String? value) {
-    return NestedObjects(
-      name: value ?? _instance.name,
+  _NestedObjectsCopyWith name(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: value,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
       previousAddresses: _instance.previousAddresses,
@@ -649,14 +586,14 @@ class _NestedObjectsCopyWith {
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update homeAddress field
-  NestedObjects homeAddress(Address? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith homeAddress(Address value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
-      homeAddress: value ?? _instance.homeAddress,
+      homeAddress: value,
       workAddress: _instance.workAddress,
       previousAddresses: _instance.previousAddresses,
       namedAddresses: _instance.namedAddresses,
@@ -665,12 +602,12 @@ class _NestedObjectsCopyWith {
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update workAddress field
-  NestedObjects workAddress(Address? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith workAddress(Address? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: value,
@@ -681,28 +618,28 @@ class _NestedObjectsCopyWith {
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update previousAddresses field
-  NestedObjects previousAddresses(List<Address>? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith previousAddresses(List<Address> value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
-      previousAddresses: value ?? _instance.previousAddresses,
+      previousAddresses: value,
       namedAddresses: _instance.namedAddresses,
       primaryContact: _instance.primaryContact,
       contacts: _instance.contacts,
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update namedAddresses field
-  NestedObjects namedAddresses(Map<String, Address>? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith namedAddresses(Map<String, Address>? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
@@ -713,28 +650,28 @@ class _NestedObjectsCopyWith {
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update primaryContact field
-  NestedObjects primaryContact(Contact? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith primaryContact(Contact value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
       previousAddresses: _instance.previousAddresses,
       namedAddresses: _instance.namedAddresses,
-      primaryContact: value ?? _instance.primaryContact,
+      primaryContact: value,
       contacts: _instance.contacts,
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update contacts field
-  NestedObjects contacts(List<Contact>? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith contacts(List<Contact>? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
@@ -745,12 +682,12 @@ class _NestedObjectsCopyWith {
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update employer field
-  NestedObjects employer(Company? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith employer(Company? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
@@ -761,12 +698,12 @@ class _NestedObjectsCopyWith {
       employer: value,
       customAddress: _instance.customAddress,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update customAddress field
-  NestedObjects customAddress(Address? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith customAddress(Address? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
@@ -777,12 +714,12 @@ class _NestedObjectsCopyWith {
       employer: _instance.employer,
       customAddress: value,
       parsedContacts: _instance.parsedContacts,
-    );
+    ));
   }
 
   /// Update parsedContacts field
-  NestedObjects parsedContacts(List<Contact>? value) {
-    return NestedObjects(
+  _NestedObjectsCopyWith parsedContacts(List<Contact>? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
       name: _instance.name,
       homeAddress: _instance.homeAddress,
       workAddress: _instance.workAddress,
@@ -793,32 +730,12 @@ class _NestedObjectsCopyWith {
       employer: _instance.employer,
       customAddress: _instance.customAddress,
       parsedContacts: value,
-    );
+    ));
   }
 
-  /// Nested copyWith for homeAddress field
-  _NestedObjectsNestedCopyWithHomeAddress get homeAddressBuilder {
-    return _NestedObjectsNestedCopyWithHomeAddress._(_instance);
-  }
-
-  /// Nested copyWith for workAddress field
-  _NestedObjectsNestedCopyWithWorkAddress get workAddressBuilder {
-    return _NestedObjectsNestedCopyWithWorkAddress._(_instance);
-  }
-
-  /// Nested copyWith for primaryContact field
-  _NestedObjectsNestedCopyWithPrimaryContact get primaryContactBuilder {
-    return _NestedObjectsNestedCopyWithPrimaryContact._(_instance);
-  }
-
-  /// Nested copyWith for employer field
-  _NestedObjectsNestedCopyWithEmployer get employerBuilder {
-    return _NestedObjectsNestedCopyWithEmployer._(_instance);
-  }
-
-  /// Nested copyWith for customAddress field
-  _NestedObjectsNestedCopyWithCustomAddress get customAddressBuilder {
-    return _NestedObjectsNestedCopyWithCustomAddress._(_instance);
+  /// Build the final instance
+  NestedObjects build() {
+    return _instance as NestedObjects;
   }
 
   /// Traditional copyWith method
@@ -849,125 +766,3 @@ class _NestedObjectsCopyWith {
   }
 }
 
-/// Nested copyWith helper class for homeAddress field
-class _NestedObjectsNestedCopyWithHomeAddress {
-  final _NestedObjects _instance;
-  const _NestedObjectsNestedCopyWithHomeAddress._(this._instance);
-
-  /// Update homeAddress field using a copyWith function
-  NestedObjects call(Address Function(Address) updater) {
-    final currentValue = _instance.homeAddress;
-    final updatedValue = updater(currentValue);
-    return NestedObjects(
-      name: _instance.name,
-      homeAddress: updatedValue,
-      workAddress: _instance.workAddress,
-      previousAddresses: _instance.previousAddresses,
-      namedAddresses: _instance.namedAddresses,
-      primaryContact: _instance.primaryContact,
-      contacts: _instance.contacts,
-      employer: _instance.employer,
-      customAddress: _instance.customAddress,
-      parsedContacts: _instance.parsedContacts,
-    );
-  }
-}
-
-/// Nested copyWith helper class for workAddress field
-class _NestedObjectsNestedCopyWithWorkAddress {
-  final _NestedObjects _instance;
-  const _NestedObjectsNestedCopyWithWorkAddress._(this._instance);
-
-  /// Update workAddress field using a copyWith function
-  NestedObjects call(Address Function(Address) updater) {
-    final currentValue = _instance.workAddress;
-    if (currentValue == null) return _instance as NestedObjects;
-    final updatedValue = updater(currentValue);
-    return NestedObjects(
-      name: _instance.name,
-      homeAddress: _instance.homeAddress,
-      workAddress: updatedValue,
-      previousAddresses: _instance.previousAddresses,
-      namedAddresses: _instance.namedAddresses,
-      primaryContact: _instance.primaryContact,
-      contacts: _instance.contacts,
-      employer: _instance.employer,
-      customAddress: _instance.customAddress,
-      parsedContacts: _instance.parsedContacts,
-    );
-  }
-}
-
-/// Nested copyWith helper class for primaryContact field
-class _NestedObjectsNestedCopyWithPrimaryContact {
-  final _NestedObjects _instance;
-  const _NestedObjectsNestedCopyWithPrimaryContact._(this._instance);
-
-  /// Update primaryContact field using a copyWith function
-  NestedObjects call(Contact Function(Contact) updater) {
-    final currentValue = _instance.primaryContact;
-    final updatedValue = updater(currentValue);
-    return NestedObjects(
-      name: _instance.name,
-      homeAddress: _instance.homeAddress,
-      workAddress: _instance.workAddress,
-      previousAddresses: _instance.previousAddresses,
-      namedAddresses: _instance.namedAddresses,
-      primaryContact: updatedValue,
-      contacts: _instance.contacts,
-      employer: _instance.employer,
-      customAddress: _instance.customAddress,
-      parsedContacts: _instance.parsedContacts,
-    );
-  }
-}
-
-/// Nested copyWith helper class for employer field
-class _NestedObjectsNestedCopyWithEmployer {
-  final _NestedObjects _instance;
-  const _NestedObjectsNestedCopyWithEmployer._(this._instance);
-
-  /// Update employer field using a copyWith function
-  NestedObjects call(Company Function(Company) updater) {
-    final currentValue = _instance.employer;
-    if (currentValue == null) return _instance as NestedObjects;
-    final updatedValue = updater(currentValue);
-    return NestedObjects(
-      name: _instance.name,
-      homeAddress: _instance.homeAddress,
-      workAddress: _instance.workAddress,
-      previousAddresses: _instance.previousAddresses,
-      namedAddresses: _instance.namedAddresses,
-      primaryContact: _instance.primaryContact,
-      contacts: _instance.contacts,
-      employer: updatedValue,
-      customAddress: _instance.customAddress,
-      parsedContacts: _instance.parsedContacts,
-    );
-  }
-}
-
-/// Nested copyWith helper class for customAddress field
-class _NestedObjectsNestedCopyWithCustomAddress {
-  final _NestedObjects _instance;
-  const _NestedObjectsNestedCopyWithCustomAddress._(this._instance);
-
-  /// Update customAddress field using a copyWith function
-  NestedObjects call(Address Function(Address) updater) {
-    final currentValue = _instance.customAddress;
-    if (currentValue == null) return _instance as NestedObjects;
-    final updatedValue = updater(currentValue);
-    return NestedObjects(
-      name: _instance.name,
-      homeAddress: _instance.homeAddress,
-      workAddress: _instance.workAddress,
-      previousAddresses: _instance.previousAddresses,
-      namedAddresses: _instance.namedAddresses,
-      primaryContact: _instance.primaryContact,
-      contacts: _instance.contacts,
-      employer: _instance.employer,
-      customAddress: updatedValue,
-      parsedContacts: _instance.parsedContacts,
-    );
-  }
-}
