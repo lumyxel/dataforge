@@ -7,7 +7,8 @@ mixin _ValidExample1 {
   abstract final String name;
   abstract final String? password;
 
-  _ValidExample1CopyWith get copyWith => _ValidExample1CopyWith._(this as ValidExample1);
+  _ValidExample1CopyWith get copyWith =>
+      _ValidExample1CopyWith._(this as ValidExample1);
 
   @override
   bool operator ==(Object other) {
@@ -30,11 +31,11 @@ mixin _ValidExample1 {
       password,
     ]);
   }
+
   @override
   String toString() {
     return 'ValidExample1(name: $name, password: $password)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -53,7 +54,8 @@ mixin _ValidExample2 {
   abstract final String name;
   abstract final String secret;
 
-  _ValidExample2CopyWith get copyWith => _ValidExample2CopyWith._(this as ValidExample2);
+  _ValidExample2CopyWith get copyWith =>
+      _ValidExample2CopyWith._(this as ValidExample2);
 
   @override
   bool operator ==(Object other) {
@@ -76,11 +78,11 @@ mixin _ValidExample2 {
       secret,
     ]);
   }
+
   @override
   String toString() {
     return 'ValidExample2(name: $name, secret: $secret)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -94,7 +96,6 @@ mixin _ValidExample2 {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ValidExample1CopyWith {
@@ -119,7 +120,7 @@ class _ValidExample1CopyWith {
 
   /// Build the final instance
   ValidExample1 build() {
-    return _instance as ValidExample1;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -133,7 +134,6 @@ class _ValidExample1CopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ValidExample2CopyWith {
@@ -158,7 +158,7 @@ class _ValidExample2CopyWith {
 
   /// Build the final instance
   ValidExample2 build() {
-    return _instance as ValidExample2;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -172,4 +172,3 @@ class _ValidExample2CopyWith {
     );
   }
 }
-

@@ -8,7 +8,8 @@ mixin _OverrideTestModel {
   abstract final int value;
   abstract final bool isActive;
 
-  _OverrideTestModelCopyWith get copyWith => _OverrideTestModelCopyWith._(this as OverrideTestModel);
+  _OverrideTestModelCopyWith get copyWith =>
+      _OverrideTestModelCopyWith._(this as OverrideTestModel);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +36,11 @@ mixin _OverrideTestModel {
       isActive,
     ]);
   }
+
   @override
   String toString() {
     return 'OverrideTestModel(name: $name, value: $value, isActive: $isActive)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -57,7 +58,6 @@ mixin _OverrideTestModel {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _OverrideTestModelCopyWith {
@@ -93,7 +93,7 @@ class _OverrideTestModelCopyWith {
 
   /// Build the final instance
   OverrideTestModel build() {
-    return _instance as OverrideTestModel;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -109,4 +109,3 @@ class _OverrideTestModelCopyWith {
     );
   }
 }
-

@@ -30,11 +30,11 @@ mixin _TestModel {
       param,
     ]);
   }
+
   @override
   String toString() {
     return 'TestModel(name: $name, param: $param)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -48,7 +48,9 @@ mixin _TestModel {
   static TestModel fromJson(Map<String, dynamic> map) {
     return TestModel(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      param: map['param'] != null ? Params.fromJson(map['param'] as Map<String, dynamic>) : null,
+      param: map['param'] != null
+          ? Params.fromJson(map['param'] as Map<String, dynamic>)
+          : null,
     );
   }
 }
@@ -75,11 +77,11 @@ mixin _Params {
       value,
     ]);
   }
+
   @override
   String toString() {
     return 'Params(value: $value)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -93,7 +95,6 @@ mixin _Params {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _TestModelCopyWith {
@@ -118,7 +119,20 @@ class _TestModelCopyWith {
 
   /// Build the final instance
   TestModel build() {
-    return _instance as TestModel;
+    return _instance;
+  }
+
+  /// Nested copyWith for param field
+  _TestModelNestedCopyWithParam get paramBuilder {
+    return _TestModelNestedCopyWithParam._(_instance);
+  }
+
+  /// Update param_value field
+  _TestModelCopyWith $param_value(String value) {
+    return _TestModelCopyWith._(TestModel(
+      name: _instance.name,
+      param: _instance.param?.copyWith.value(value).build(),
+    ));
   }
 
   /// Traditional copyWith method
@@ -133,6 +147,22 @@ class _TestModelCopyWith {
   }
 }
 
+/// Nested copyWith helper class for param field
+class _TestModelNestedCopyWithParam {
+  final TestModel _instance;
+  const _TestModelNestedCopyWithParam._(this._instance);
+
+  /// Update param field using a copyWith function
+  TestModel call(Params Function(Params) updater) {
+    final currentValue = _instance.param;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return TestModel(
+      name: _instance.name,
+      param: updatedValue,
+    );
+  }
+}
 
 /// Helper class for chained copyWith operations
 class _ParamsCopyWith {
@@ -148,7 +178,7 @@ class _ParamsCopyWith {
 
   /// Build the final instance
   Params build() {
-    return _instance as Params;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -160,4 +190,3 @@ class _ParamsCopyWith {
     );
   }
 }
-

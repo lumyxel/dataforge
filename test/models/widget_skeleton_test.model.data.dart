@@ -7,7 +7,8 @@ mixin _WidgetSkeletonModel {
   abstract final String name;
   abstract final String value;
 
-  _WidgetSkeletonModelCopyWith get copyWith => _WidgetSkeletonModelCopyWith._(this as WidgetSkeletonModel);
+  _WidgetSkeletonModelCopyWith get copyWith =>
+      _WidgetSkeletonModelCopyWith._(this as WidgetSkeletonModel);
 
   @override
   bool operator ==(Object other) {
@@ -30,11 +31,11 @@ mixin _WidgetSkeletonModel {
       value,
     ]);
   }
+
   @override
   String toString() {
     return 'WidgetSkeletonModel(name: $name, value: $value)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -50,7 +51,6 @@ mixin _WidgetSkeletonModel {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _WidgetSkeletonModelCopyWith {
@@ -75,7 +75,7 @@ class _WidgetSkeletonModelCopyWith {
 
   /// Build the final instance
   WidgetSkeletonModel build() {
-    return _instance as WidgetSkeletonModel;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -89,4 +89,3 @@ class _WidgetSkeletonModelCopyWith {
     );
   }
 }
-

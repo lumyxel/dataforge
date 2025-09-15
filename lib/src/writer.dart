@@ -1164,6 +1164,21 @@ class Writer {
   }
 
   /// Check if a field is a nested object that supports copyWith
+  bool _isNestedCopyWithField(FieldInfo field) {
+    // Check if the field type is a custom class (not primitive types)
+    final baseType =
+        field.type.replaceAll('?', '').replaceAll(RegExp(r'<.*>'), '');
+    return !_isPrimitiveType(baseType) &&
+        !baseType.startsWith('List') &&
+        !baseType.startsWith('Map');
+  }
+
+  /// Get the nested type for copyWith operations
+  String _getNestedCopyWithType(FieldInfo field) {
+    // For nested copyWith, we need to preserve the full type including generics
+    // Only remove the nullable marker
+    return field.type.replaceAll('?', '');
+  }
 
   /// Check if a type is primitive
   bool _isPrimitiveType(String type) {
@@ -1183,10 +1198,171 @@ class Writer {
     return primitiveTypes.contains(type);
   }
 
+  /// Recursively collect all flattened field paths for nested objects
+  /// Returns a list of FlattenedField objects containing field paths and types
+  List<FlattenedField> _collectFlattenedFields(ClassInfo clazz,
+      [String prefix = '']) {
+    final flattenedFields = <FlattenedField>[];
+
+    for (final field in clazz.fields) {
+      final fieldPath = prefix.isEmpty ? field.name : '${prefix}_${field.name}';
+
+      // Check if this field is a nested object that has its own ClassInfo
+      final nestedClass = _findClassInfoByType(field.type);
+      if (nestedClass != null) {
+        // Recursively collect fields from nested class
+        final nestedFields = _collectFlattenedFields(nestedClass, fieldPath);
+        flattenedFields.addAll(nestedFields);
+      } else {
+        // This is a primitive field, add it to the flattened list
+        flattenedFields.add(FlattenedField(
+          path: fieldPath,
+          fieldName: field.name,
+          type: field.type,
+          originalField: field,
+        ));
+      }
+    }
+
+    return flattenedFields;
+  }
+
+  /// Find ClassInfo by type name
+  ClassInfo? _findClassInfoByType(String typeName) {
+    // Remove nullable marker and generic parameters
+    final cleanType = _removeGenericParameters(typeName.replaceAll('?', ''));
+
+    // Search through all classes in the result
+    for (final clazz in result.classes) {
+      if (clazz.name == cleanType) {
+        return clazz;
+      }
+    }
+
+    return null;
+  }
+
   /// Generate nested update path for flattened field access
   String _generateNestedUpdatePath(List<String> pathParts) {
     if (pathParts.isEmpty) return '';
     return '["${pathParts.join('", "')}"]';
+  }
+
+  /// Generate nested copyWith chain for updating deep nested fields
+  String _generateNestedCopyWithChain(
+      ClassInfo clazz, List<String> fieldPath, String finalValue) {
+    if (fieldPath.isEmpty) {
+      return finalValue;
+    }
+
+    if (fieldPath.length == 1) {
+      // Direct field update
+      return finalValue;
+    }
+
+    // Build the nested copyWith chain from the inside out
+    String result = finalValue;
+
+    // Start from the innermost field and work outward
+    for (int i = fieldPath.length - 1; i > 0; i--) {
+      final currentField = fieldPath[i];
+      final parentPath = fieldPath.sublist(0, i);
+
+      // Build the access path with proper null safety
+      String accessPath = _buildAccessPath(clazz, parentPath);
+
+      // For nested access, we need to check if the last field in parentPath is nullable
+      // to determine if we need ?. or . before copyWith
+      bool needsNullableAccess = false;
+      if (parentPath.isNotEmpty) {
+        // Navigate to find the actual field type
+        ClassInfo? currentClass = clazz;
+        for (int k = 0; k < parentPath.length - 1; k++) {
+          final fieldName = parentPath[k];
+          final field = currentClass?.fields
+              .where((f) => f.name == fieldName)
+              .firstOrNull;
+          if (field != null) {
+            currentClass = _findClassInfoByType(field.type);
+          }
+        }
+
+        // Check if the last field in parentPath is nullable
+        if (currentClass != null && parentPath.isNotEmpty) {
+          final lastFieldName = parentPath.last;
+          final lastField = currentClass.fields
+              .where((f) => f.name == lastFieldName)
+              .firstOrNull;
+          needsNullableAccess = lastField?.type.endsWith('?') ?? false;
+        }
+      }
+
+      final copyWithOperator = needsNullableAccess ? '?.' : '.';
+
+      // Generate the copyWith chain
+      result =
+          '$accessPath${copyWithOperator}copyWith.$currentField($result).build()';
+    }
+
+    return result;
+  }
+
+  /// Build access path for a field path with proper null safety
+  String _buildAccessPath(ClassInfo clazz, List<String> fieldPath) {
+    if (fieldPath.isEmpty) {
+      return '_instance';
+    }
+
+    String accessPath = '_instance';
+
+    for (int j = 0; j < fieldPath.length; j++) {
+      final fieldName = fieldPath[j];
+
+      if (j == 0) {
+        // First field: use normal access
+        accessPath += '.$fieldName';
+      } else {
+        // Subsequent fields: use non-null assertion
+        accessPath += '!.$fieldName';
+      }
+    }
+
+    return accessPath;
+  }
+
+  /// Check if a field path represents a nullable field
+  bool _isFieldPathNullable(ClassInfo rootClass, List<String> fieldPath) {
+    if (fieldPath.isEmpty) return false;
+
+    // Start from the root class and traverse the path
+    ClassInfo? currentClass = rootClass;
+
+    for (int i = 0; i < fieldPath.length; i++) {
+      final fieldName = fieldPath[i];
+      final field =
+          currentClass?.fields.where((f) => f.name == fieldName).firstOrNull;
+
+      if (field == null) return false;
+
+      // Check if this field is nullable
+      final isNullable = field.type.endsWith('?');
+
+      // If this is the last field in the path, return its nullability
+      if (i == fieldPath.length - 1) {
+        return isNullable;
+      }
+
+      // If any field in the path is nullable, the entire path is nullable
+      if (isNullable) {
+        return true;
+      }
+
+      // Otherwise, find the next class in the chain
+      currentClass = _findClassInfoByType(field.type);
+      if (currentClass == null) return false;
+    }
+
+    return false;
   }
 
   /// Build chained copyWith helper class (outside mixin)
@@ -1232,6 +1408,52 @@ class Writer {
     buffer.writeln('    return _instance as ${clazz.name}$genericParams;');
     buffer.writeln('  }');
 
+    // Generate nested copyWith getters for complex object fields
+    for (final field in validFields) {
+      if (_isNestedCopyWithField(field)) {
+        final capitalizedFieldName =
+            field.name[0].toUpperCase() + field.name.substring(1);
+        buffer.writeln('\n  /// Nested copyWith for ${field.name} field');
+        buffer.writeln(
+            '  _${clazz.name}NestedCopyWith$capitalizedFieldName$genericParams get ${field.name}Builder {');
+        buffer.writeln(
+            '    return _${clazz.name}NestedCopyWith$capitalizedFieldName$genericParams._(_instance);');
+        buffer.writeln('  }');
+      }
+    }
+
+    // Generate flattened field methods for infinite nesting
+    final flattenedFields = _collectFlattenedFields(clazz);
+    for (final flattenedField in flattenedFields) {
+      // Skip direct fields (they are already handled above)
+      if (!flattenedField.path.contains('_')) continue;
+
+      final methodName = '\$${flattenedField.path}';
+      final paramType = flattenedField.type;
+
+      buffer.writeln('\n  /// Update ${flattenedField.path} field');
+      buffer.writeln('  $copyWithClassName $methodName($paramType value) {');
+
+      // Generate the nested field update logic using copyWith chain
+      final pathParts = flattenedField.path.split('_');
+      buffer.writeln(
+          '    return $copyWithClassName._(${clazz.name}$genericParams(');
+
+      for (final field in validFields) {
+        if (field.name == pathParts[0]) {
+          // Generate nested copyWith chain for this field
+          final nestedUpdateCode =
+              _generateNestedCopyWithChain(clazz, pathParts, 'value');
+          buffer.writeln('      ${field.name}: $nestedUpdateCode,');
+        } else {
+          buffer.writeln('      ${field.name}: _instance.${field.name},');
+        }
+      }
+
+      buffer.writeln('    ));');
+      buffer.writeln('  }');
+    }
+
     // Generate call method for traditional copyWith syntax
     buffer.writeln('\n  /// Traditional copyWith method');
     buffer.writeln('  ${clazz.name}$genericParams call({');
@@ -1247,6 +1469,65 @@ class Writer {
     for (final field in validFields) {
       buffer.writeln(
           '      ${field.name}: ${field.name} ?? _instance.${field.name},');
+    }
+
+    buffer.writeln('    );');
+    buffer.writeln('  }');
+    buffer.writeln('}');
+
+    // Generate nested copyWith helper classes for complex object fields
+    for (final field in validFields) {
+      if (_isNestedCopyWithField(field)) {
+        _buildNestedCopyWithHelperClass(
+            buffer, clazz, field, genericParams, validFields);
+      }
+    }
+  }
+
+  /// Build nested copyWith helper class for a specific field
+  void _buildNestedCopyWithHelperClass(
+      StringBuffer buffer,
+      ClassInfo parentClazz,
+      FieldInfo nestedField,
+      String genericParams,
+      List<FieldInfo> parentFields) {
+    final capitalizedFieldName =
+        nestedField.name[0].toUpperCase() + nestedField.name.substring(1);
+    final nestedType = _getNestedCopyWithType(nestedField);
+    final nestedCopyWithClassName =
+        '_${parentClazz.name}NestedCopyWith$capitalizedFieldName$genericParams';
+
+    buffer.writeln(
+        '\n/// Nested copyWith helper class for ${nestedField.name} field');
+    buffer.writeln('class $nestedCopyWithClassName {');
+    buffer.writeln('  final ${parentClazz.name}$genericParams _instance;');
+    // Constructor name should not include generic parameters
+    final nestedConstructorName = parentClazz.genericParameters.isNotEmpty
+        ? '_${parentClazz.name}NestedCopyWith$capitalizedFieldName._'
+        : '$nestedCopyWithClassName._';
+    buffer.writeln('  const $nestedConstructorName(this._instance);');
+
+    // Generate a method that takes a function to update the nested object
+    buffer.writeln(
+        '\n  /// Update ${nestedField.name} field using a copyWith function');
+    buffer.writeln(
+        '  ${parentClazz.name}$genericParams call($nestedType Function($nestedType) updater) {');
+    buffer.writeln('    final currentValue = _instance.${nestedField.name};');
+    if (nestedField.type.endsWith('?')) {
+      buffer.writeln(
+          '    if (currentValue == null) return _instance as ${parentClazz.name}$genericParams;');
+      buffer.writeln('    final updatedValue = updater(currentValue);');
+    } else {
+      buffer.writeln('    final updatedValue = updater(currentValue);');
+    }
+    buffer.writeln('    return ${parentClazz.name}$genericParams(');
+
+    for (final f in parentFields) {
+      if (f.name == nestedField.name) {
+        buffer.writeln('      ${f.name}: updatedValue,');
+      } else {
+        buffer.writeln('      ${f.name}: _instance.${f.name},');
+      }
     }
 
     buffer.writeln('    );');

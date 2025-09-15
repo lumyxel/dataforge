@@ -7,7 +7,8 @@ mixin _NoFromJsonTest {
   abstract final String name;
   abstract final int age;
 
-  _NoFromJsonTestCopyWith get copyWith => _NoFromJsonTestCopyWith._(this as NoFromJsonTest);
+  _NoFromJsonTestCopyWith get copyWith =>
+      _NoFromJsonTestCopyWith._(this as NoFromJsonTest);
 
   @override
   bool operator ==(Object other) {
@@ -30,11 +31,11 @@ mixin _NoFromJsonTest {
       age,
     ]);
   }
+
   @override
   String toString() {
     return 'NoFromJsonTest(name: $name, age: $age)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -43,7 +44,6 @@ mixin _NoFromJsonTest {
     return map;
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _NoFromJsonTestCopyWith {
@@ -68,7 +68,7 @@ class _NoFromJsonTestCopyWith {
 
   /// Build the final instance
   NoFromJsonTest build() {
-    return _instance as NoFromJsonTest;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -82,4 +82,3 @@ class _NoFromJsonTestCopyWith {
     );
   }
 }
-

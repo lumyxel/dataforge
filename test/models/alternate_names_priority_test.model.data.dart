@@ -8,7 +8,8 @@ mixin _AlternateNamesPriorityTest {
   abstract final String? title;
   abstract final String? description;
 
-  _AlternateNamesPriorityTestCopyWith get copyWith => _AlternateNamesPriorityTestCopyWith._(this as AlternateNamesPriorityTest);
+  _AlternateNamesPriorityTestCopyWith get copyWith =>
+      _AlternateNamesPriorityTestCopyWith._(this as AlternateNamesPriorityTest);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +36,11 @@ mixin _AlternateNamesPriorityTest {
       description,
     ]);
   }
+
   @override
   String toString() {
     return 'AlternateNamesPriorityTest(owner: $owner, title: $title, description: $description)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -57,13 +58,14 @@ mixin _AlternateNamesPriorityTest {
 
   static AlternateNamesPriorityTest fromJson(Map<String, dynamic> map) {
     return AlternateNamesPriorityTest(
-      owner: SafeCasteUtil.safeCast<String>((map['owner'] ?? map['ownerCopyright'] ?? map['copyright_owner'])),
-      title: SafeCasteUtil.safeCast<String>((map['title'] ?? map['name'] ?? map['displayName'])),
+      owner: SafeCasteUtil.safeCast<String>(
+          (map['owner'] ?? map['ownerCopyright'] ?? map['copyright_owner'])),
+      title: SafeCasteUtil.safeCast<String>(
+          (map['title'] ?? map['name'] ?? map['displayName'])),
       description: SafeCasteUtil.safeCast<String>(map['description']),
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _AlternateNamesPriorityTestCopyWith {
@@ -99,7 +101,7 @@ class _AlternateNamesPriorityTestCopyWith {
 
   /// Build the final instance
   AlternateNamesPriorityTest build() {
-    return _instance as AlternateNamesPriorityTest;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -115,4 +117,3 @@ class _AlternateNamesPriorityTestCopyWith {
     );
   }
 }
-

@@ -8,7 +8,8 @@ mixin _AutoFromJsonTest {
   abstract final int age;
   abstract final bool isActive;
 
-  _AutoFromJsonTestCopyWith get copyWith => _AutoFromJsonTestCopyWith._(this as AutoFromJsonTest);
+  _AutoFromJsonTestCopyWith get copyWith =>
+      _AutoFromJsonTestCopyWith._(this as AutoFromJsonTest);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +36,11 @@ mixin _AutoFromJsonTest {
       isActive,
     ]);
   }
+
   @override
   String toString() {
     return 'AutoFromJsonTest(name: $name, age: $age, isActive: $isActive)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -57,7 +58,6 @@ mixin _AutoFromJsonTest {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _AutoFromJsonTestCopyWith {
@@ -93,7 +93,7 @@ class _AutoFromJsonTestCopyWith {
 
   /// Build the final instance
   AutoFromJsonTest build() {
-    return _instance as AutoFromJsonTest;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -109,4 +109,3 @@ class _AutoFromJsonTestCopyWith {
     );
   }
 }
-

@@ -35,11 +35,11 @@ mixin _User {
       email,
     ]);
   }
+
   @override
   String toString() {
     return 'User(name: $name, age: $age, email: $email)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -92,11 +92,11 @@ mixin _Address {
       zipCode,
     ]);
   }
+
   @override
   String toString() {
     return 'Address(street: $street, city: $city, zipCode: $zipCode)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -149,11 +149,11 @@ mixin _Profile {
       DeepCollectionEquality().hash(tags),
     ]);
   }
+
   @override
   String toString() {
     return 'Profile(user: $user, address: $address, tags: $tags)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -167,11 +167,12 @@ mixin _Profile {
     return Profile(
       user: User.fromJson((map['user'] ?? {}) as Map<String, dynamic>),
       address: Address.fromJson((map['address'] ?? {}) as Map<String, dynamic>),
-      tags: ((map['tags'] as List<dynamic>?) ?? []).map((e) => e.toString()).toList(),
+      tags: ((map['tags'] as List<dynamic>?) ?? [])
+          .map((e) => e.toString())
+          .toList(),
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _UserCopyWith {
@@ -207,7 +208,7 @@ class _UserCopyWith {
 
   /// Build the final instance
   User build() {
-    return _instance as User;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -223,7 +224,6 @@ class _UserCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _AddressCopyWith {
@@ -259,7 +259,7 @@ class _AddressCopyWith {
 
   /// Build the final instance
   Address build() {
-    return _instance as Address;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -275,7 +275,6 @@ class _AddressCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ProfileCopyWith {
@@ -311,7 +310,71 @@ class _ProfileCopyWith {
 
   /// Build the final instance
   Profile build() {
-    return _instance as Profile;
+    return _instance;
+  }
+
+  /// Nested copyWith for user field
+  _ProfileNestedCopyWithUser get userBuilder {
+    return _ProfileNestedCopyWithUser._(_instance);
+  }
+
+  /// Nested copyWith for address field
+  _ProfileNestedCopyWithAddress get addressBuilder {
+    return _ProfileNestedCopyWithAddress._(_instance);
+  }
+
+  /// Update user_name field
+  _ProfileCopyWith $user_name(String value) {
+    return _ProfileCopyWith._(Profile(
+      user: _instance.user.copyWith.name(value).build(),
+      address: _instance.address,
+      tags: _instance.tags,
+    ));
+  }
+
+  /// Update user_age field
+  _ProfileCopyWith $user_age(int value) {
+    return _ProfileCopyWith._(Profile(
+      user: _instance.user.copyWith.age(value).build(),
+      address: _instance.address,
+      tags: _instance.tags,
+    ));
+  }
+
+  /// Update user_email field
+  _ProfileCopyWith $user_email(String? value) {
+    return _ProfileCopyWith._(Profile(
+      user: _instance.user.copyWith.email(value).build(),
+      address: _instance.address,
+      tags: _instance.tags,
+    ));
+  }
+
+  /// Update address_street field
+  _ProfileCopyWith $address_street(String value) {
+    return _ProfileCopyWith._(Profile(
+      user: _instance.user,
+      address: _instance.address.copyWith.street(value).build(),
+      tags: _instance.tags,
+    ));
+  }
+
+  /// Update address_city field
+  _ProfileCopyWith $address_city(String value) {
+    return _ProfileCopyWith._(Profile(
+      user: _instance.user,
+      address: _instance.address.copyWith.city(value).build(),
+      tags: _instance.tags,
+    ));
+  }
+
+  /// Update address_zipCode field
+  _ProfileCopyWith $address_zipCode(String? value) {
+    return _ProfileCopyWith._(Profile(
+      user: _instance.user,
+      address: _instance.address.copyWith.zipCode(value).build(),
+      tags: _instance.tags,
+    ));
   }
 
   /// Traditional copyWith method
@@ -328,3 +391,36 @@ class _ProfileCopyWith {
   }
 }
 
+/// Nested copyWith helper class for user field
+class _ProfileNestedCopyWithUser {
+  final Profile _instance;
+  const _ProfileNestedCopyWithUser._(this._instance);
+
+  /// Update user field using a copyWith function
+  Profile call(User Function(User) updater) {
+    final currentValue = _instance.user;
+    final updatedValue = updater(currentValue);
+    return Profile(
+      user: updatedValue,
+      address: _instance.address,
+      tags: _instance.tags,
+    );
+  }
+}
+
+/// Nested copyWith helper class for address field
+class _ProfileNestedCopyWithAddress {
+  final Profile _instance;
+  const _ProfileNestedCopyWithAddress._(this._instance);
+
+  /// Update address field using a copyWith function
+  Profile call(Address Function(Address) updater) {
+    final currentValue = _instance.address;
+    final updatedValue = updater(currentValue);
+    return Profile(
+      user: _instance.user,
+      address: updatedValue,
+      tags: _instance.tags,
+    );
+  }
+}

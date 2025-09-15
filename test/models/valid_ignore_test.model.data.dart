@@ -9,7 +9,8 @@ mixin _ValidIgnoreTest {
   abstract final String passwordWithDefault;
   abstract final int age;
 
-  _ValidIgnoreTestCopyWith get copyWith => _ValidIgnoreTestCopyWith._(this as ValidIgnoreTest);
+  _ValidIgnoreTestCopyWith get copyWith =>
+      _ValidIgnoreTestCopyWith._(this as ValidIgnoreTest);
 
   @override
   bool operator ==(Object other) {
@@ -40,11 +41,11 @@ mixin _ValidIgnoreTest {
       age,
     ]);
   }
+
   @override
   String toString() {
     return 'ValidIgnoreTest(name: $name, nullablePassword: $nullablePassword, passwordWithDefault: $passwordWithDefault, age: $age)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -60,7 +61,6 @@ mixin _ValidIgnoreTest {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ValidIgnoreTestCopyWith {
@@ -109,7 +109,7 @@ class _ValidIgnoreTestCopyWith {
 
   /// Build the final instance
   ValidIgnoreTest build() {
-    return _instance as ValidIgnoreTest;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -127,4 +127,3 @@ class _ValidIgnoreTestCopyWith {
     );
   }
 }
-

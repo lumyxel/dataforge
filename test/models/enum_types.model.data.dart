@@ -60,29 +60,43 @@ mixin _EnumTypes {
       DeepCollectionEquality().hash(roleMap),
     ]);
   }
+
   @override
   String toString() {
     return 'EnumTypes(status: $status, optionalRole: $optionalRole, userType: $userType, priority: $priority, parsedStatus: $parsedStatus, roleFromInt: $roleFromInt, statusList: $statusList, roleMap: $roleMap)';
   }
 
-
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['status'] = const DefaultEnumConverter<Status>(Status.values).toJson(status);
+    map['status'] =
+        const DefaultEnumConverter<Status>(Status.values).toJson(status);
     if (optionalRole != null) {
-      map['optionalRole'] = optionalRole != null ? const DefaultEnumConverter<UserRole>(UserRole.values).toJson(optionalRole!) : null;
+      map['optionalRole'] = optionalRole != null
+          ? const DefaultEnumConverter<UserRole>(UserRole.values)
+              .toJson(optionalRole!)
+          : null;
     }
-    map['user_type'] = const DefaultEnumConverter<UserRole>(UserRole.values).toJson(userType);
-    map['priority'] = const DefaultEnumConverter<Priority>(Priority.values).toJson(priority);
-    map['parsedStatus'] = const DefaultEnumConverter<Status>(Status.values).toJson(parsedStatus);
+    map['user_type'] =
+        const DefaultEnumConverter<UserRole>(UserRole.values).toJson(userType);
+    map['priority'] =
+        const DefaultEnumConverter<Priority>(Priority.values).toJson(priority);
+    map['parsedStatus'] =
+        const DefaultEnumConverter<Status>(Status.values).toJson(parsedStatus);
     if (roleFromInt != null) {
-      map['roleFromInt'] = roleFromInt != null ? const DefaultEnumConverter<UserRole>(UserRole.values).toJson(roleFromInt!) : null;
+      map['roleFromInt'] = roleFromInt != null
+          ? const DefaultEnumConverter<UserRole>(UserRole.values)
+              .toJson(roleFromInt!)
+          : null;
     }
     if (statusList != null) {
-      map['statusList'] = statusList?.map((e) => const DefaultEnumConverter<Status>(Status.values).toJson(e)).toList();
+      map['statusList'] = statusList
+          ?.map((e) =>
+              const DefaultEnumConverter<Status>(Status.values).toJson(e))
+          .toList();
     }
     if (roleMap != null) {
-      map['roleMap'] = roleMap?.map((key, value) => MapEntry(key, const DefaultEnumConverter<UserRole>(UserRole.values).toJson(value)));
+      map['roleMap'] = roleMap?.map((key, value) => MapEntry(key,
+          const DefaultEnumConverter<UserRole>(UserRole.values).toJson(value)));
     }
     return map;
   }
@@ -90,18 +104,40 @@ mixin _EnumTypes {
   static EnumTypes fromJson(Map<String, dynamic> map) {
     final roleFromIntReadValue = EnumTypes._readValue(map, 'roleFromInt');
     return EnumTypes(
-      status: map['status'] != null ? const DefaultEnumConverter<Status>(Status.values).fromJson(map['status']) as Status : throw ArgumentError('Required field status is missing'),
-      optionalRole: map['optionalRole'] != null ? const DefaultEnumConverter<UserRole>(UserRole.values).fromJson(map['optionalRole']) : null,
-      userType: map['user_type'] != null ? const DefaultEnumConverter<UserRole>(UserRole.values).fromJson(map['user_type']) as UserRole : throw ArgumentError('Required field userType is missing'),
-      priority: map['priority'] != null ? const DefaultEnumConverter<Priority>(Priority.values).fromJson(map['priority']) as Priority : throw ArgumentError('Required field priority is missing'),
-      parsedStatus: map['parsedStatus'] != null ? const DefaultEnumConverter<Status>(Status.values).fromJson(map['parsedStatus']) as Status : throw ArgumentError('Required field parsedStatus is missing'),
+      status: map['status'] != null
+          ? const DefaultEnumConverter<Status>(Status.values)
+              .fromJson(map['status']) as Status
+          : throw ArgumentError('Required field status is missing'),
+      optionalRole: map['optionalRole'] != null
+          ? const DefaultEnumConverter<UserRole>(UserRole.values)
+              .fromJson(map['optionalRole'])
+          : null,
+      userType: map['user_type'] != null
+          ? const DefaultEnumConverter<UserRole>(UserRole.values)
+              .fromJson(map['user_type']) as UserRole
+          : throw ArgumentError('Required field userType is missing'),
+      priority: map['priority'] != null
+          ? const DefaultEnumConverter<Priority>(Priority.values)
+              .fromJson(map['priority']) as Priority
+          : throw ArgumentError('Required field priority is missing'),
+      parsedStatus: map['parsedStatus'] != null
+          ? const DefaultEnumConverter<Status>(Status.values)
+              .fromJson(map['parsedStatus']) as Status
+          : throw ArgumentError('Required field parsedStatus is missing'),
       roleFromInt: roleFromIntReadValue as UserRole?,
-      statusList: (map['statusList'] as List<dynamic>?)?.map((e) => const DefaultEnumConverter<Status>(Status.values).fromJson(e)).toList()?.cast<Status>(),
-      roleMap: (map['roleMap'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, const DefaultEnumConverter<UserRole>(UserRole.values).fromJson(value)!)),
+      statusList: (map['statusList'] as List<dynamic>?)
+          ?.map((e) =>
+              const DefaultEnumConverter<Status>(Status.values).fromJson(e))
+          .toList()
+          .cast<Status>(),
+      roleMap: (map['roleMap'] as Map<String, dynamic>?)?.map((key, value) =>
+          MapEntry(
+              key,
+              const DefaultEnumConverter<UserRole>(UserRole.values)
+                  .fromJson(value)!)),
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _EnumTypesCopyWith {
@@ -222,7 +258,37 @@ class _EnumTypesCopyWith {
 
   /// Build the final instance
   EnumTypes build() {
-    return _instance as EnumTypes;
+    return _instance;
+  }
+
+  /// Nested copyWith for status field
+  _EnumTypesNestedCopyWithStatus get statusBuilder {
+    return _EnumTypesNestedCopyWithStatus._(_instance);
+  }
+
+  /// Nested copyWith for optionalRole field
+  _EnumTypesNestedCopyWithOptionalRole get optionalRoleBuilder {
+    return _EnumTypesNestedCopyWithOptionalRole._(_instance);
+  }
+
+  /// Nested copyWith for userType field
+  _EnumTypesNestedCopyWithUserType get userTypeBuilder {
+    return _EnumTypesNestedCopyWithUserType._(_instance);
+  }
+
+  /// Nested copyWith for priority field
+  _EnumTypesNestedCopyWithPriority get priorityBuilder {
+    return _EnumTypesNestedCopyWithPriority._(_instance);
+  }
+
+  /// Nested copyWith for parsedStatus field
+  _EnumTypesNestedCopyWithParsedStatus get parsedStatusBuilder {
+    return _EnumTypesNestedCopyWithParsedStatus._(_instance);
+  }
+
+  /// Nested copyWith for roleFromInt field
+  _EnumTypesNestedCopyWithRoleFromInt get roleFromIntBuilder {
+    return _EnumTypesNestedCopyWithRoleFromInt._(_instance);
   }
 
   /// Traditional copyWith method
@@ -249,3 +315,136 @@ class _EnumTypesCopyWith {
   }
 }
 
+/// Nested copyWith helper class for status field
+class _EnumTypesNestedCopyWithStatus {
+  final EnumTypes _instance;
+  const _EnumTypesNestedCopyWithStatus._(this._instance);
+
+  /// Update status field using a copyWith function
+  EnumTypes call(Status Function(Status) updater) {
+    final currentValue = _instance.status;
+    final updatedValue = updater(currentValue);
+    return EnumTypes(
+      status: updatedValue,
+      optionalRole: _instance.optionalRole,
+      userType: _instance.userType,
+      priority: _instance.priority,
+      parsedStatus: _instance.parsedStatus,
+      roleFromInt: _instance.roleFromInt,
+      statusList: _instance.statusList,
+      roleMap: _instance.roleMap,
+    );
+  }
+}
+
+/// Nested copyWith helper class for optionalRole field
+class _EnumTypesNestedCopyWithOptionalRole {
+  final EnumTypes _instance;
+  const _EnumTypesNestedCopyWithOptionalRole._(this._instance);
+
+  /// Update optionalRole field using a copyWith function
+  EnumTypes call(UserRole Function(UserRole) updater) {
+    final currentValue = _instance.optionalRole;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return EnumTypes(
+      status: _instance.status,
+      optionalRole: updatedValue,
+      userType: _instance.userType,
+      priority: _instance.priority,
+      parsedStatus: _instance.parsedStatus,
+      roleFromInt: _instance.roleFromInt,
+      statusList: _instance.statusList,
+      roleMap: _instance.roleMap,
+    );
+  }
+}
+
+/// Nested copyWith helper class for userType field
+class _EnumTypesNestedCopyWithUserType {
+  final EnumTypes _instance;
+  const _EnumTypesNestedCopyWithUserType._(this._instance);
+
+  /// Update userType field using a copyWith function
+  EnumTypes call(UserRole Function(UserRole) updater) {
+    final currentValue = _instance.userType;
+    final updatedValue = updater(currentValue);
+    return EnumTypes(
+      status: _instance.status,
+      optionalRole: _instance.optionalRole,
+      userType: updatedValue,
+      priority: _instance.priority,
+      parsedStatus: _instance.parsedStatus,
+      roleFromInt: _instance.roleFromInt,
+      statusList: _instance.statusList,
+      roleMap: _instance.roleMap,
+    );
+  }
+}
+
+/// Nested copyWith helper class for priority field
+class _EnumTypesNestedCopyWithPriority {
+  final EnumTypes _instance;
+  const _EnumTypesNestedCopyWithPriority._(this._instance);
+
+  /// Update priority field using a copyWith function
+  EnumTypes call(Priority Function(Priority) updater) {
+    final currentValue = _instance.priority;
+    final updatedValue = updater(currentValue);
+    return EnumTypes(
+      status: _instance.status,
+      optionalRole: _instance.optionalRole,
+      userType: _instance.userType,
+      priority: updatedValue,
+      parsedStatus: _instance.parsedStatus,
+      roleFromInt: _instance.roleFromInt,
+      statusList: _instance.statusList,
+      roleMap: _instance.roleMap,
+    );
+  }
+}
+
+/// Nested copyWith helper class for parsedStatus field
+class _EnumTypesNestedCopyWithParsedStatus {
+  final EnumTypes _instance;
+  const _EnumTypesNestedCopyWithParsedStatus._(this._instance);
+
+  /// Update parsedStatus field using a copyWith function
+  EnumTypes call(Status Function(Status) updater) {
+    final currentValue = _instance.parsedStatus;
+    final updatedValue = updater(currentValue);
+    return EnumTypes(
+      status: _instance.status,
+      optionalRole: _instance.optionalRole,
+      userType: _instance.userType,
+      priority: _instance.priority,
+      parsedStatus: updatedValue,
+      roleFromInt: _instance.roleFromInt,
+      statusList: _instance.statusList,
+      roleMap: _instance.roleMap,
+    );
+  }
+}
+
+/// Nested copyWith helper class for roleFromInt field
+class _EnumTypesNestedCopyWithRoleFromInt {
+  final EnumTypes _instance;
+  const _EnumTypesNestedCopyWithRoleFromInt._(this._instance);
+
+  /// Update roleFromInt field using a copyWith function
+  EnumTypes call(UserRole Function(UserRole) updater) {
+    final currentValue = _instance.roleFromInt;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return EnumTypes(
+      status: _instance.status,
+      optionalRole: _instance.optionalRole,
+      userType: _instance.userType,
+      priority: _instance.priority,
+      parsedStatus: _instance.parsedStatus,
+      roleFromInt: updatedValue,
+      statusList: _instance.statusList,
+      roleMap: _instance.roleMap,
+    );
+  }
+}

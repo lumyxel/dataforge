@@ -8,7 +8,8 @@ mixin _ApiResponse<T> {
   abstract final String message;
   abstract final T? data;
 
-  _ApiResponseCopyWith<T> get copyWith => _ApiResponseCopyWith<T>._(this as ApiResponse<T>);
+  _ApiResponseCopyWith<T> get copyWith =>
+      _ApiResponseCopyWith<T>._(this as ApiResponse<T>);
 
   @override
   bool operator ==(Object other) {
@@ -35,18 +36,18 @@ mixin _ApiResponse<T> {
       data,
     ]);
   }
+
   @override
   String toString() {
     return 'ApiResponse(success: $success, message: $message, data: $data)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['success'] = success;
     map['message'] = message;
     if (data != null) {
-      map['data'] = data != null ? ApiResponse._dataToJson(data!) : null;
+      map['data'] = data != null ? ApiResponse._dataToJson(data as T) : null;
     }
     return map;
   }
@@ -97,11 +98,11 @@ mixin _User {
       age,
     ]);
   }
+
   @override
   String toString() {
     return 'User(id: $id, name: $name, email: $email, age: $age)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -128,7 +129,8 @@ mixin _ListResponse<T> {
   abstract final int total;
   abstract final List<T>? items;
 
-  _ListResponseCopyWith<T> get copyWith => _ListResponseCopyWith<T>._(this as ListResponse<T>);
+  _ListResponseCopyWith<T> get copyWith =>
+      _ListResponseCopyWith<T>._(this as ListResponse<T>);
 
   @override
   bool operator ==(Object other) {
@@ -151,11 +153,11 @@ mixin _ListResponse<T> {
       DeepCollectionEquality().hash(items),
     ]);
   }
+
   @override
   String toString() {
     return 'ListResponse(total: $total, items: $items)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -169,11 +171,12 @@ mixin _ListResponse<T> {
   static ListResponse<T> fromJson<T>(Map<String, dynamic> map) {
     return ListResponse<T>(
       total: SafeCasteUtil.safeCast<int>(map['total']) ?? 0,
-      items: map['items'] != null ? ListResponse._itemsFromJson(map['items']) : null,
+      items: map['items'] != null
+          ? ListResponse._itemsFromJson(map['items'])
+          : null,
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ApiResponseCopyWith<T> {
@@ -209,7 +212,12 @@ class _ApiResponseCopyWith<T> {
 
   /// Build the final instance
   ApiResponse<T> build() {
-    return _instance as ApiResponse<T>;
+    return _instance;
+  }
+
+  /// Nested copyWith for data field
+  _ApiResponseNestedCopyWithData<T> get dataBuilder {
+    return _ApiResponseNestedCopyWithData<T>._(_instance);
   }
 
   /// Traditional copyWith method
@@ -226,6 +234,23 @@ class _ApiResponseCopyWith<T> {
   }
 }
 
+/// Nested copyWith helper class for data field
+class _ApiResponseNestedCopyWithData<T> {
+  final ApiResponse<T> _instance;
+  const _ApiResponseNestedCopyWithData._(this._instance);
+
+  /// Update data field using a copyWith function
+  ApiResponse<T> call(T Function(T) updater) {
+    final currentValue = _instance.data;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return ApiResponse<T>(
+      success: _instance.success,
+      message: _instance.message,
+      data: updatedValue,
+    );
+  }
+}
 
 /// Helper class for chained copyWith operations
 class _UserCopyWith {
@@ -274,7 +299,7 @@ class _UserCopyWith {
 
   /// Build the final instance
   User build() {
-    return _instance as User;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -292,7 +317,6 @@ class _UserCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ListResponseCopyWith<T> {
@@ -317,7 +341,7 @@ class _ListResponseCopyWith<T> {
 
   /// Build the final instance
   ListResponse<T> build() {
-    return _instance as ListResponse<T>;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -331,4 +355,3 @@ class _ListResponseCopyWith<T> {
     );
   }
 }
-

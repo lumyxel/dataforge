@@ -8,7 +8,8 @@ mixin _DefaultChainedTest {
   abstract final int age;
   abstract final bool isActive;
 
-  _DefaultChainedTestCopyWith get copyWith => _DefaultChainedTestCopyWith._(this as DefaultChainedTest);
+  _DefaultChainedTestCopyWith get copyWith =>
+      _DefaultChainedTestCopyWith._(this as DefaultChainedTest);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +36,11 @@ mixin _DefaultChainedTest {
       isActive,
     ]);
   }
+
   @override
   String toString() {
     return 'DefaultChainedTest(name: $name, age: $age, isActive: $isActive)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -57,7 +58,6 @@ mixin _DefaultChainedTest {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _DefaultChainedTestCopyWith {
@@ -93,7 +93,7 @@ class _DefaultChainedTestCopyWith {
 
   /// Build the final instance
   DefaultChainedTest build() {
-    return _instance as DefaultChainedTest;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -109,4 +109,3 @@ class _DefaultChainedTestCopyWith {
     );
   }
 }
-

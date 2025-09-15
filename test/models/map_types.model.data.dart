@@ -41,7 +41,8 @@ mixin _MapTypes {
     if (!DeepCollectionEquality().equals(dynamicMap, other.dynamicMap)) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(optionalStringMap, other.optionalStringMap)) {
+    if (!DeepCollectionEquality()
+        .equals(optionalStringMap, other.optionalStringMap)) {
       return false;
     }
     if (!DeepCollectionEquality().equals(listMap, other.listMap)) {
@@ -90,11 +91,11 @@ mixin _MapTypes {
       DeepCollectionEquality().hash(intKeyMap),
     ]);
   }
+
   @override
   String toString() {
     return 'MapTypes(stringMap: $stringMap, intMap: $intMap, doubleMap: $doubleMap, boolMap: $boolMap, dynamicMap: $dynamicMap, optionalStringMap: $optionalStringMap, listMap: $listMap, nestedMap: $nestedMap, namedMap: $namedMap, parsedMap: $parsedMap, customIntMap: $customIntMap, complexMap: $complexMap, mapList: $mapList, intKeyMap: $intKeyMap)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -134,13 +135,20 @@ mixin _MapTypes {
       boolMap: (map['boolMap'] as Map<String, bool>?) ?? {},
       dynamicMap: (map['dynamicMap'] as Map<String, dynamic>?) ?? {},
       optionalStringMap: (map['optionalStringMap'] as Map<String, String>?),
-      listMap: (map['listMap'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, (value as List<dynamic>).cast<String>())) ?? {},
+      listMap: (map['listMap'] as Map<String, dynamic>?)?.map((key, value) =>
+              MapEntry(key, (value as List<dynamic>).cast<String>())) ??
+          {},
       nestedMap: (map['nestedMap'] as Map<String, Map<String, String>>?) ?? {},
       namedMap: (map['str_map'] as Map<String, String>?) ?? {},
-      parsedMap: parsedMapReadValue != null ? (parsedMapReadValue as Map?)?.cast<String, String>() : null,
+      parsedMap: parsedMapReadValue != null
+          ? (parsedMapReadValue as Map?)?.cast<String, String>()
+          : null,
       customIntMap: (customIntMapReadValue as Map?)?.cast<String, int>() ?? {},
-      complexMap: complexMapReadValue != null ? (complexMapReadValue as Map?)?.cast<String, Map<String, dynamic>>() : null,
-      mapList: (map['mapList'] as List<dynamic>?)?.cast<Map<String, String>>() ?? [],
+      complexMap: complexMapReadValue != null
+          ? (complexMapReadValue as Map?)?.cast<String, Map<String, dynamic>>()
+          : null,
+      mapList:
+          (map['mapList'] as List<dynamic>?)?.cast<Map<String, String>>() ?? [],
       intKeyMap: (map['intKeyMap'] as Map<int, String>?),
     );
   }
@@ -152,7 +160,8 @@ mixin _MapWithObjects {
   abstract final Map<String, Address>? optionalAddressMap;
   abstract final Map<String, Address>? parsedAddressMap;
 
-  _MapWithObjectsCopyWith get copyWith => _MapWithObjectsCopyWith._(this as MapWithObjects);
+  _MapWithObjectsCopyWith get copyWith =>
+      _MapWithObjectsCopyWith._(this as MapWithObjects);
 
   @override
   bool operator ==(Object other) {
@@ -162,13 +171,16 @@ mixin _MapWithObjects {
     if (!DeepCollectionEquality().equals(addressMap, other.addressMap)) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(contactListMap, other.contactListMap)) {
+    if (!DeepCollectionEquality()
+        .equals(contactListMap, other.contactListMap)) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(optionalAddressMap, other.optionalAddressMap)) {
+    if (!DeepCollectionEquality()
+        .equals(optionalAddressMap, other.optionalAddressMap)) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(parsedAddressMap, other.parsedAddressMap)) {
+    if (!DeepCollectionEquality()
+        .equals(parsedAddressMap, other.parsedAddressMap)) {
       return false;
     }
     return true;
@@ -183,11 +195,11 @@ mixin _MapWithObjects {
       DeepCollectionEquality().hash(parsedAddressMap),
     ]);
   }
+
   @override
   String toString() {
     return 'MapWithObjects(addressMap: $addressMap, contactListMap: $contactListMap, optionalAddressMap: $optionalAddressMap, parsedAddressMap: $parsedAddressMap)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -203,12 +215,27 @@ mixin _MapWithObjects {
   }
 
   static MapWithObjects fromJson(Map<String, dynamic> map) {
-    final parsedAddressMapReadValue = MapWithObjects._readValue(map, 'parsedAddressMap');
+    final parsedAddressMapReadValue =
+        MapWithObjects._readValue(map, 'parsedAddressMap');
     return MapWithObjects(
-      addressMap: (map['addressMap'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, Address.fromJson(value as Map<String, dynamic>))) ?? {},
-      contactListMap: (map['contactListMap'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, (value as List<dynamic>).map((item) => Contact.fromJson(item as Map<String, dynamic>)).toList())) ?? {},
-      optionalAddressMap: (map['optionalAddressMap'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, Address.fromJson(value as Map<String, dynamic>))),
-      parsedAddressMap: parsedAddressMapReadValue != null ? (parsedAddressMapReadValue as Map?)?.cast<String, Address>() : null,
+      addressMap: (map['addressMap'] as Map<String, dynamic>?)?.map((key,
+                  value) =>
+              MapEntry(key, Address.fromJson(value as Map<String, dynamic>))) ??
+          {},
+      contactListMap: (map['contactListMap'] as Map<String, dynamic>?)?.map(
+              (key, value) => MapEntry(
+                  key,
+                  (value as List<dynamic>)
+                      .map((item) =>
+                          Contact.fromJson(item as Map<String, dynamic>))
+                      .toList())) ??
+          {},
+      optionalAddressMap: (map['optionalAddressMap'] as Map<String, dynamic>?)
+          ?.map((key, value) =>
+              MapEntry(key, Address.fromJson(value as Map<String, dynamic>))),
+      parsedAddressMap: parsedAddressMapReadValue != null
+          ? (parsedAddressMapReadValue as Map?)?.cast<String, Address>()
+          : null,
     );
   }
 }
@@ -245,11 +272,11 @@ mixin _Address {
       zipCode,
     ]);
   }
+
   @override
   String toString() {
     return 'Address(street: $street, city: $city, zipCode: $zipCode)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -295,11 +322,11 @@ mixin _Contact {
       phone,
     ]);
   }
+
   @override
   String toString() {
     return 'Contact(email: $email, phone: $phone)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -317,7 +344,6 @@ mixin _Contact {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _MapTypesCopyWith {
@@ -606,7 +632,7 @@ class _MapTypesCopyWith {
 
   /// Build the final instance
   MapTypes build() {
-    return _instance as MapTypes;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -644,7 +670,6 @@ class _MapTypesCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _MapWithObjectsCopyWith {
@@ -693,7 +718,7 @@ class _MapWithObjectsCopyWith {
 
   /// Build the final instance
   MapWithObjects build() {
-    return _instance as MapWithObjects;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -711,7 +736,6 @@ class _MapWithObjectsCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _AddressCopyWith {
@@ -747,7 +771,7 @@ class _AddressCopyWith {
 
   /// Build the final instance
   Address build() {
-    return _instance as Address;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -763,7 +787,6 @@ class _AddressCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ContactCopyWith {
@@ -788,7 +811,7 @@ class _ContactCopyWith {
 
   /// Build the final instance
   Contact build() {
-    return _instance as Contact;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -802,4 +825,3 @@ class _ContactCopyWith {
     );
   }
 }
-

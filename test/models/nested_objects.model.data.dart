@@ -50,11 +50,11 @@ mixin _Address {
       isPrimary,
     ]);
   }
+
   @override
   String toString() {
     return 'Address(street: $street, city: $city, state: $state, zipCode: $zipCode, country: $country, isPrimary: $isPrimary)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -113,11 +113,11 @@ mixin _Contact {
       contactType,
     ]);
   }
+
   @override
   String toString() {
     return 'Contact(email: $email, phone: $phone, contactType: $contactType)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -164,7 +164,8 @@ mixin _Company {
     if (primaryContact != other.primaryContact) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(additionalContacts, other.additionalContacts)) {
+    if (!DeepCollectionEquality()
+        .equals(additionalContacts, other.additionalContacts)) {
       return false;
     }
     return true;
@@ -180,11 +181,11 @@ mixin _Company {
       DeepCollectionEquality().hash(additionalContacts),
     ]);
   }
+
   @override
   String toString() {
     return 'Company(name: $name, headquarters: $headquarters, branches: $branches, primaryContact: $primaryContact, additionalContacts: $additionalContacts)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -203,10 +204,18 @@ mixin _Company {
   static Company fromJson(Map<String, dynamic> map) {
     return Company(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      headquarters: Address.fromJson((map['headquarters'] ?? {}) as Map<String, dynamic>),
-      branches: (map['branches'] as List<dynamic>?)?.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList()?.cast<Address>(),
-      primaryContact: Contact.fromJson((map['primaryContact'] ?? {}) as Map<String, dynamic>),
-      additionalContacts: (map['additionalContacts'] as List<dynamic>?)?.map((e) => Contact.fromJson(e as Map<String, dynamic>)).toList()?.cast<Contact>(),
+      headquarters:
+          Address.fromJson((map['headquarters'] ?? {}) as Map<String, dynamic>),
+      branches: (map['branches'] as List<dynamic>?)
+          ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
+          .toList()
+          .cast<Address>(),
+      primaryContact: Contact.fromJson(
+          (map['primaryContact'] ?? {}) as Map<String, dynamic>),
+      additionalContacts: (map['additionalContacts'] as List<dynamic>?)
+          ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
+          .toList()
+          .cast<Contact>(),
     );
   }
 }
@@ -223,7 +232,8 @@ mixin _NestedObjects {
   abstract final Address? customAddress;
   abstract final List<Contact>? parsedContacts;
 
-  _NestedObjectsCopyWith get copyWith => _NestedObjectsCopyWith._(this as NestedObjects);
+  _NestedObjectsCopyWith get copyWith =>
+      _NestedObjectsCopyWith._(this as NestedObjects);
 
   @override
   bool operator ==(Object other) {
@@ -239,10 +249,12 @@ mixin _NestedObjects {
     if (workAddress != other.workAddress) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(previousAddresses, other.previousAddresses)) {
+    if (!DeepCollectionEquality()
+        .equals(previousAddresses, other.previousAddresses)) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(namedAddresses, other.namedAddresses)) {
+    if (!DeepCollectionEquality()
+        .equals(namedAddresses, other.namedAddresses)) {
       return false;
     }
     if (primaryContact != other.primaryContact) {
@@ -257,7 +269,8 @@ mixin _NestedObjects {
     if (customAddress != other.customAddress) {
       return false;
     }
-    if (!DeepCollectionEquality().equals(parsedContacts, other.parsedContacts)) {
+    if (!DeepCollectionEquality()
+        .equals(parsedContacts, other.parsedContacts)) {
       return false;
     }
     return true;
@@ -278,11 +291,11 @@ mixin _NestedObjects {
       DeepCollectionEquality().hash(parsedContacts),
     ]);
   }
+
   @override
   String toString() {
     return 'NestedObjects(name: $name, homeAddress: $homeAddress, workAddress: $workAddress, previousAddresses: $previousAddresses, namedAddresses: $namedAddresses, primaryContact: $primaryContact, contacts: $contacts, employer: $employer, customAddress: $customAddress, parsedContacts: $parsedContacts)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -312,22 +325,43 @@ mixin _NestedObjects {
   }
 
   static NestedObjects fromJson(Map<String, dynamic> map) {
-    final parsedContactsReadValue = NestedObjects._readValue(map, 'parsedContacts');
+    final parsedContactsReadValue =
+        NestedObjects._readValue(map, 'parsedContacts');
     return NestedObjects(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      homeAddress: Address.fromJson((map['homeAddress'] ?? {}) as Map<String, dynamic>),
-      workAddress: map['workAddress'] != null ? Address.fromJson(map['workAddress'] as Map<String, dynamic>) : null,
-      previousAddresses: (map['previousAddresses'] as List<dynamic>?)?.map((e) => Address.fromJson(e as Map<String, dynamic>)).toList()?.cast<Address>() ?? [],
-      namedAddresses: (map['namedAddresses'] as Map<String, dynamic>?)?.map((key, value) => MapEntry(key, Address.fromJson(value as Map<String, dynamic>))),
-      primaryContact: Contact.fromJson((map['primaryContact'] ?? {}) as Map<String, dynamic>),
-      contacts: (map['contacts'] as List<dynamic>?)?.map((e) => Contact.fromJson(e as Map<String, dynamic>)).toList()?.cast<Contact>(),
-      employer: map['employer'] != null ? Company.fromJson(map['employer'] as Map<String, dynamic>) : null,
-      customAddress: map['customAddress'] != null ? Address.fromJson(map['customAddress'] as Map<String, dynamic>) : null,
-      parsedContacts: parsedContactsReadValue != null ? (parsedContactsReadValue as List?)?.map((e) => Contact.fromJson(e as Map<String, dynamic>)).toList() : null,
+      homeAddress:
+          Address.fromJson((map['homeAddress'] ?? {}) as Map<String, dynamic>),
+      workAddress: map['workAddress'] != null
+          ? Address.fromJson(map['workAddress'] as Map<String, dynamic>)
+          : null,
+      previousAddresses: (map['previousAddresses'] as List<dynamic>?)
+              ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
+              .toList()
+              .cast<Address>() ??
+          [],
+      namedAddresses: (map['namedAddresses'] as Map<String, dynamic>?)?.map(
+          (key, value) =>
+              MapEntry(key, Address.fromJson(value as Map<String, dynamic>))),
+      primaryContact: Contact.fromJson(
+          (map['primaryContact'] ?? {}) as Map<String, dynamic>),
+      contacts: (map['contacts'] as List<dynamic>?)
+          ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
+          .toList()
+          .cast<Contact>(),
+      employer: map['employer'] != null
+          ? Company.fromJson(map['employer'] as Map<String, dynamic>)
+          : null,
+      customAddress: map['customAddress'] != null
+          ? Address.fromJson(map['customAddress'] as Map<String, dynamic>)
+          : null,
+      parsedContacts: parsedContactsReadValue != null
+          ? (parsedContactsReadValue as List?)
+              ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
+              .toList()
+          : null,
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _AddressCopyWith {
@@ -408,7 +442,7 @@ class _AddressCopyWith {
 
   /// Build the final instance
   Address build() {
-    return _instance as Address;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -430,7 +464,6 @@ class _AddressCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _ContactCopyWith {
@@ -466,7 +499,7 @@ class _ContactCopyWith {
 
   /// Build the final instance
   Contact build() {
-    return _instance as Contact;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -482,7 +515,6 @@ class _ContactCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _CompanyCopyWith {
@@ -546,7 +578,117 @@ class _CompanyCopyWith {
 
   /// Build the final instance
   Company build() {
-    return _instance as Company;
+    return _instance;
+  }
+
+  /// Nested copyWith for headquarters field
+  _CompanyNestedCopyWithHeadquarters get headquartersBuilder {
+    return _CompanyNestedCopyWithHeadquarters._(_instance);
+  }
+
+  /// Nested copyWith for primaryContact field
+  _CompanyNestedCopyWithPrimaryContact get primaryContactBuilder {
+    return _CompanyNestedCopyWithPrimaryContact._(_instance);
+  }
+
+  /// Update headquarters_street field
+  _CompanyCopyWith $headquarters_street(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.street(value).build(),
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact,
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update headquarters_city field
+  _CompanyCopyWith $headquarters_city(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.city(value).build(),
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact,
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update headquarters_state field
+  _CompanyCopyWith $headquarters_state(String? value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.state(value).build(),
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact,
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update headquarters_zipCode field
+  _CompanyCopyWith $headquarters_zipCode(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.zipCode(value).build(),
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact,
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update headquarters_country field
+  _CompanyCopyWith $headquarters_country(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.country(value).build(),
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact,
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update headquarters_isPrimary field
+  _CompanyCopyWith $headquarters_isPrimary(bool value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.isPrimary(value).build(),
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact,
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update primaryContact_email field
+  _CompanyCopyWith $primaryContact_email(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact.copyWith.email(value).build(),
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update primaryContact_phone field
+  _CompanyCopyWith $primaryContact_phone(String? value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact.copyWith.phone(value).build(),
+      additionalContacts: _instance.additionalContacts,
+    ));
+  }
+
+  /// Update primaryContact_contactType field
+  _CompanyCopyWith $primaryContact_contactType(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      branches: _instance.branches,
+      primaryContact:
+          _instance.primaryContact.copyWith.contactType(value).build(),
+      additionalContacts: _instance.additionalContacts,
+    ));
   }
 
   /// Traditional copyWith method
@@ -567,6 +709,43 @@ class _CompanyCopyWith {
   }
 }
 
+/// Nested copyWith helper class for headquarters field
+class _CompanyNestedCopyWithHeadquarters {
+  final Company _instance;
+  const _CompanyNestedCopyWithHeadquarters._(this._instance);
+
+  /// Update headquarters field using a copyWith function
+  Company call(Address Function(Address) updater) {
+    final currentValue = _instance.headquarters;
+    final updatedValue = updater(currentValue);
+    return Company(
+      name: _instance.name,
+      headquarters: updatedValue,
+      branches: _instance.branches,
+      primaryContact: _instance.primaryContact,
+      additionalContacts: _instance.additionalContacts,
+    );
+  }
+}
+
+/// Nested copyWith helper class for primaryContact field
+class _CompanyNestedCopyWithPrimaryContact {
+  final Company _instance;
+  const _CompanyNestedCopyWithPrimaryContact._(this._instance);
+
+  /// Update primaryContact field using a copyWith function
+  Company call(Contact Function(Contact) updater) {
+    final currentValue = _instance.primaryContact;
+    final updatedValue = updater(currentValue);
+    return Company(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      branches: _instance.branches,
+      primaryContact: updatedValue,
+      additionalContacts: _instance.additionalContacts,
+    );
+  }
+}
 
 /// Helper class for chained copyWith operations
 class _NestedObjectsCopyWith {
@@ -735,7 +914,590 @@ class _NestedObjectsCopyWith {
 
   /// Build the final instance
   NestedObjects build() {
-    return _instance as NestedObjects;
+    return _instance;
+  }
+
+  /// Nested copyWith for homeAddress field
+  _NestedObjectsNestedCopyWithHomeAddress get homeAddressBuilder {
+    return _NestedObjectsNestedCopyWithHomeAddress._(_instance);
+  }
+
+  /// Nested copyWith for workAddress field
+  _NestedObjectsNestedCopyWithWorkAddress get workAddressBuilder {
+    return _NestedObjectsNestedCopyWithWorkAddress._(_instance);
+  }
+
+  /// Nested copyWith for primaryContact field
+  _NestedObjectsNestedCopyWithPrimaryContact get primaryContactBuilder {
+    return _NestedObjectsNestedCopyWithPrimaryContact._(_instance);
+  }
+
+  /// Nested copyWith for employer field
+  _NestedObjectsNestedCopyWithEmployer get employerBuilder {
+    return _NestedObjectsNestedCopyWithEmployer._(_instance);
+  }
+
+  /// Nested copyWith for customAddress field
+  _NestedObjectsNestedCopyWithCustomAddress get customAddressBuilder {
+    return _NestedObjectsNestedCopyWithCustomAddress._(_instance);
+  }
+
+  /// Update homeAddress_street field
+  _NestedObjectsCopyWith $homeAddress_street(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress.copyWith.street(value).build(),
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update homeAddress_city field
+  _NestedObjectsCopyWith $homeAddress_city(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress.copyWith.city(value).build(),
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update homeAddress_state field
+  _NestedObjectsCopyWith $homeAddress_state(String? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress.copyWith.state(value).build(),
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update homeAddress_zipCode field
+  _NestedObjectsCopyWith $homeAddress_zipCode(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress.copyWith.zipCode(value).build(),
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update homeAddress_country field
+  _NestedObjectsCopyWith $homeAddress_country(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress.copyWith.country(value).build(),
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update homeAddress_isPrimary field
+  _NestedObjectsCopyWith $homeAddress_isPrimary(bool value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress.copyWith.isPrimary(value).build(),
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update workAddress_street field
+  _NestedObjectsCopyWith $workAddress_street(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress?.copyWith.street(value).build(),
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update workAddress_city field
+  _NestedObjectsCopyWith $workAddress_city(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress?.copyWith.city(value).build(),
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update workAddress_state field
+  _NestedObjectsCopyWith $workAddress_state(String? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress?.copyWith.state(value).build(),
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update workAddress_zipCode field
+  _NestedObjectsCopyWith $workAddress_zipCode(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress?.copyWith.zipCode(value).build(),
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update workAddress_country field
+  _NestedObjectsCopyWith $workAddress_country(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress?.copyWith.country(value).build(),
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update workAddress_isPrimary field
+  _NestedObjectsCopyWith $workAddress_isPrimary(bool value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress?.copyWith.isPrimary(value).build(),
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update primaryContact_email field
+  _NestedObjectsCopyWith $primaryContact_email(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact.copyWith.email(value).build(),
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update primaryContact_phone field
+  _NestedObjectsCopyWith $primaryContact_phone(String? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact.copyWith.phone(value).build(),
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update primaryContact_contactType field
+  _NestedObjectsCopyWith $primaryContact_contactType(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact:
+          _instance.primaryContact.copyWith.contactType(value).build(),
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_name field
+  _NestedObjectsCopyWith $employer_name(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith.name(value).build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_headquarters_street field
+  _NestedObjectsCopyWith $employer_headquarters_street(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .headquarters(
+              _instance.employer!.headquarters.copyWith.street(value).build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_headquarters_city field
+  _NestedObjectsCopyWith $employer_headquarters_city(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .headquarters(
+              _instance.employer!.headquarters.copyWith.city(value).build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_headquarters_state field
+  _NestedObjectsCopyWith $employer_headquarters_state(String? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .headquarters(
+              _instance.employer!.headquarters.copyWith.state(value).build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_headquarters_zipCode field
+  _NestedObjectsCopyWith $employer_headquarters_zipCode(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .headquarters(
+              _instance.employer!.headquarters.copyWith.zipCode(value).build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_headquarters_country field
+  _NestedObjectsCopyWith $employer_headquarters_country(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .headquarters(
+              _instance.employer!.headquarters.copyWith.country(value).build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_headquarters_isPrimary field
+  _NestedObjectsCopyWith $employer_headquarters_isPrimary(bool value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .headquarters(_instance.employer!.headquarters.copyWith
+              .isPrimary(value)
+              .build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_branches field
+  _NestedObjectsCopyWith $employer_branches(List<Address>? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith.branches(value).build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_primaryContact_email field
+  _NestedObjectsCopyWith $employer_primaryContact_email(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .primaryContact(
+              _instance.employer!.primaryContact.copyWith.email(value).build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_primaryContact_phone field
+  _NestedObjectsCopyWith $employer_primaryContact_phone(String? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .primaryContact(
+              _instance.employer!.primaryContact.copyWith.phone(value).build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_primaryContact_contactType field
+  _NestedObjectsCopyWith $employer_primaryContact_contactType(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith
+          .primaryContact(_instance.employer!.primaryContact.copyWith
+              .contactType(value)
+              .build())
+          .build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update employer_additionalContacts field
+  _NestedObjectsCopyWith $employer_additionalContacts(List<Contact>? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer?.copyWith.additionalContacts(value).build(),
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update customAddress_street field
+  _NestedObjectsCopyWith $customAddress_street(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress?.copyWith.street(value).build(),
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update customAddress_city field
+  _NestedObjectsCopyWith $customAddress_city(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress?.copyWith.city(value).build(),
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update customAddress_state field
+  _NestedObjectsCopyWith $customAddress_state(String? value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress?.copyWith.state(value).build(),
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update customAddress_zipCode field
+  _NestedObjectsCopyWith $customAddress_zipCode(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress?.copyWith.zipCode(value).build(),
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update customAddress_country field
+  _NestedObjectsCopyWith $customAddress_country(String value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress?.copyWith.country(value).build(),
+      parsedContacts: _instance.parsedContacts,
+    ));
+  }
+
+  /// Update customAddress_isPrimary field
+  _NestedObjectsCopyWith $customAddress_isPrimary(bool value) {
+    return _NestedObjectsCopyWith._(NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress?.copyWith.isPrimary(value).build(),
+      parsedContacts: _instance.parsedContacts,
+    ));
   }
 
   /// Traditional copyWith method
@@ -766,3 +1528,125 @@ class _NestedObjectsCopyWith {
   }
 }
 
+/// Nested copyWith helper class for homeAddress field
+class _NestedObjectsNestedCopyWithHomeAddress {
+  final NestedObjects _instance;
+  const _NestedObjectsNestedCopyWithHomeAddress._(this._instance);
+
+  /// Update homeAddress field using a copyWith function
+  NestedObjects call(Address Function(Address) updater) {
+    final currentValue = _instance.homeAddress;
+    final updatedValue = updater(currentValue);
+    return NestedObjects(
+      name: _instance.name,
+      homeAddress: updatedValue,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    );
+  }
+}
+
+/// Nested copyWith helper class for workAddress field
+class _NestedObjectsNestedCopyWithWorkAddress {
+  final NestedObjects _instance;
+  const _NestedObjectsNestedCopyWithWorkAddress._(this._instance);
+
+  /// Update workAddress field using a copyWith function
+  NestedObjects call(Address Function(Address) updater) {
+    final currentValue = _instance.workAddress;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: updatedValue,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    );
+  }
+}
+
+/// Nested copyWith helper class for primaryContact field
+class _NestedObjectsNestedCopyWithPrimaryContact {
+  final NestedObjects _instance;
+  const _NestedObjectsNestedCopyWithPrimaryContact._(this._instance);
+
+  /// Update primaryContact field using a copyWith function
+  NestedObjects call(Contact Function(Contact) updater) {
+    final currentValue = _instance.primaryContact;
+    final updatedValue = updater(currentValue);
+    return NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: updatedValue,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    );
+  }
+}
+
+/// Nested copyWith helper class for employer field
+class _NestedObjectsNestedCopyWithEmployer {
+  final NestedObjects _instance;
+  const _NestedObjectsNestedCopyWithEmployer._(this._instance);
+
+  /// Update employer field using a copyWith function
+  NestedObjects call(Company Function(Company) updater) {
+    final currentValue = _instance.employer;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: updatedValue,
+      customAddress: _instance.customAddress,
+      parsedContacts: _instance.parsedContacts,
+    );
+  }
+}
+
+/// Nested copyWith helper class for customAddress field
+class _NestedObjectsNestedCopyWithCustomAddress {
+  final NestedObjects _instance;
+  const _NestedObjectsNestedCopyWithCustomAddress._(this._instance);
+
+  /// Update customAddress field using a copyWith function
+  NestedObjects call(Address Function(Address) updater) {
+    final currentValue = _instance.customAddress;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return NestedObjects(
+      name: _instance.name,
+      homeAddress: _instance.homeAddress,
+      workAddress: _instance.workAddress,
+      previousAddresses: _instance.previousAddresses,
+      namedAddresses: _instance.namedAddresses,
+      primaryContact: _instance.primaryContact,
+      contacts: _instance.contacts,
+      employer: _instance.employer,
+      customAddress: updatedValue,
+      parsedContacts: _instance.parsedContacts,
+    );
+  }
+}

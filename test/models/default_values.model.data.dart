@@ -10,7 +10,8 @@ mixin _DefaultValues {
   abstract final double doubleValue;
   abstract final List<String> listValue;
 
-  _DefaultValuesCopyWith get copyWith => _DefaultValuesCopyWith._(this as DefaultValues);
+  _DefaultValuesCopyWith get copyWith =>
+      _DefaultValuesCopyWith._(this as DefaultValues);
 
   @override
   bool operator ==(Object other) {
@@ -45,11 +46,11 @@ mixin _DefaultValues {
       DeepCollectionEquality().hash(listValue),
     ]);
   }
+
   @override
   String toString() {
     return 'DefaultValues(intValue: $intValue, stringValue: $stringValue, boolValue: $boolValue, doubleValue: $doubleValue, listValue: $listValue)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -64,10 +65,14 @@ mixin _DefaultValues {
   static DefaultValues fromJson(Map<String, dynamic> map) {
     return DefaultValues(
       intValue: SafeCasteUtil.safeCast<int>(map['intValue']) ?? 42,
-      stringValue: SafeCasteUtil.safeCast<String>(map['stringValue']) ?? 'default',
+      stringValue:
+          SafeCasteUtil.safeCast<String>(map['stringValue']) ?? 'default',
       boolValue: SafeCasteUtil.safeCast<bool>(map['boolValue']) ?? true,
       doubleValue: SafeCasteUtil.safeCast<double>(map['doubleValue']) ?? 3.14,
-      listValue: (map['listValue'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? const ['default'],
+      listValue: (map['listValue'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const ['default'],
     );
   }
 }
@@ -77,7 +82,8 @@ mixin _NestedDefaultValues {
   abstract final DefaultValues nested;
   abstract final int? nullableValue;
 
-  _NestedDefaultValuesCopyWith get copyWith => _NestedDefaultValuesCopyWith._(this as NestedDefaultValues);
+  _NestedDefaultValuesCopyWith get copyWith =>
+      _NestedDefaultValuesCopyWith._(this as NestedDefaultValues);
 
   @override
   bool operator ==(Object other) {
@@ -104,11 +110,11 @@ mixin _NestedDefaultValues {
       nullableValue,
     ]);
   }
+
   @override
   String toString() {
     return 'NestedDefaultValues(name: $name, nested: $nested, nullableValue: $nullableValue)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -123,12 +129,13 @@ mixin _NestedDefaultValues {
   static NestedDefaultValues fromJson(Map<String, dynamic> map) {
     return NestedDefaultValues(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? 'nested_default',
-      nested: map['nested'] != null ? DefaultValues.fromJson(map['nested'] as Map<String, dynamic>) : const DefaultValues(),
+      nested: map['nested'] != null
+          ? DefaultValues.fromJson(map['nested'] as Map<String, dynamic>)
+          : const DefaultValues(),
       nullableValue: SafeCasteUtil.safeCast<int>(map['nullableValue']),
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _DefaultValuesCopyWith {
@@ -192,7 +199,7 @@ class _DefaultValuesCopyWith {
 
   /// Build the final instance
   DefaultValues build() {
-    return _instance as DefaultValues;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -212,7 +219,6 @@ class _DefaultValuesCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _NestedDefaultValuesCopyWith {
@@ -248,7 +254,57 @@ class _NestedDefaultValuesCopyWith {
 
   /// Build the final instance
   NestedDefaultValues build() {
-    return _instance as NestedDefaultValues;
+    return _instance;
+  }
+
+  /// Nested copyWith for nested field
+  _NestedDefaultValuesNestedCopyWithNested get nestedBuilder {
+    return _NestedDefaultValuesNestedCopyWithNested._(_instance);
+  }
+
+  /// Update nested_intValue field
+  _NestedDefaultValuesCopyWith $nested_intValue(int value) {
+    return _NestedDefaultValuesCopyWith._(NestedDefaultValues(
+      name: _instance.name,
+      nested: _instance.nested.copyWith.intValue(value).build(),
+      nullableValue: _instance.nullableValue,
+    ));
+  }
+
+  /// Update nested_stringValue field
+  _NestedDefaultValuesCopyWith $nested_stringValue(String value) {
+    return _NestedDefaultValuesCopyWith._(NestedDefaultValues(
+      name: _instance.name,
+      nested: _instance.nested.copyWith.stringValue(value).build(),
+      nullableValue: _instance.nullableValue,
+    ));
+  }
+
+  /// Update nested_boolValue field
+  _NestedDefaultValuesCopyWith $nested_boolValue(bool value) {
+    return _NestedDefaultValuesCopyWith._(NestedDefaultValues(
+      name: _instance.name,
+      nested: _instance.nested.copyWith.boolValue(value).build(),
+      nullableValue: _instance.nullableValue,
+    ));
+  }
+
+  /// Update nested_doubleValue field
+  _NestedDefaultValuesCopyWith $nested_doubleValue(double value) {
+    return _NestedDefaultValuesCopyWith._(NestedDefaultValues(
+      name: _instance.name,
+      nested: _instance.nested.copyWith.doubleValue(value).build(),
+      nullableValue: _instance.nullableValue,
+    ));
+  }
+
+  /// Update nested_listValue field
+  _NestedDefaultValuesCopyWith $nested_listValue(List<String> value) {
+    return _NestedDefaultValuesCopyWith._(NestedDefaultValues(
+      name: _instance.name,
+      nested: _instance.nested.copyWith.listValue(value).build(),
+      nullableValue: _instance.nullableValue,
+    ));
   }
 
   /// Traditional copyWith method
@@ -265,3 +321,19 @@ class _NestedDefaultValuesCopyWith {
   }
 }
 
+/// Nested copyWith helper class for nested field
+class _NestedDefaultValuesNestedCopyWithNested {
+  final NestedDefaultValues _instance;
+  const _NestedDefaultValuesNestedCopyWithNested._(this._instance);
+
+  /// Update nested field using a copyWith function
+  NestedDefaultValues call(DefaultValues Function(DefaultValues) updater) {
+    final currentValue = _instance.nested;
+    final updatedValue = updater(currentValue);
+    return NestedDefaultValues(
+      name: _instance.name,
+      nested: updatedValue,
+      nullableValue: _instance.nullableValue,
+    );
+  }
+}

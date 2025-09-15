@@ -8,7 +8,8 @@ mixin _EchoApiResponse<T> {
   abstract final String message;
   abstract final T? data;
 
-  _EchoApiResponseCopyWith<T> get copyWith => _EchoApiResponseCopyWith<T>._(this as EchoApiResponse<T>);
+  _EchoApiResponseCopyWith<T> get copyWith =>
+      _EchoApiResponseCopyWith<T>._(this as EchoApiResponse<T>);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +36,11 @@ mixin _EchoApiResponse<T> {
       data,
     ]);
   }
+
   @override
   String toString() {
     return 'EchoApiResponse(code: $code, message: $message, data: $data)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -59,7 +60,6 @@ mixin _EchoApiResponse<T> {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _EchoApiResponseCopyWith<T> {
@@ -95,7 +95,12 @@ class _EchoApiResponseCopyWith<T> {
 
   /// Build the final instance
   EchoApiResponse<T> build() {
-    return _instance as EchoApiResponse<T>;
+    return _instance;
+  }
+
+  /// Nested copyWith for data field
+  _EchoApiResponseNestedCopyWithData<T> get dataBuilder {
+    return _EchoApiResponseNestedCopyWithData<T>._(_instance);
   }
 
   /// Traditional copyWith method
@@ -112,3 +117,20 @@ class _EchoApiResponseCopyWith<T> {
   }
 }
 
+/// Nested copyWith helper class for data field
+class _EchoApiResponseNestedCopyWithData<T> {
+  final EchoApiResponse<T> _instance;
+  const _EchoApiResponseNestedCopyWithData._(this._instance);
+
+  /// Update data field using a copyWith function
+  EchoApiResponse<T> call(T Function(T) updater) {
+    final currentValue = _instance.data;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return EchoApiResponse<T>(
+      code: _instance.code,
+      message: _instance.message,
+      data: updatedValue,
+    );
+  }
+}

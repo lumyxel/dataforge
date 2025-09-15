@@ -35,11 +35,11 @@ mixin _Address {
       zipCode,
     ]);
   }
+
   @override
   String toString() {
     return 'Address(street: $street, city: $city, zipCode: $zipCode)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -97,11 +97,11 @@ mixin _Person {
       workAddress,
     ]);
   }
+
   @override
   String toString() {
     return 'Person(name: $name, age: $age, address: $address, workAddress: $workAddress)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -119,7 +119,9 @@ mixin _Person {
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       age: SafeCasteUtil.safeCast<int>(map['age']) ?? 0,
       address: Address.fromJson((map['address'] ?? {}) as Map<String, dynamic>),
-      workAddress: map['workAddress'] != null ? Address.fromJson(map['workAddress'] as Map<String, dynamic>) : null,
+      workAddress: map['workAddress'] != null
+          ? Address.fromJson(map['workAddress'] as Map<String, dynamic>)
+          : null,
     );
   }
 }
@@ -156,11 +158,11 @@ mixin _Company {
       DeepCollectionEquality().hash(employees),
     ]);
   }
+
   @override
   String toString() {
     return 'Company(name: $name, ceo: $ceo, employees: $employees)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -174,7 +176,11 @@ mixin _Company {
     return Company(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       ceo: Person.fromJson((map['ceo'] ?? {}) as Map<String, dynamic>),
-      employees: (map['employees'] as List<dynamic>?)?.map((e) => Person.fromJson(e as Map<String, dynamic>)).toList()?.cast<Person>() ?? [],
+      employees: (map['employees'] as List<dynamic>?)
+              ?.map((e) => Person.fromJson(e as Map<String, dynamic>))
+              .toList()
+              .cast<Person>() ??
+          [],
     );
   }
 }
@@ -216,11 +222,11 @@ mixin _Department {
       location,
     ]);
   }
+
   @override
   String toString() {
     return 'Department(name: $name, manager: $manager, parentCompany: $parentCompany, location: $location)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -237,8 +243,11 @@ mixin _Department {
     return Department(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
       manager: Person.fromJson((map['manager'] ?? {}) as Map<String, dynamic>),
-      parentCompany: Company.fromJson((map['parentCompany'] ?? {}) as Map<String, dynamic>),
-      location: map['location'] != null ? Address.fromJson(map['location'] as Map<String, dynamic>) : null,
+      parentCompany: Company.fromJson(
+          (map['parentCompany'] ?? {}) as Map<String, dynamic>),
+      location: map['location'] != null
+          ? Address.fromJson(map['location'] as Map<String, dynamic>)
+          : null,
     );
   }
 }
@@ -250,7 +259,8 @@ mixin _Organization {
   abstract final Person founder;
   abstract final Company? parentCompany;
 
-  _OrganizationCopyWith get copyWith => _OrganizationCopyWith._(this as Organization);
+  _OrganizationCopyWith get copyWith =>
+      _OrganizationCopyWith._(this as Organization);
 
   @override
   bool operator ==(Object other) {
@@ -285,11 +295,11 @@ mixin _Organization {
       parentCompany,
     ]);
   }
+
   @override
   String toString() {
     return 'Organization(name: $name, headquarters: $headquarters, departments: $departments, founder: $founder, parentCompany: $parentCompany)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -306,10 +316,17 @@ mixin _Organization {
   static Organization fromJson(Map<String, dynamic> map) {
     return Organization(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      headquarters: Address.fromJson((map['headquarters'] ?? {}) as Map<String, dynamic>),
-      departments: (map['departments'] as List<dynamic>?)?.map((e) => Department.fromJson(e as Map<String, dynamic>)).toList()?.cast<Department>() ?? [],
+      headquarters:
+          Address.fromJson((map['headquarters'] ?? {}) as Map<String, dynamic>),
+      departments: (map['departments'] as List<dynamic>?)
+              ?.map((e) => Department.fromJson(e as Map<String, dynamic>))
+              .toList()
+              .cast<Department>() ??
+          [],
       founder: Person.fromJson((map['founder'] ?? {}) as Map<String, dynamic>),
-      parentCompany: map['parentCompany'] != null ? Company.fromJson(map['parentCompany'] as Map<String, dynamic>) : null,
+      parentCompany: map['parentCompany'] != null
+          ? Company.fromJson(map['parentCompany'] as Map<String, dynamic>)
+          : null,
     );
   }
 }
@@ -321,7 +338,8 @@ mixin _CorporateGroup {
   abstract final Person chairman;
   abstract final Address? registeredAddress;
 
-  _CorporateGroupCopyWith get copyWith => _CorporateGroupCopyWith._(this as CorporateGroup);
+  _CorporateGroupCopyWith get copyWith =>
+      _CorporateGroupCopyWith._(this as CorporateGroup);
 
   @override
   bool operator ==(Object other) {
@@ -356,11 +374,11 @@ mixin _CorporateGroup {
       registeredAddress,
     ]);
   }
+
   @override
   String toString() {
     return 'CorporateGroup(name: $name, mainOrganization: $mainOrganization, subsidiaries: $subsidiaries, chairman: $chairman, registeredAddress: $registeredAddress)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -377,14 +395,21 @@ mixin _CorporateGroup {
   static CorporateGroup fromJson(Map<String, dynamic> map) {
     return CorporateGroup(
       name: SafeCasteUtil.safeCast<String>(map['name']) ?? "",
-      mainOrganization: Organization.fromJson((map['mainOrganization'] ?? {}) as Map<String, dynamic>),
-      subsidiaries: (map['subsidiaries'] as List<dynamic>?)?.map((e) => Organization.fromJson(e as Map<String, dynamic>)).toList()?.cast<Organization>() ?? [],
-      chairman: Person.fromJson((map['chairman'] ?? {}) as Map<String, dynamic>),
-      registeredAddress: map['registeredAddress'] != null ? Address.fromJson(map['registeredAddress'] as Map<String, dynamic>) : null,
+      mainOrganization: Organization.fromJson(
+          (map['mainOrganization'] ?? {}) as Map<String, dynamic>),
+      subsidiaries: (map['subsidiaries'] as List<dynamic>?)
+              ?.map((e) => Organization.fromJson(e as Map<String, dynamic>))
+              .toList()
+              .cast<Organization>() ??
+          [],
+      chairman:
+          Person.fromJson((map['chairman'] ?? {}) as Map<String, dynamic>),
+      registeredAddress: map['registeredAddress'] != null
+          ? Address.fromJson(map['registeredAddress'] as Map<String, dynamic>)
+          : null,
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _AddressCopyWith {
@@ -420,7 +445,7 @@ class _AddressCopyWith {
 
   /// Build the final instance
   Address build() {
-    return _instance as Address;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -436,7 +461,6 @@ class _AddressCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _PersonCopyWith {
@@ -485,7 +509,77 @@ class _PersonCopyWith {
 
   /// Build the final instance
   Person build() {
-    return _instance as Person;
+    return _instance;
+  }
+
+  /// Nested copyWith for address field
+  _PersonNestedCopyWithAddress get addressBuilder {
+    return _PersonNestedCopyWithAddress._(_instance);
+  }
+
+  /// Nested copyWith for workAddress field
+  _PersonNestedCopyWithWorkAddress get workAddressBuilder {
+    return _PersonNestedCopyWithWorkAddress._(_instance);
+  }
+
+  /// Update address_street field
+  _PersonCopyWith $address_street(String value) {
+    return _PersonCopyWith._(Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: _instance.address.copyWith.street(value).build(),
+      workAddress: _instance.workAddress,
+    ));
+  }
+
+  /// Update address_city field
+  _PersonCopyWith $address_city(String value) {
+    return _PersonCopyWith._(Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: _instance.address.copyWith.city(value).build(),
+      workAddress: _instance.workAddress,
+    ));
+  }
+
+  /// Update address_zipCode field
+  _PersonCopyWith $address_zipCode(String? value) {
+    return _PersonCopyWith._(Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: _instance.address.copyWith.zipCode(value).build(),
+      workAddress: _instance.workAddress,
+    ));
+  }
+
+  /// Update workAddress_street field
+  _PersonCopyWith $workAddress_street(String value) {
+    return _PersonCopyWith._(Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: _instance.address,
+      workAddress: _instance.workAddress?.copyWith.street(value).build(),
+    ));
+  }
+
+  /// Update workAddress_city field
+  _PersonCopyWith $workAddress_city(String value) {
+    return _PersonCopyWith._(Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: _instance.address,
+      workAddress: _instance.workAddress?.copyWith.city(value).build(),
+    ));
+  }
+
+  /// Update workAddress_zipCode field
+  _PersonCopyWith $workAddress_zipCode(String? value) {
+    return _PersonCopyWith._(Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: _instance.address,
+      workAddress: _instance.workAddress?.copyWith.zipCode(value).build(),
+    ));
   }
 
   /// Traditional copyWith method
@@ -504,6 +598,42 @@ class _PersonCopyWith {
   }
 }
 
+/// Nested copyWith helper class for address field
+class _PersonNestedCopyWithAddress {
+  final Person _instance;
+  const _PersonNestedCopyWithAddress._(this._instance);
+
+  /// Update address field using a copyWith function
+  Person call(Address Function(Address) updater) {
+    final currentValue = _instance.address;
+    final updatedValue = updater(currentValue);
+    return Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: updatedValue,
+      workAddress: _instance.workAddress,
+    );
+  }
+}
+
+/// Nested copyWith helper class for workAddress field
+class _PersonNestedCopyWithWorkAddress {
+  final Person _instance;
+  const _PersonNestedCopyWithWorkAddress._(this._instance);
+
+  /// Update workAddress field using a copyWith function
+  Person call(Address Function(Address) updater) {
+    final currentValue = _instance.workAddress;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return Person(
+      name: _instance.name,
+      age: _instance.age,
+      address: _instance.address,
+      workAddress: updatedValue,
+    );
+  }
+}
 
 /// Helper class for chained copyWith operations
 class _CompanyCopyWith {
@@ -539,7 +669,98 @@ class _CompanyCopyWith {
 
   /// Build the final instance
   Company build() {
-    return _instance as Company;
+    return _instance;
+  }
+
+  /// Nested copyWith for ceo field
+  _CompanyNestedCopyWithCeo get ceoBuilder {
+    return _CompanyNestedCopyWithCeo._(_instance);
+  }
+
+  /// Update ceo_name field
+  _CompanyCopyWith $ceo_name(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith.name(value).build(),
+      employees: _instance.employees,
+    ));
+  }
+
+  /// Update ceo_age field
+  _CompanyCopyWith $ceo_age(int value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith.age(value).build(),
+      employees: _instance.employees,
+    ));
+  }
+
+  /// Update ceo_address_street field
+  _CompanyCopyWith $ceo_address_street(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith
+          .address(_instance.ceo.address.copyWith.street(value).build())
+          .build(),
+      employees: _instance.employees,
+    ));
+  }
+
+  /// Update ceo_address_city field
+  _CompanyCopyWith $ceo_address_city(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith
+          .address(_instance.ceo.address.copyWith.city(value).build())
+          .build(),
+      employees: _instance.employees,
+    ));
+  }
+
+  /// Update ceo_address_zipCode field
+  _CompanyCopyWith $ceo_address_zipCode(String? value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith
+          .address(_instance.ceo.address.copyWith.zipCode(value).build())
+          .build(),
+      employees: _instance.employees,
+    ));
+  }
+
+  /// Update ceo_workAddress_street field
+  _CompanyCopyWith $ceo_workAddress_street(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith
+          .workAddress(
+              _instance.ceo.workAddress?.copyWith.street(value).build())
+          .build(),
+      employees: _instance.employees,
+    ));
+  }
+
+  /// Update ceo_workAddress_city field
+  _CompanyCopyWith $ceo_workAddress_city(String value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith
+          .workAddress(_instance.ceo.workAddress?.copyWith.city(value).build())
+          .build(),
+      employees: _instance.employees,
+    ));
+  }
+
+  /// Update ceo_workAddress_zipCode field
+  _CompanyCopyWith $ceo_workAddress_zipCode(String? value) {
+    return _CompanyCopyWith._(Company(
+      name: _instance.name,
+      ceo: _instance.ceo.copyWith
+          .workAddress(
+              _instance.ceo.workAddress?.copyWith.zipCode(value).build())
+          .build(),
+      employees: _instance.employees,
+    ));
   }
 
   /// Traditional copyWith method
@@ -556,6 +777,22 @@ class _CompanyCopyWith {
   }
 }
 
+/// Nested copyWith helper class for ceo field
+class _CompanyNestedCopyWithCeo {
+  final Company _instance;
+  const _CompanyNestedCopyWithCeo._(this._instance);
+
+  /// Update ceo field using a copyWith function
+  Company call(Person Function(Person) updater) {
+    final currentValue = _instance.ceo;
+    final updatedValue = updater(currentValue);
+    return Company(
+      name: _instance.name,
+      ceo: updatedValue,
+      employees: _instance.employees,
+    );
+  }
+}
 
 /// Helper class for chained copyWith operations
 class _DepartmentCopyWith {
@@ -604,7 +841,287 @@ class _DepartmentCopyWith {
 
   /// Build the final instance
   Department build() {
-    return _instance as Department;
+    return _instance;
+  }
+
+  /// Nested copyWith for manager field
+  _DepartmentNestedCopyWithManager get managerBuilder {
+    return _DepartmentNestedCopyWithManager._(_instance);
+  }
+
+  /// Nested copyWith for parentCompany field
+  _DepartmentNestedCopyWithParentCompany get parentCompanyBuilder {
+    return _DepartmentNestedCopyWithParentCompany._(_instance);
+  }
+
+  /// Nested copyWith for location field
+  _DepartmentNestedCopyWithLocation get locationBuilder {
+    return _DepartmentNestedCopyWithLocation._(_instance);
+  }
+
+  /// Update manager_name field
+  _DepartmentCopyWith $manager_name(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith.name(value).build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager_age field
+  _DepartmentCopyWith $manager_age(int value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith.age(value).build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager_address_street field
+  _DepartmentCopyWith $manager_address_street(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith
+          .address(_instance.manager.address.copyWith.street(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager_address_city field
+  _DepartmentCopyWith $manager_address_city(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith
+          .address(_instance.manager.address.copyWith.city(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager_address_zipCode field
+  _DepartmentCopyWith $manager_address_zipCode(String? value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith
+          .address(_instance.manager.address.copyWith.zipCode(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager_workAddress_street field
+  _DepartmentCopyWith $manager_workAddress_street(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith
+          .workAddress(
+              _instance.manager.workAddress?.copyWith.street(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager_workAddress_city field
+  _DepartmentCopyWith $manager_workAddress_city(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith
+          .workAddress(
+              _instance.manager.workAddress?.copyWith.city(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update manager_workAddress_zipCode field
+  _DepartmentCopyWith $manager_workAddress_zipCode(String? value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager.copyWith
+          .workAddress(
+              _instance.manager.workAddress?.copyWith.zipCode(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_name field
+  _DepartmentCopyWith $parentCompany_name(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith.name(value).build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_name field
+  _DepartmentCopyWith $parentCompany_ceo_name(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith.name(value).build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_age field
+  _DepartmentCopyWith $parentCompany_ceo_age(int value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith.age(value).build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_address_street field
+  _DepartmentCopyWith $parentCompany_ceo_address_street(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith
+              .address(_instance.parentCompany.ceo.address.copyWith
+                  .street(value)
+                  .build())
+              .build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_address_city field
+  _DepartmentCopyWith $parentCompany_ceo_address_city(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith
+              .address(_instance.parentCompany.ceo.address.copyWith
+                  .city(value)
+                  .build())
+              .build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_address_zipCode field
+  _DepartmentCopyWith $parentCompany_ceo_address_zipCode(String? value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith
+              .address(_instance.parentCompany.ceo.address.copyWith
+                  .zipCode(value)
+                  .build())
+              .build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_workAddress_street field
+  _DepartmentCopyWith $parentCompany_ceo_workAddress_street(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith
+              .workAddress(_instance.parentCompany.ceo.workAddress?.copyWith
+                  .street(value)
+                  .build())
+              .build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_workAddress_city field
+  _DepartmentCopyWith $parentCompany_ceo_workAddress_city(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith
+              .workAddress(_instance.parentCompany.ceo.workAddress?.copyWith
+                  .city(value)
+                  .build())
+              .build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_ceo_workAddress_zipCode field
+  _DepartmentCopyWith $parentCompany_ceo_workAddress_zipCode(String? value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith
+          .ceo(_instance.parentCompany.ceo.copyWith
+              .workAddress(_instance.parentCompany.ceo.workAddress?.copyWith
+                  .zipCode(value)
+                  .build())
+              .build())
+          .build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update parentCompany_employees field
+  _DepartmentCopyWith $parentCompany_employees(List<Person> value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany.copyWith.employees(value).build(),
+      location: _instance.location,
+    ));
+  }
+
+  /// Update location_street field
+  _DepartmentCopyWith $location_street(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany,
+      location: _instance.location?.copyWith.street(value).build(),
+    ));
+  }
+
+  /// Update location_city field
+  _DepartmentCopyWith $location_city(String value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany,
+      location: _instance.location?.copyWith.city(value).build(),
+    ));
+  }
+
+  /// Update location_zipCode field
+  _DepartmentCopyWith $location_zipCode(String? value) {
+    return _DepartmentCopyWith._(Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany,
+      location: _instance.location?.copyWith.zipCode(value).build(),
+    ));
   }
 
   /// Traditional copyWith method
@@ -623,6 +1140,60 @@ class _DepartmentCopyWith {
   }
 }
 
+/// Nested copyWith helper class for manager field
+class _DepartmentNestedCopyWithManager {
+  final Department _instance;
+  const _DepartmentNestedCopyWithManager._(this._instance);
+
+  /// Update manager field using a copyWith function
+  Department call(Person Function(Person) updater) {
+    final currentValue = _instance.manager;
+    final updatedValue = updater(currentValue);
+    return Department(
+      name: _instance.name,
+      manager: updatedValue,
+      parentCompany: _instance.parentCompany,
+      location: _instance.location,
+    );
+  }
+}
+
+/// Nested copyWith helper class for parentCompany field
+class _DepartmentNestedCopyWithParentCompany {
+  final Department _instance;
+  const _DepartmentNestedCopyWithParentCompany._(this._instance);
+
+  /// Update parentCompany field using a copyWith function
+  Department call(Company Function(Company) updater) {
+    final currentValue = _instance.parentCompany;
+    final updatedValue = updater(currentValue);
+    return Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: updatedValue,
+      location: _instance.location,
+    );
+  }
+}
+
+/// Nested copyWith helper class for location field
+class _DepartmentNestedCopyWithLocation {
+  final Department _instance;
+  const _DepartmentNestedCopyWithLocation._(this._instance);
+
+  /// Update location field using a copyWith function
+  Department call(Address Function(Address) updater) {
+    final currentValue = _instance.location;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return Department(
+      name: _instance.name,
+      manager: _instance.manager,
+      parentCompany: _instance.parentCompany,
+      location: updatedValue,
+    );
+  }
+}
 
 /// Helper class for chained copyWith operations
 class _OrganizationCopyWith {
@@ -686,7 +1257,308 @@ class _OrganizationCopyWith {
 
   /// Build the final instance
   Organization build() {
-    return _instance as Organization;
+    return _instance;
+  }
+
+  /// Nested copyWith for headquarters field
+  _OrganizationNestedCopyWithHeadquarters get headquartersBuilder {
+    return _OrganizationNestedCopyWithHeadquarters._(_instance);
+  }
+
+  /// Nested copyWith for founder field
+  _OrganizationNestedCopyWithFounder get founderBuilder {
+    return _OrganizationNestedCopyWithFounder._(_instance);
+  }
+
+  /// Nested copyWith for parentCompany field
+  _OrganizationNestedCopyWithParentCompany get parentCompanyBuilder {
+    return _OrganizationNestedCopyWithParentCompany._(_instance);
+  }
+
+  /// Update headquarters_street field
+  _OrganizationCopyWith $headquarters_street(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.street(value).build(),
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update headquarters_city field
+  _OrganizationCopyWith $headquarters_city(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.city(value).build(),
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update headquarters_zipCode field
+  _OrganizationCopyWith $headquarters_zipCode(String? value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters.copyWith.zipCode(value).build(),
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_name field
+  _OrganizationCopyWith $founder_name(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith.name(value).build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_age field
+  _OrganizationCopyWith $founder_age(int value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith.age(value).build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_address_street field
+  _OrganizationCopyWith $founder_address_street(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith
+          .address(_instance.founder.address.copyWith.street(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_address_city field
+  _OrganizationCopyWith $founder_address_city(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith
+          .address(_instance.founder.address.copyWith.city(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_address_zipCode field
+  _OrganizationCopyWith $founder_address_zipCode(String? value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith
+          .address(_instance.founder.address.copyWith.zipCode(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_workAddress_street field
+  _OrganizationCopyWith $founder_workAddress_street(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith
+          .workAddress(
+              _instance.founder.workAddress?.copyWith.street(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_workAddress_city field
+  _OrganizationCopyWith $founder_workAddress_city(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith
+          .workAddress(
+              _instance.founder.workAddress?.copyWith.city(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update founder_workAddress_zipCode field
+  _OrganizationCopyWith $founder_workAddress_zipCode(String? value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder.copyWith
+          .workAddress(
+              _instance.founder.workAddress?.copyWith.zipCode(value).build())
+          .build(),
+      parentCompany: _instance.parentCompany,
+    ));
+  }
+
+  /// Update parentCompany_name field
+  _OrganizationCopyWith $parentCompany_name(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith.name(value).build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_name field
+  _OrganizationCopyWith $parentCompany_ceo_name(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith.name(value).build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_age field
+  _OrganizationCopyWith $parentCompany_ceo_age(int value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith.age(value).build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_address_street field
+  _OrganizationCopyWith $parentCompany_ceo_address_street(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith
+              .address(_instance.parentCompany!.ceo.address.copyWith
+                  .street(value)
+                  .build())
+              .build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_address_city field
+  _OrganizationCopyWith $parentCompany_ceo_address_city(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith
+              .address(_instance.parentCompany!.ceo.address.copyWith
+                  .city(value)
+                  .build())
+              .build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_address_zipCode field
+  _OrganizationCopyWith $parentCompany_ceo_address_zipCode(String? value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith
+              .address(_instance.parentCompany!.ceo.address.copyWith
+                  .zipCode(value)
+                  .build())
+              .build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_workAddress_street field
+  _OrganizationCopyWith $parentCompany_ceo_workAddress_street(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith
+              .workAddress(_instance.parentCompany!.ceo.workAddress?.copyWith
+                  .street(value)
+                  .build())
+              .build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_workAddress_city field
+  _OrganizationCopyWith $parentCompany_ceo_workAddress_city(String value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith
+              .workAddress(_instance.parentCompany!.ceo.workAddress?.copyWith
+                  .city(value)
+                  .build())
+              .build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_ceo_workAddress_zipCode field
+  _OrganizationCopyWith $parentCompany_ceo_workAddress_zipCode(String? value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith
+          .ceo(_instance.parentCompany!.ceo.copyWith
+              .workAddress(_instance.parentCompany!.ceo.workAddress?.copyWith
+                  .zipCode(value)
+                  .build())
+              .build())
+          .build(),
+    ));
+  }
+
+  /// Update parentCompany_employees field
+  _OrganizationCopyWith $parentCompany_employees(List<Person> value) {
+    return _OrganizationCopyWith._(Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany?.copyWith.employees(value).build(),
+    ));
   }
 
   /// Traditional copyWith method
@@ -707,6 +1579,63 @@ class _OrganizationCopyWith {
   }
 }
 
+/// Nested copyWith helper class for headquarters field
+class _OrganizationNestedCopyWithHeadquarters {
+  final Organization _instance;
+  const _OrganizationNestedCopyWithHeadquarters._(this._instance);
+
+  /// Update headquarters field using a copyWith function
+  Organization call(Address Function(Address) updater) {
+    final currentValue = _instance.headquarters;
+    final updatedValue = updater(currentValue);
+    return Organization(
+      name: _instance.name,
+      headquarters: updatedValue,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: _instance.parentCompany,
+    );
+  }
+}
+
+/// Nested copyWith helper class for founder field
+class _OrganizationNestedCopyWithFounder {
+  final Organization _instance;
+  const _OrganizationNestedCopyWithFounder._(this._instance);
+
+  /// Update founder field using a copyWith function
+  Organization call(Person Function(Person) updater) {
+    final currentValue = _instance.founder;
+    final updatedValue = updater(currentValue);
+    return Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: updatedValue,
+      parentCompany: _instance.parentCompany,
+    );
+  }
+}
+
+/// Nested copyWith helper class for parentCompany field
+class _OrganizationNestedCopyWithParentCompany {
+  final Organization _instance;
+  const _OrganizationNestedCopyWithParentCompany._(this._instance);
+
+  /// Update parentCompany field using a copyWith function
+  Organization call(Company Function(Company) updater) {
+    final currentValue = _instance.parentCompany;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return Organization(
+      name: _instance.name,
+      headquarters: _instance.headquarters,
+      departments: _instance.departments,
+      founder: _instance.founder,
+      parentCompany: updatedValue,
+    );
+  }
+}
 
 /// Helper class for chained copyWith operations
 class _CorporateGroupCopyWith {
@@ -770,7 +1699,561 @@ class _CorporateGroupCopyWith {
 
   /// Build the final instance
   CorporateGroup build() {
-    return _instance as CorporateGroup;
+    return _instance;
+  }
+
+  /// Nested copyWith for mainOrganization field
+  _CorporateGroupNestedCopyWithMainOrganization get mainOrganizationBuilder {
+    return _CorporateGroupNestedCopyWithMainOrganization._(_instance);
+  }
+
+  /// Nested copyWith for chairman field
+  _CorporateGroupNestedCopyWithChairman get chairmanBuilder {
+    return _CorporateGroupNestedCopyWithChairman._(_instance);
+  }
+
+  /// Nested copyWith for registeredAddress field
+  _CorporateGroupNestedCopyWithRegisteredAddress get registeredAddressBuilder {
+    return _CorporateGroupNestedCopyWithRegisteredAddress._(_instance);
+  }
+
+  /// Update mainOrganization_name field
+  _CorporateGroupCopyWith $mainOrganization_name(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith.name(value).build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_headquarters_street field
+  _CorporateGroupCopyWith $mainOrganization_headquarters_street(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .headquarters(_instance.mainOrganization.headquarters.copyWith
+              .street(value)
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_headquarters_city field
+  _CorporateGroupCopyWith $mainOrganization_headquarters_city(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .headquarters(_instance.mainOrganization.headquarters.copyWith
+              .city(value)
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_headquarters_zipCode field
+  _CorporateGroupCopyWith $mainOrganization_headquarters_zipCode(
+      String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .headquarters(_instance.mainOrganization.headquarters.copyWith
+              .zipCode(value)
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_departments field
+  _CorporateGroupCopyWith $mainOrganization_departments(
+      List<Department> value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization:
+          _instance.mainOrganization.copyWith.departments(value).build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_name field
+  _CorporateGroupCopyWith $mainOrganization_founder_name(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(
+              _instance.mainOrganization.founder.copyWith.name(value).build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_age field
+  _CorporateGroupCopyWith $mainOrganization_founder_age(int value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(
+              _instance.mainOrganization.founder.copyWith.age(value).build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_address_street field
+  _CorporateGroupCopyWith $mainOrganization_founder_address_street(
+      String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(_instance.mainOrganization.founder.copyWith
+              .address(_instance.mainOrganization.founder.address.copyWith
+                  .street(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_address_city field
+  _CorporateGroupCopyWith $mainOrganization_founder_address_city(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(_instance.mainOrganization.founder.copyWith
+              .address(_instance.mainOrganization.founder.address.copyWith
+                  .city(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_address_zipCode field
+  _CorporateGroupCopyWith $mainOrganization_founder_address_zipCode(
+      String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(_instance.mainOrganization.founder.copyWith
+              .address(_instance.mainOrganization.founder.address.copyWith
+                  .zipCode(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_workAddress_street field
+  _CorporateGroupCopyWith $mainOrganization_founder_workAddress_street(
+      String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(_instance.mainOrganization.founder.copyWith
+              .workAddress(_instance
+                  .mainOrganization.founder.workAddress?.copyWith
+                  .street(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_workAddress_city field
+  _CorporateGroupCopyWith $mainOrganization_founder_workAddress_city(
+      String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(_instance.mainOrganization.founder.copyWith
+              .workAddress(_instance
+                  .mainOrganization.founder.workAddress?.copyWith
+                  .city(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_founder_workAddress_zipCode field
+  _CorporateGroupCopyWith $mainOrganization_founder_workAddress_zipCode(
+      String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .founder(_instance.mainOrganization.founder.copyWith
+              .workAddress(_instance
+                  .mainOrganization.founder.workAddress?.copyWith
+                  .zipCode(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_name field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_name(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .name(value)
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_name field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_ceo_name(
+      String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .name(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_age field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_ceo_age(int value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .age(value)
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_address_street field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_ceo_address_street(
+      String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .address(_instance
+                      .mainOrganization.parentCompany!.ceo.address.copyWith
+                      .street(value)
+                      .build())
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_address_city field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_ceo_address_city(
+      String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .address(_instance
+                      .mainOrganization.parentCompany!.ceo.address.copyWith
+                      .city(value)
+                      .build())
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_address_zipCode field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_ceo_address_zipCode(
+      String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .address(_instance
+                      .mainOrganization.parentCompany!.ceo.address.copyWith
+                      .zipCode(value)
+                      .build())
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_workAddress_street field
+  _CorporateGroupCopyWith
+      $mainOrganization_parentCompany_ceo_workAddress_street(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .workAddress(_instance
+                      .mainOrganization.parentCompany!.ceo.workAddress?.copyWith
+                      .street(value)
+                      .build())
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_workAddress_city field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_ceo_workAddress_city(
+      String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .workAddress(_instance
+                      .mainOrganization.parentCompany!.ceo.workAddress?.copyWith
+                      .city(value)
+                      .build())
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_ceo_workAddress_zipCode field
+  _CorporateGroupCopyWith
+      $mainOrganization_parentCompany_ceo_workAddress_zipCode(String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .ceo(_instance.mainOrganization.parentCompany!.ceo.copyWith
+                  .workAddress(_instance
+                      .mainOrganization.parentCompany!.ceo.workAddress?.copyWith
+                      .zipCode(value)
+                      .build())
+                  .build())
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update mainOrganization_parentCompany_employees field
+  _CorporateGroupCopyWith $mainOrganization_parentCompany_employees(
+      List<Person> value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization.copyWith
+          .parentCompany(_instance.mainOrganization.parentCompany?.copyWith
+              .employees(value)
+              .build())
+          .build(),
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_name field
+  _CorporateGroupCopyWith $chairman_name(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith.name(value).build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_age field
+  _CorporateGroupCopyWith $chairman_age(int value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith.age(value).build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_address_street field
+  _CorporateGroupCopyWith $chairman_address_street(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith
+          .address(_instance.chairman.address.copyWith.street(value).build())
+          .build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_address_city field
+  _CorporateGroupCopyWith $chairman_address_city(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith
+          .address(_instance.chairman.address.copyWith.city(value).build())
+          .build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_address_zipCode field
+  _CorporateGroupCopyWith $chairman_address_zipCode(String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith
+          .address(_instance.chairman.address.copyWith.zipCode(value).build())
+          .build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_workAddress_street field
+  _CorporateGroupCopyWith $chairman_workAddress_street(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith
+          .workAddress(
+              _instance.chairman.workAddress?.copyWith.street(value).build())
+          .build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_workAddress_city field
+  _CorporateGroupCopyWith $chairman_workAddress_city(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith
+          .workAddress(
+              _instance.chairman.workAddress?.copyWith.city(value).build())
+          .build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update chairman_workAddress_zipCode field
+  _CorporateGroupCopyWith $chairman_workAddress_zipCode(String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman.copyWith
+          .workAddress(
+              _instance.chairman.workAddress?.copyWith.zipCode(value).build())
+          .build(),
+      registeredAddress: _instance.registeredAddress,
+    ));
+  }
+
+  /// Update registeredAddress_street field
+  _CorporateGroupCopyWith $registeredAddress_street(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress:
+          _instance.registeredAddress?.copyWith.street(value).build(),
+    ));
+  }
+
+  /// Update registeredAddress_city field
+  _CorporateGroupCopyWith $registeredAddress_city(String value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress:
+          _instance.registeredAddress?.copyWith.city(value).build(),
+    ));
+  }
+
+  /// Update registeredAddress_zipCode field
+  _CorporateGroupCopyWith $registeredAddress_zipCode(String? value) {
+    return _CorporateGroupCopyWith._(CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress:
+          _instance.registeredAddress?.copyWith.zipCode(value).build(),
+    ));
   }
 
   /// Traditional copyWith method
@@ -791,3 +2274,60 @@ class _CorporateGroupCopyWith {
   }
 }
 
+/// Nested copyWith helper class for mainOrganization field
+class _CorporateGroupNestedCopyWithMainOrganization {
+  final CorporateGroup _instance;
+  const _CorporateGroupNestedCopyWithMainOrganization._(this._instance);
+
+  /// Update mainOrganization field using a copyWith function
+  CorporateGroup call(Organization Function(Organization) updater) {
+    final currentValue = _instance.mainOrganization;
+    final updatedValue = updater(currentValue);
+    return CorporateGroup(
+      name: _instance.name,
+      mainOrganization: updatedValue,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: _instance.registeredAddress,
+    );
+  }
+}
+
+/// Nested copyWith helper class for chairman field
+class _CorporateGroupNestedCopyWithChairman {
+  final CorporateGroup _instance;
+  const _CorporateGroupNestedCopyWithChairman._(this._instance);
+
+  /// Update chairman field using a copyWith function
+  CorporateGroup call(Person Function(Person) updater) {
+    final currentValue = _instance.chairman;
+    final updatedValue = updater(currentValue);
+    return CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: updatedValue,
+      registeredAddress: _instance.registeredAddress,
+    );
+  }
+}
+
+/// Nested copyWith helper class for registeredAddress field
+class _CorporateGroupNestedCopyWithRegisteredAddress {
+  final CorporateGroup _instance;
+  const _CorporateGroupNestedCopyWithRegisteredAddress._(this._instance);
+
+  /// Update registeredAddress field using a copyWith function
+  CorporateGroup call(Address Function(Address) updater) {
+    final currentValue = _instance.registeredAddress;
+    if (currentValue == null) return _instance;
+    final updatedValue = updater(currentValue);
+    return CorporateGroup(
+      name: _instance.name,
+      mainOrganization: _instance.mainOrganization,
+      subsidiaries: _instance.subsidiaries,
+      chairman: _instance.chairman,
+      registeredAddress: updatedValue,
+    );
+  }
+}

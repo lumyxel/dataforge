@@ -8,7 +8,8 @@ mixin _UserDataforge {
   abstract final int age;
   abstract final String? email;
 
-  _UserDataforgeCopyWith get copyWith => _UserDataforgeCopyWith._(this as UserDataforge);
+  _UserDataforgeCopyWith get copyWith =>
+      _UserDataforgeCopyWith._(this as UserDataforge);
 
   @override
   bool operator ==(Object other) {
@@ -35,11 +36,11 @@ mixin _UserDataforge {
       email,
     ]);
   }
+
   @override
   String toString() {
     return 'UserDataforge(name: $name, age: $age, email: $email)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -65,7 +66,8 @@ mixin _UserDataClass {
   abstract final int age;
   abstract final String? email;
 
-  _UserDataClassCopyWith get copyWith => _UserDataClassCopyWith._(this as UserDataClass);
+  _UserDataClassCopyWith get copyWith =>
+      _UserDataClassCopyWith._(this as UserDataClass);
 
   @override
   bool operator ==(Object other) {
@@ -92,11 +94,11 @@ mixin _UserDataClass {
       email,
     ]);
   }
+
   @override
   String toString() {
     return 'UserDataClass(name: $name, age: $age, email: $email)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -121,7 +123,8 @@ mixin _UserDataClassConstant {
   abstract final String name;
   abstract final int age;
 
-  _UserDataClassConstantCopyWith get copyWith => _UserDataClassConstantCopyWith._(this as UserDataClassConstant);
+  _UserDataClassConstantCopyWith get copyWith =>
+      _UserDataClassConstantCopyWith._(this as UserDataClassConstant);
 
   @override
   bool operator ==(Object other) {
@@ -144,11 +147,11 @@ mixin _UserDataClassConstant {
       age,
     ]);
   }
+
   @override
   String toString() {
     return 'UserDataClassConstant(name: $name, age: $age)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -169,7 +172,8 @@ mixin _UserDataforgeConstant {
   abstract final String name;
   abstract final int age;
 
-  _UserDataforgeConstantCopyWith get copyWith => _UserDataforgeConstantCopyWith._(this as UserDataforgeConstant);
+  _UserDataforgeConstantCopyWith get copyWith =>
+      _UserDataforgeConstantCopyWith._(this as UserDataforgeConstant);
 
   @override
   bool operator ==(Object other) {
@@ -192,11 +196,11 @@ mixin _UserDataforgeConstant {
       age,
     ]);
   }
+
   @override
   String toString() {
     return 'UserDataforgeConstant(name: $name, age: $age)';
   }
-
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -212,7 +216,6 @@ mixin _UserDataforgeConstant {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _UserDataforgeCopyWith {
@@ -248,7 +251,7 @@ class _UserDataforgeCopyWith {
 
   /// Build the final instance
   UserDataforge build() {
-    return _instance as UserDataforge;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -264,7 +267,6 @@ class _UserDataforgeCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _UserDataClassCopyWith {
@@ -300,7 +302,7 @@ class _UserDataClassCopyWith {
 
   /// Build the final instance
   UserDataClass build() {
-    return _instance as UserDataClass;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -316,7 +318,6 @@ class _UserDataClassCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _UserDataClassConstantCopyWith {
@@ -341,7 +342,7 @@ class _UserDataClassConstantCopyWith {
 
   /// Build the final instance
   UserDataClassConstant build() {
-    return _instance as UserDataClassConstant;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -355,7 +356,6 @@ class _UserDataClassConstantCopyWith {
     );
   }
 }
-
 
 /// Helper class for chained copyWith operations
 class _UserDataforgeConstantCopyWith {
@@ -380,7 +380,7 @@ class _UserDataforgeConstantCopyWith {
 
   /// Build the final instance
   UserDataforgeConstant build() {
-    return _instance as UserDataforgeConstant;
+    return _instance;
   }
 
   /// Traditional copyWith method
@@ -394,4 +394,3 @@ class _UserDataforgeConstantCopyWith {
     );
   }
 }
-
