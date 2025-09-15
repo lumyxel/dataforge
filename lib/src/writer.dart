@@ -1215,7 +1215,8 @@ class Writer {
 
     // Generate method for each field
     for (final field in validFields) {
-      final paramType = _generateCopyWithParameterType(field);
+      // For chained copyWith, use the original field type directly
+      final paramType = field.type;
       buffer.writeln('\n  /// Update ${field.name} field');
       buffer.writeln(
           '  ${clazz.name}$genericParams ${field.name}($paramType value) {');
@@ -1223,12 +1224,8 @@ class Writer {
 
       for (final f in validFields) {
         if (f.name == field.name) {
-          // For nullable fields, use value directly to allow setting null
-          if (field.type.endsWith('?')) {
-            buffer.writeln('      ${f.name}: value,');
-          } else {
-            buffer.writeln('      ${f.name}: value ?? _instance.${f.name},');
-          }
+          // Use value directly for chained copyWith
+          buffer.writeln('      ${f.name}: value,');
         } else {
           buffer.writeln('      ${f.name}: _instance.${f.name},');
         }

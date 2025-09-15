@@ -180,19 +180,19 @@ class _UserCopyWith {
   const _UserCopyWith._(this._instance);
 
   /// Update name field
-  User name(String? value) {
+  User name(String value) {
     return User(
-      name: value ?? _instance.name,
+      name: value,
       age: _instance.age,
       email: _instance.email,
     );
   }
 
   /// Update age field
-  User age(int? value) {
+  User age(int value) {
     return User(
       name: _instance.name,
-      age: value ?? _instance.age,
+      age: value,
       email: _instance.email,
     );
   }
@@ -226,19 +226,19 @@ class _AddressCopyWith {
   const _AddressCopyWith._(this._instance);
 
   /// Update street field
-  Address street(String? value) {
+  Address street(String value) {
     return Address(
-      street: value ?? _instance.street,
+      street: value,
       city: _instance.city,
       zipCode: _instance.zipCode,
     );
   }
 
   /// Update city field
-  Address city(String? value) {
+  Address city(String value) {
     return Address(
       street: _instance.street,
-      city: value ?? _instance.city,
+      city: value,
       zipCode: _instance.zipCode,
     );
   }
@@ -272,29 +272,29 @@ class _ProfileCopyWith {
   const _ProfileCopyWith._(this._instance);
 
   /// Update user field
-  Profile user(User? value) {
+  Profile user(User value) {
     return Profile(
-      user: value ?? _instance.user,
+      user: value,
       address: _instance.address,
       tags: _instance.tags,
     );
   }
 
   /// Update address field
-  Profile address(Address? value) {
+  Profile address(Address value) {
     return Profile(
       user: _instance.user,
-      address: value ?? _instance.address,
+      address: value,
       tags: _instance.tags,
     );
   }
 
   /// Update tags field
-  Profile tags(List<String>? value) {
+  Profile tags(List<String> value) {
     return Profile(
       user: _instance.user,
       address: _instance.address,
-      tags: value ?? _instance.tags,
+      tags: value,
     );
   }
 
